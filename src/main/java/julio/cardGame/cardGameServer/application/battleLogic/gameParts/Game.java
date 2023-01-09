@@ -5,6 +5,10 @@ import julio.cardGame.cardGameServer.application.battleLogic.gameParts.helpers.F
 import julio.cardGame.cardGameServer.application.battleLogic.gameParts.helpers.Fighter.CardFighterResult;
 import julio.cardGame.cardGameServer.application.battleLogic.gameParts.helpers.Messages.IMessageFactory;
 import julio.cardGame.cardGameServer.application.battleLogic.gameParts.helpers.Messages.MessageFactory;
+import julio.cardGame.common.models.UserInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Game {
     public int roundCounter = 0;
@@ -13,16 +17,16 @@ public class Game {
     private final User firstPlayer;
     private final User secondPlayer;
 
-    public Game(String firstName, String secondName) {
+    public Game(UserInfo firstUser, UserInfo secondUser) {
 
-        this.firstPlayer = new User(firstName);
+        this.firstPlayer = new User(firstUser);
 
         //todo fetches the owned cards from the db
-        this.firstPlayer.createCollection();
+        //this.firstPlayer.createCollection();
 
-        this.secondPlayer = new User(secondName);
+        this.secondPlayer = new User(secondUser);
         //todo fetches the owned cards from the db
-        this.secondPlayer.createCollection();
+        //this.secondPlayer.createCollection();
 
     }
 
@@ -33,7 +37,7 @@ public class Game {
 
     }
 
-    public void playRound() {
+    public List<String> playRound() {
 
         IMessageFactory messageFactory = new MessageFactory();
 
@@ -41,6 +45,8 @@ public class Game {
         this.createDecks();
 
         CardFighter cardFighter = new CardFighter();
+
+        List<String> battleResult = new ArrayList<>();
 
         while (this.playersHaveCards()) {
 
@@ -59,10 +65,17 @@ public class Game {
                 if (fightResult == null) {
                     throw new RuntimeException("Fight result is null");
                 } else {
-                    System.out.println(messageFactory.createCardFightMsg(this.firstPlayer, firstPlayerFirstCard, this.secondPlayer, secondPlayerSecondCard, fightResult));
+
+                    battleResult.add(
+                            messageFactory
+                                    .createCardFightMsg(this.firstPlayer, firstPlayerFirstCard, this.secondPlayer, secondPlayerSecondCard, fightResult));
+
                     if (fightResult.getLoser() != null) {
+
+
                         System.out.println("Moving loser");
                     }
+
                 }
             } catch (Exception e) {
                 System.err.println(e.getMessage());
@@ -71,7 +84,9 @@ public class Game {
 
         }
 
-        System.out.println(messageFactory.createEndGameMsg(this.calculateWinner()));
+        battleResult.add(messageFactory.createEndGameMsg(this.calculateWinner()));
+
+        return battleResult;
 
     }
 

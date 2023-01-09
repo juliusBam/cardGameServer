@@ -10,7 +10,7 @@ public class Main {
     public static void main(String[] args) throws IOException, RuntimeException {
 
         //todo will be the login
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        /*BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
         String firstName;
         String secondName;
@@ -30,6 +30,6 @@ public class Main {
 
         Game newGame = new Game(firstName, secondName);
 
-        newGame.playRound();
+        newGame.playRound();*/
     }
 }

@@ -5,122 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="312fb4b1-8cf7-436a-b6d7-c41c0b71f13d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/application/CardGame.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/ClientAction.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/ClientInputParser.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/ClientInputValidator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/HeadersBuilder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/ServerResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/ServerResponseParser.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/readers/CardNameReader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/readers/CardReader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/readers/CredentialReader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/readers/DeckReader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/readers/DoubleReader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/readers/GenericStringReader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/readers/InputReader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/readers/PackageReader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/readers/TradeDealReader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/readers/TypeReader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/readers/UUIDreader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/readers/UsernameReader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/requests/DeleteRequestBuilder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/requests/GetRequestBuilder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/requests/PostRequestBuilder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/requests/PutRequestBuilder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/requests/RequestBuilder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/services/Actions/Action.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/services/Actions/QuitAction.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/services/Actions/deleteActions/DeleteTradeAction.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/services/Actions/getActions/FetchCardsAction.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/services/Actions/getActions/ShowDeckAction.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/services/Actions/getActions/ShowScoreAction.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/services/Actions/getActions/ShowStatsAction.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/services/Actions/getActions/ShowTradesAction.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/services/Actions/getActions/ShowUserAction.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/services/Actions/postActions/BattleAction.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/services/Actions/postActions/BuyPackageAction.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/services/Actions/postActions/CreatePackageAction.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/services/Actions/postActions/CreateUserAction.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/services/Actions/postActions/LoginAction.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/services/Actions/postActions/PostTradeAction.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/services/Actions/postActions/TradeAction.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/services/Actions/putActions/CreateDeckAction.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/services/Actions/putActions/UpdateUserAction.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/services/LoginValidator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/services/RequestSender.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/services/Validator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/application/battleLogic/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/application/battleLogic/gameParts/Game.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/application/battleLogic/gameParts/User.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/application/battleLogic/gameParts/cards/Card.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/application/battleLogic/gameParts/cards/CardCreationDataset.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/application/battleLogic/gameParts/cards/CardFactory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/application/battleLogic/gameParts/cards/Deck.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/application/battleLogic/gameParts/cards/Elements.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/application/battleLogic/gameParts/cards/ICard.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/application/battleLogic/gameParts/cards/monsters/Monster.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/application/battleLogic/gameParts/cards/monsters/Races.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/application/battleLogic/gameParts/cards/spells/Spell.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/application/battleLogic/gameParts/helpers/CardTrader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/application/battleLogic/gameParts/helpers/Fighter/CardDmgCalculator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/application/battleLogic/gameParts/helpers/Fighter/CardFighter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/application/battleLogic/gameParts/helpers/Fighter/CardFighterResult.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/application/battleLogic/gameParts/helpers/Messages/IMessageFactory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/application/battleLogic/gameParts/helpers/Messages/MessageFactory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/application/battleLogic/gameParts/services/CardsFetcher.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/application/serverLogic/db/DataTransformation.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/application/serverLogic/db/DbConnection.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/http/Header.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/http/HeaderParser.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/http/HeadersValidator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/http/HttpCommunication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/http/HttpMessage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/http/HttpPath.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/http/HttpServer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/http/HttpVerb.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/http/PathParser.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/http/RequestContext.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/http/Response.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/http/Sendable.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/router/RouteIdentifier.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/router/Router.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/router/routes/delete/ExecuteDeleteTrading.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/router/routes/get/ExecuteGetCard.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/router/routes/get/ExecuteGetDeck.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/router/routes/get/ExecuteGetScore.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/router/routes/get/ExecuteGetStats.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/router/routes/get/ExecuteGetTrading.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/router/routes/get/ExecuteGetUser.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/router/routes/post/ExecutePostBattle.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/router/routes/post/ExecutePostPackage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/router/routes/post/ExecutePostSession.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/router/routes/post/ExecutePostTrading.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/router/routes/post/ExecutePostTransactionPackage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/router/routes/post/ExecutePostUser.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/router/routes/put/ExecutePutDeck.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/router/routes/put/ExecutePutUser.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/common/CardTypes.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/common/Constants.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/common/DefaultMessages.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/common/HttpStatus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/common/RequestParameters.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/common/models/CardModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/common/models/CompleteUserModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/common/models/ScoreModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/common/models/StatsModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/common/models/TradeModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/common/models/UserAdditionalDataModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/common/models/UserLoginDataModel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/application/serverLogic/BattleResultObs.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/common/models/UserInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/application/battleLogic/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/application/battleLogic/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/application/battleLogic/gameParts/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/application/battleLogic/gameParts/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/application/battleLogic/gameParts/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/application/battleLogic/gameParts/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/application/battleLogic/gameParts/services/CardsFetcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/application/battleLogic/gameParts/services/CardsFetcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/http/HttpServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/http/HttpServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/router/routes/post/ExecutePostBattle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/router/routes/post/ExecutePostBattle.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -281,11 +174,25 @@
       <workItem from="1673201016505" duration="6018000" />
       <workItem from="1673210154509" duration="2295000" />
       <workItem from="1673213424865" duration="874000" />
+      <workItem from="1673214311165" duration="86000" />
+      <workItem from="1673256092123" duration="3339000" />
     </task>
+    <task id="LOCAL-00001" summary="First backup :D">
+      <created>1673214341070</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1673214341070</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="First backup :D" />
+    <option name="LAST_COMMIT_MESSAGE" value="First backup :D" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -357,13 +264,18 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/router/routes/delete/ExecuteDeleteTrading.java</url>
-          <line>46</line>
-          <option name="timeStamp" value="57" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/router/routes/delete/ExecuteDeleteTrading.java</url>
           <line>78</line>
           <option name="timeStamp" value="58" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/router/routes/post/ExecutePostBattle.java</url>
+          <line>20</line>
+          <option name="timeStamp" value="60" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/router/routes/post/ExecutePostBattle.java</url>
+          <line>37</line>
+          <option name="timeStamp" value="61" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

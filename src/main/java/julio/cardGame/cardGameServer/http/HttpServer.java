@@ -1,9 +1,12 @@
 package julio.cardGame.cardGameServer.http;
 
+import julio.cardGame.cardGameServer.application.battleLogic.gameParts.Game;
+import julio.cardGame.cardGameServer.application.serverLogic.BattleResultObs;
 import julio.cardGame.common.Constants;
 import julio.cardGame.cardGameServer.router.Route;
 import julio.cardGame.cardGameServer.router.RouteIdentifier;
 import julio.cardGame.cardGameServer.router.Router;
+import julio.cardGame.common.models.UserInfo;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -11,12 +14,17 @@ import java.net.Socket;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class HttpServer {
 
     private final Router router = new Router();
+
+    public static BattleResultObs battleRes = new BattleResultObs();
 
     public void start() {
 

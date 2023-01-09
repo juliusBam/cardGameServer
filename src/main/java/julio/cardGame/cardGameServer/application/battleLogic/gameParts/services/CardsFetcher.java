@@ -7,12 +7,13 @@ import julio.cardGame.cardGameServer.application.battleLogic.gameParts.cards.mon
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class CardsFetcher {
 
     static int counter;
 
-    public List<CardCreationDataset> getUserCollection(String username) {
+    /*public List<CardCreationDataset> getUserCollection(String username) {
 
         //todo send request to server with username to fetch the collection
         
@@ -33,7 +34,7 @@ public class CardsFetcher {
         }
         
         return creationResponse;
-    }
+    }*/
 
 
     public List<CardCreationDataset> getNewPackage() {
@@ -67,6 +68,13 @@ public class CardsFetcher {
 
         return creationResponse;
 
+    }
+
+    public List<CardCreationDataset> getDeck(UUID userID) {
+
+        //todo fetch from db
+
+        return null;
     }
 
 }

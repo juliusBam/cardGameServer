@@ -5,19 +5,20 @@ import julio.cardGame.cardGameServer.application.battleLogic.gameParts.cards.Car
 import julio.cardGame.cardGameServer.application.battleLogic.gameParts.cards.Deck;
 import julio.cardGame.cardGameServer.application.battleLogic.gameParts.cards.ICard;
 import julio.cardGame.cardGameServer.application.battleLogic.gameParts.services.CardsFetcher;
+import julio.cardGame.common.models.UserInfo;
 
 import java.security.InvalidParameterException;
 import java.util.List;
 
 public class User {
 
-    private String name;
+    private UserInfo info;
     private final Deck deck;
     private final Deck collection;
 
-    public User(String newName) {
+    public User(UserInfo newUser) {
 
-        this.name = newName;
+        this.info = newUser;
         this.deck = new Deck();
         this.collection = new Deck();
 
@@ -32,35 +33,14 @@ public class User {
     }
 
     public void createDeck() throws InvalidParameterException {
-        //choose cards from the collection
-        //todo send request
 
         CardsFetcher cardsFetcher = new CardsFetcher();
 
         try {
 
-            List<CardCreationDataset> creationResponse = cardsFetcher.getNewPackage();
+            List<CardCreationDataset> creationResponse = cardsFetcher.getDeck(this.info.userID);
 
-            this.processCardResponse(creationResponse, 'd');
-
-        } catch (InvalidParameterException e) {
-
-            throw e;
-
-        }
-
-    }
-
-    public void createCollection() {
-        //fetch the cards from the db
-        //
-        CardsFetcher cardsFetcher = new CardsFetcher();
-
-        try {
-
-            List<CardCreationDataset> creationResponse = cardsFetcher.getUserCollection(this.name);
-
-            this.processCardResponse(creationResponse, 'c');
+            this.processCardResponse(creationResponse);
 
         } catch (InvalidParameterException e) {
 
@@ -71,35 +51,35 @@ public class User {
     }
 
     //to do use function pointer
-    public void processCardResponse(List<CardCreationDataset> creationResponse, char actionType) throws InvalidParameterException {
+    public void processCardResponse(List<CardCreationDataset> creationResponse) {
 
         CardFactory myFactory = new CardFactory();
 
-        try {
+        //try {
 
             for (CardCreationDataset el: creationResponse) {
 
                 //we execute the reflection of the passed method
                 //method.invoke(this, myFactory.createCard(el.race, el.name, el.type, el.dmg));
-                if (actionType == 'd') {
+                //if (actionType == 'd') {
 
                     this.insertIntoDeck(myFactory.createCard(el.race, el.name, el.type, el.dmg));
 
-                } else if (actionType == 'c'){
+                /*} else if (actionType == 'c'){
 
                     this.insertIntoCollection(myFactory.createCard(el.race, el.name, el.type, el.dmg));
                 } else {
 
                     throw new InvalidParameterException("Wrong container type");
 
-                }
+                }*/
             }
 
-        } catch (InvalidParameterException e) {
+        /*} catch (InvalidParameterException e) {
 
             System.err.println(e.getMessage());
 
-        }
+        }*/
 
     }
 
@@ -108,7 +88,7 @@ public class User {
     }
 
     public String getName() {
-        return name;
+        return this.info.userName;
     }
 
     public boolean hasCards() {
