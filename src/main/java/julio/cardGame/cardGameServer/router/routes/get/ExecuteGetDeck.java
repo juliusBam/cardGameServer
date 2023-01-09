@@ -8,7 +8,7 @@ import julio.cardGame.cardGameServer.router.Route;
 import julio.cardGame.common.DefaultMessages;
 import julio.cardGame.common.HttpStatus;
 import julio.cardGame.common.RequestParameters;
-import julio.cardGame.common.models.CardModel;
+import julio.cardGame.common.models.CardRequestModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,9 +18,9 @@ public class ExecuteGetDeck implements Route {
     public Response process(RequestContext requestContext) {
 
         //todo fetch deck from db
-        List<CardModel> cards = new ArrayList<>();
+        List<CardRequestModel> cards = new ArrayList<>();
 
-        cards.add(new CardModel());
+        cards.add(new CardRequestModel());
 
         if (cards.size() == 0)
             return new Response(DefaultMessages.USER_NO_DECK.getMessage(), HttpStatus.OK);

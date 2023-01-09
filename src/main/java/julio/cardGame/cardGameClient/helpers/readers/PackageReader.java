@@ -1,6 +1,6 @@
 package julio.cardGame.cardGameClient.helpers.readers;
 
-import julio.cardGame.common.models.CardModel;
+import julio.cardGame.common.models.CardRequestModel;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,11 +12,11 @@ public class PackageReader extends InputReader {
         super();
     }
 
-    public List<CardModel> readPackage() throws IOException {
+    public List<CardRequestModel> readPackage() throws IOException {
 
         System.out.println("Package creation, please follow the instructions");
 
-        List<CardModel> pack = new ArrayList<>();
+        List<CardRequestModel> pack = new ArrayList<>();
 
         while (true) {
 

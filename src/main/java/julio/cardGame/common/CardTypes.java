@@ -1,9 +1,9 @@
 package julio.cardGame.common;
 
 public enum CardTypes {
-    SPELL("spell"),
+    SPELL("Spell"),
 
-    MONSTER("monster");
+    MONSTER("Monster");
 
     private final String cardType;
 

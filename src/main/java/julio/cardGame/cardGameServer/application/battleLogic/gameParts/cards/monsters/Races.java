@@ -1,12 +1,22 @@
 package julio.cardGame.cardGameServer.application.battleLogic.gameParts.cards.monsters;
 
 public enum Races {
-    Elf,
-    Goblin,
-    Dragon,
-    Kraken,
-    Wizard,
-    Ork,
-    Knight,
-    Troll
+    Elf("Elf"),
+    Goblin("Goblin"),
+    Dragon("Dragon"),
+    Kraken("Kraken"),
+    Wizard("Wizard"),
+    Ork("Ork"),
+    Knight("Knight"),
+    Troll("Troll");
+
+    private final String race;
+
+    Races(String race) {
+        this.race = race;
+    }
+
+    public String getRace() {
+        return this.race;
+    }
 }

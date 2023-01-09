@@ -1,10 +1,8 @@
 package julio.cardGame.cardGameClient.helpers.readers;
 
-import julio.cardGame.cardGameClient.helpers.ClientInputValidator;
-import julio.cardGame.common.models.CardModel;
+import julio.cardGame.common.models.CardRequestModel;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.UUID;
 
 public class CardReader extends InputReader {
@@ -13,7 +11,7 @@ public class CardReader extends InputReader {
         super();
     }
 
-    public CardModel readCard() throws IOException {
+    public CardRequestModel readCard() throws IOException {
 
         UUID cardId = new UUIDreader().readUUID();
 
@@ -21,7 +19,7 @@ public class CardReader extends InputReader {
 
         Double cardDmg = new DoubleReader().readDouble();
 
-        return new CardModel(cardId, cardName, cardDmg);
+        return new CardRequestModel(cardId, cardName, cardDmg);
 
     }
 

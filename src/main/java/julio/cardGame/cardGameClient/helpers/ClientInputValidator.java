@@ -1,7 +1,5 @@
 package julio.cardGame.cardGameClient.helpers;
 
-import julio.cardGame.common.models.CardModel;
-
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

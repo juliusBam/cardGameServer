@@ -22,12 +22,10 @@ public class ExecutePostBattle implements Route, Observer {
 
         HttpServer.battleRes.addUserQueue(new UserInfo("julio", UUID.fromString("6cd85277-4590-49d4-b0cf-ba0a921faad0"), 800));
 
+        //waits until the battleResults are changed
         while (!listChanged) {
 
         }
-
-        //System.out.println(this.battleRes);
-        //System.out.println(this.battleRes);
 
         String body = "";
 
@@ -52,7 +50,6 @@ public class ExecutePostBattle implements Route, Observer {
 
     public void setBattleRes(List<String> battleRes) {
         this.battleRes = battleRes;
-        //todo send the response
     }
 
     private List<String> battleRes;

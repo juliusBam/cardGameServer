@@ -31,6 +31,8 @@ public class BattleResultObs extends Observable {
             newResult.add("In the battle result");
             newResult.add("Second message in the battle res");
             newResult.add("Winner is julio");
+            //todo execute game
+            //todo update decks, elo, wins, losses in the db
             updateBattleResult(newResult);
             battleQueue = new ArrayBlockingQueue<>(2);
         }
