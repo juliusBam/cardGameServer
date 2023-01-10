@@ -6,19 +6,19 @@ import julio.cardGame.cardGameServer.application.serverLogic.db.DbConnection;
 import julio.cardGame.cardGameServer.http.HeadersValidator;
 import julio.cardGame.cardGameServer.http.RequestContext;
 import julio.cardGame.cardGameServer.http.Response;
-import julio.cardGame.cardGameServer.router.Route;
+import julio.cardGame.cardGameServer.router.Routeable;
 import julio.cardGame.common.DefaultMessages;
 import julio.cardGame.common.HttpStatus;
 import julio.cardGame.common.RequestParameters;
 import julio.cardGame.common.models.CompleteUserModel;
-import julio.cardGame.common.models.UserLoginDataModel;
 import julio.cardGame.common.models.UserAdditionalDataModel;
+import julio.cardGame.common.models.UserStats;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ExecuteGetUser implements Route {
+public class ExecuteGetUser implements Routeable {
     @Override
     public Response process(RequestContext requestContext) {
 
@@ -52,7 +52,8 @@ public class ExecuteGetUser implements Route {
                 completeUserModel = new CompleteUserModel(
                         resultSet.getString(2),
                         new UserAdditionalDataModel(resultSet.getString(4), resultSet.getString(6), resultSet.getString(5)),
-                        resultSet.getInt(7), resultSet.getInt(8),resultSet.getInt(9)
+                        new UserStats(resultSet.getInt(8), resultSet.getInt(9),resultSet.getInt(10)),
+                        resultSet.getInt(11)
                 );
 
                 try {
@@ -73,8 +74,6 @@ public class ExecuteGetUser implements Route {
             return new Response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
             //throw new RuntimeException(e);
         }
-
-        //todo db logic
 
 
 

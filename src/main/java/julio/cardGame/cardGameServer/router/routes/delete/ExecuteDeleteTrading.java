@@ -5,37 +5,41 @@ import julio.cardGame.cardGameServer.application.serverLogic.db.DbConnection;
 import julio.cardGame.cardGameServer.http.HeadersValidator;
 import julio.cardGame.cardGameServer.http.RequestContext;
 import julio.cardGame.cardGameServer.http.Response;
-import julio.cardGame.cardGameServer.router.Route;
+import julio.cardGame.cardGameServer.router.AuthorizationWrapper;
+import julio.cardGame.cardGameServer.router.AuthenticatedRoute;
+import julio.cardGame.cardGameServer.router.Routeable;
 import julio.cardGame.common.HttpStatus;
 import julio.cardGame.common.RequestParameters;
 
-import java.security.NoSuchAlgorithmException;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
-public class ExecuteDeleteTrading implements Route {
+public class ExecuteDeleteTrading extends AuthenticatedRoute implements Routeable {
     @Override
     public Response process(RequestContext requestContext) {
 
         String stringTradeId = requestContext.fetchParameter(RequestParameters.SELECTED_TRADE_DEAL.getParamValue());
 
-        String authToken = HeadersValidator.validateToken(requestContext.getHeaders());
+        AuthorizationWrapper auth = this.requireAuthToken(requestContext.getHeaders());
 
-        if (authToken == null)
-            return new Response(HttpStatus.UNAUTHORIZED.getStatusMessage(), HttpStatus.UNAUTHORIZED);
+        if (auth.response != null)
+            return auth.response;
+
+        String userName = auth.userName;
 
         if (stringTradeId == null)
             return new Response(HttpStatus.BAD_REQUEST.getStatusMessage(), HttpStatus.BAD_REQUEST);
 
-        if (HeadersValidator.checkAdmin(authToken)) {
+
+
+        if (HeadersValidator.checkAdmin(userName)) {
 
             return deleteAdmin(requestContext, stringTradeId);
 
         } else {
 
-            return deleteUser(requestContext, stringTradeId, authToken);
+            return deleteUser(requestContext, stringTradeId, userName);
 
         }
     }
@@ -72,7 +76,7 @@ public class ExecuteDeleteTrading implements Route {
         }
     }
 
-    private Response deleteUser(RequestContext requestContext, String tradeId, String authToken) {
+    private Response deleteUser(RequestContext requestContext, String tradeId, String userName) {
         try {
 
             //validate the uuid we received
@@ -92,7 +96,7 @@ public class ExecuteDeleteTrading implements Route {
             )) {
 
                 preparedStatement.setObject(1, DataTransformation.prepareUUID(uuid));
-                preparedStatement.setString(2, HeadersValidator.extractUserName(authToken));
+                preparedStatement.setString(2, userName);
 
                 preparedStatement.execute();
 

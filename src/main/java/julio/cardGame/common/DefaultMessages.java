@@ -4,7 +4,19 @@ public enum DefaultMessages {
 
     ERR_JSON_PARSE_USER("Error while parsing the user data"),
 
+    ERR_NO_COINS("Not enough coins, to buy the package"),
+
+    ERR_NO_PACKAGES("There are no packages to buy"),
+
+    ERR_CARD_NOT_OWNED("The offered card is not owned by you"),
+
+    ERR_CARD_NOT_VALID("The offered card is not valid for the trade"),
+
+    ERR_NO_SELF_TRADE("No self trades allowed"),
+
     ERR_JSON_PARSE_STATS("Error while parsing the stats"),
+
+    ERR_MISMATCHING_USERS("The requested and logged user do not match"),
 
     USER_NO_CARDS("No cards were found"),
 

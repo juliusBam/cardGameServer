@@ -6,7 +6,7 @@ import julio.cardGame.cardGameServer.application.serverLogic.db.DataTransformati
 import julio.cardGame.cardGameServer.application.serverLogic.db.DbConnection;
 import julio.cardGame.cardGameServer.http.RequestContext;
 import julio.cardGame.cardGameServer.http.Response;
-import julio.cardGame.cardGameServer.router.Route;
+import julio.cardGame.cardGameServer.router.Routeable;
 import julio.cardGame.common.DefaultMessages;
 import julio.cardGame.common.HttpStatus;
 import julio.cardGame.common.models.UserLoginDataModel;
@@ -15,9 +15,8 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.UUID;
 
-public class ExecutePostSession implements Route {
+public class ExecutePostSession implements Routeable {
 
     @Override
     public Response process(RequestContext requestContext) {

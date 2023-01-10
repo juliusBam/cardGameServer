@@ -1,5 +1,6 @@
 package julio.cardGame.cardGameServer.application.serverLogic.db;
 
+import julio.cardGame.common.CardTypes;
 import org.postgresql.util.PGobject;
 
 import java.math.BigInteger;
@@ -33,5 +34,17 @@ public class DataTransformation {
         transformedUUID.setValue(uuid.toString());
 
         return transformedUUID;
+    }
+
+    public static CardTypes convertIntoCardType(String rawCardType) {
+
+        if (rawCardType.equals("monster"))
+            return CardTypes.MONSTER;
+
+        if (rawCardType.equals("spell"))
+            return CardTypes.SPELL;
+
+        return null;
+
     }
 }

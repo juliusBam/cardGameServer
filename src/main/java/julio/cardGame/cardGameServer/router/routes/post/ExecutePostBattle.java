@@ -3,7 +3,7 @@ package julio.cardGame.cardGameServer.router.routes.post;
 import julio.cardGame.cardGameServer.http.HttpServer;
 import julio.cardGame.cardGameServer.http.RequestContext;
 import julio.cardGame.cardGameServer.http.Response;
-import julio.cardGame.cardGameServer.router.Route;
+import julio.cardGame.cardGameServer.router.Routeable;
 import julio.cardGame.common.HttpStatus;
 import julio.cardGame.common.models.UserInfo;
 
@@ -12,7 +12,7 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.UUID;
 
-public class ExecutePostBattle implements Route, Observer {
+public class ExecutePostBattle implements Routeable, Observer {
 
     private boolean listChanged = false;
     @Override

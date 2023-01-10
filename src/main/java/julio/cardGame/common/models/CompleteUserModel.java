@@ -9,18 +9,16 @@ public class CompleteUserModel {
     public UserAdditionalDataModel userAdditionalData;
 
     public String userName;
-    public int elo;
 
-    public int wins;
+    public UserStats userStats;
 
-    public int losses;
+    public int coins;
 
-    public CompleteUserModel(String userName, UserAdditionalDataModel additionalData, int elo, int wins, int losses) {
+    public CompleteUserModel(String userName, UserAdditionalDataModel additionalData, UserStats userStats, int coins) {
         this.userName = userName;
         this.userAdditionalData = additionalData;
-        this.elo = elo;
-        this.wins = wins;
-        this.losses = losses;
+        this.userStats = userStats;
+        this.coins = coins;
     }
 
     public CompleteUserModel() {}

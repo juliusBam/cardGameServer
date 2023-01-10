@@ -5,23 +5,28 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import julio.cardGame.cardGameServer.application.serverLogic.db.DataTransformation;
 import julio.cardGame.cardGameServer.application.serverLogic.db.DbConnection;
+import julio.cardGame.cardGameServer.http.HeadersValidator;
 import julio.cardGame.cardGameServer.http.RequestContext;
 import julio.cardGame.cardGameServer.http.Response;
-import julio.cardGame.cardGameServer.router.Route;
+import julio.cardGame.cardGameServer.router.Routeable;
 import julio.cardGame.common.DefaultMessages;
 import julio.cardGame.common.HttpStatus;
 import julio.cardGame.common.models.CardDbModel;
 import julio.cardGame.common.models.CardRequestModel;
 
-import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class ExecutePostPackage implements Route {
+public class ExecutePostPackage implements Routeable {
     @Override
     public Response process(RequestContext requestContext) {
+
+        String authToken = HeadersValidator.validateToken(requestContext.getHeaders());
+
+        if (authToken == null || !HeadersValidator.checkAdmin(authToken))
+            return new Response(HttpStatus.UNAUTHORIZED.getStatusMessage(), HttpStatus.UNAUTHORIZED);
 
         try {
 
@@ -55,7 +60,7 @@ public class ExecutePostPackage implements Route {
                 """;
 
             //dbConnection has to be in a separeted try catch, so that the the rollback can be executed at line 74
-            try (Connection dbConn = DbConnection.getInstance().getConnection()) {
+            try (Connection dbConn = DbConnection.getInstance().connect()) {
 
                 try (PreparedStatement statementInsertCards = dbConn.prepareStatement(sqlInsertCards);
                      PreparedStatement statementInsertPackage = dbConn.prepareStatement(sqlInsertPackage)

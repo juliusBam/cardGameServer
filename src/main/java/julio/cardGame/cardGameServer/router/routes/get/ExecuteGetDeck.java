@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import julio.cardGame.cardGameServer.http.RequestContext;
 import julio.cardGame.cardGameServer.http.Response;
-import julio.cardGame.cardGameServer.router.Route;
+import julio.cardGame.cardGameServer.router.Routeable;
 import julio.cardGame.common.DefaultMessages;
 import julio.cardGame.common.HttpStatus;
 import julio.cardGame.common.RequestParameters;
@@ -13,7 +13,7 @@ import julio.cardGame.common.models.CardRequestModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExecuteGetDeck implements Route {
+public class ExecuteGetDeck implements Routeable {
     @Override
     public Response process(RequestContext requestContext) {
 

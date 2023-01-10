@@ -3,17 +3,16 @@ package julio.cardGame.cardGameServer.router.routes.get;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import julio.cardGame.cardGameServer.http.RequestContext;
-import julio.cardGame.cardGameServer.router.Route;
+import julio.cardGame.cardGameServer.router.Routeable;
 import julio.cardGame.cardGameServer.http.Response;
 import julio.cardGame.common.DefaultMessages;
 import julio.cardGame.common.HttpStatus;
 import julio.cardGame.common.models.ScoreModel;
-import julio.cardGame.common.models.StatsModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExecuteGetScore implements Route {
+public class ExecuteGetScore implements Routeable {
     @Override
     public Response process(RequestContext requestContext) {
 

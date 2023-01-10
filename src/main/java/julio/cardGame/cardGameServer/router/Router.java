@@ -12,13 +12,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Router {
-    private final Map<RouteIdentifier, Route> routes = new HashMap<>();
+    private final Map<RouteIdentifier, Routeable> routes = new HashMap<>();
 
-    public void registerRoute(RouteIdentifier routeIdentifier, Route route) {
-        routes.put(routeIdentifier, route);
+    public void registerRoute(RouteIdentifier routeIdentifier, Routeable routeable) {
+        routes.put(routeIdentifier, routeable);
     }
 
-    public Route findRoute(RouteIdentifier routeIdentifier) {
+    public Routeable findRoute(RouteIdentifier routeIdentifier) {
         return routes.get(routeIdentifier);
     }
 
