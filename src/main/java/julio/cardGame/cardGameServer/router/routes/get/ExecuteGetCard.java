@@ -10,7 +10,7 @@ import julio.cardGame.cardGameServer.router.Routeable;
 import julio.cardGame.common.DefaultMessages;
 import julio.cardGame.common.HttpStatus;
 import julio.cardGame.cardGameServer.http.Response;
-import julio.cardGame.common.models.CardDbModel;
+import julio.cardGame.cardGameServer.application.serverLogic.models.CardDbModel;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

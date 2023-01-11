@@ -3,6 +3,7 @@ package julio.cardGame.cardGameServer.router.routes.put;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import julio.cardGame.cardGameServer.application.serverLogic.db.DbConnection;
+import julio.cardGame.cardGameServer.application.serverLogic.repositories.UserRepo;
 import julio.cardGame.cardGameServer.http.RequestContext;
 import julio.cardGame.cardGameServer.http.Response;
 import julio.cardGame.cardGameServer.router.AuthenticatedRoute;
@@ -11,7 +12,7 @@ import julio.cardGame.cardGameServer.router.Routeable;
 import julio.cardGame.common.DefaultMessages;
 import julio.cardGame.common.HttpStatus;
 import julio.cardGame.common.RequestParameters;
-import julio.cardGame.common.models.UserAdditionalDataModel;
+import julio.cardGame.cardGameServer.application.serverLogic.models.UserAdditionalDataModel;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -39,23 +40,20 @@ public class ExecutePutUser extends AuthenticatedRoute implements Routeable {
             if (!requestedUser.equals(auth.userName))
                 return new Response(DefaultMessages.ERR_MISMATCHING_USERS.getMessage(), HttpStatus.BAD_REQUEST);
 
-            try (Connection connection = DbConnection.getInstance().connect()) {
+            this.updateUser(requestedUser, userModel);
 
-                this.updateUser(connection, requestedUser, userModel);
+            return new Response(HttpStatus.OK.getStatusMessage(), HttpStatus.OK);
 
-                return new Response(HttpStatus.OK.getStatusMessage(), HttpStatus.OK);
-
-            } catch (SQLException e) {
-                return new Response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-            }
 
         } catch (JsonProcessingException e) {
             return new Response(DefaultMessages.ERR_JSON_PARSE_USER.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (SQLException e) {
+            return new Response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
 
-    private void updateUser(Connection connection, String requestedUser, UserAdditionalDataModel userModel) throws SQLException {
+    private void updateUser(String requestedUser, UserAdditionalDataModel userModel) throws SQLException {
 
         String sql = """
                     UPDATE
@@ -64,11 +62,11 @@ public class ExecutePutUser extends AuthenticatedRoute implements Routeable {
                             WHERE "userName"=?;
                 """;
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try (PreparedStatement preparedStatement = DbConnection.getInstance().prepareStatement(sql)) {
 
-            preparedStatement.setString(1, userModel.Image);
-            preparedStatement.setObject(2, userModel.Bio);
-            preparedStatement.setString(3, userModel.Name);
+            preparedStatement.setString(1, userModel.image);
+            preparedStatement.setObject(2, userModel.bio);
+            preparedStatement.setString(3, userModel.name);
             preparedStatement.setString(4, requestedUser);
 
             preparedStatement.execute();

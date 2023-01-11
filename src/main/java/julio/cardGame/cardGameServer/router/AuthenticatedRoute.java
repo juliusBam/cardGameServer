@@ -6,6 +6,7 @@ import julio.cardGame.cardGameServer.http.HeadersValidator;
 import julio.cardGame.cardGameServer.http.Response;
 import julio.cardGame.common.HttpStatus;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public abstract class AuthenticatedRoute {
@@ -15,6 +16,7 @@ public abstract class AuthenticatedRoute {
         String authToken = HeadersValidator.validateToken(headers);
 
         if (authToken == null) {
+
             return new AuthorizationWrapper(null,
                     new Response(HttpStatus.UNAUTHORIZED.getStatusMessage(), HttpStatus.UNAUTHORIZED)
             );
@@ -33,7 +35,7 @@ public abstract class AuthenticatedRoute {
 
     }
 
-    protected AuthorizationWrapper requireAdmin(List<Header> headers) {
+    protected AuthorizationWrapper requireAdmin(List<Header> headers) throws SQLException {
 
         AuthorizationWrapper authorizationWrapper = this.requireAuthToken(headers);
 

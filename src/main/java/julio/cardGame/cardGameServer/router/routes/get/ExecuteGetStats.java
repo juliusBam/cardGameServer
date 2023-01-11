@@ -2,6 +2,7 @@ package julio.cardGame.cardGameServer.router.routes.get;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import julio.cardGame.cardGameServer.application.serverLogic.db.DataTransformation;
 import julio.cardGame.cardGameServer.application.serverLogic.db.DbConnection;
 import julio.cardGame.cardGameServer.http.RequestContext;
 import julio.cardGame.cardGameServer.http.Response;
@@ -10,7 +11,7 @@ import julio.cardGame.cardGameServer.router.AuthenticatedRoute;
 import julio.cardGame.cardGameServer.router.Routeable;
 import julio.cardGame.common.DefaultMessages;
 import julio.cardGame.common.HttpStatus;
-import julio.cardGame.common.models.StatsModel;
+import julio.cardGame.cardGameServer.application.serverLogic.models.StatsModel;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -44,16 +45,12 @@ public class ExecuteGetStats extends AuthenticatedRoute implements Routeable {
 
             int wins = resultSet.getInt(1);
             int losses = resultSet.getInt(2);
-            int elo = resultSet.getInt(3);
-            double winRate = 0;
-
-            if (wins + losses != 0 || wins != 0)
-                winRate = (double) (wins / (wins + losses));
+            double winRate = DataTransformation.calculateWinRate(wins, losses);
 
             //todo change variables to stored
             StatsModel statsModel = new StatsModel(
-                resultSet.getInt(1),
-                    resultSet.getInt(2),
+                    wins,
+                    losses,
                     winRate,
                     resultSet.getInt(3)
             );

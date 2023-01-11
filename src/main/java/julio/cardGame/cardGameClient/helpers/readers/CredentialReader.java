@@ -1,11 +1,8 @@
 package julio.cardGame.cardGameClient.helpers.readers;
 
-import julio.cardGame.cardGameClient.helpers.ClientInputValidator;
-import julio.cardGame.common.models.UserLoginDataModel;
+import julio.cardGame.cardGameServer.application.serverLogic.models.UserLoginDataModel;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 public class CredentialReader extends InputReader {
     public CredentialReader() {

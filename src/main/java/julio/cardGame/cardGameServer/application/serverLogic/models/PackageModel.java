@@ -1,4 +1,4 @@
-package julio.cardGame.common.models;
+package julio.cardGame.cardGameServer.application.serverLogic.models;
 
 import java.util.UUID;
 

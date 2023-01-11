@@ -47,6 +47,7 @@ public class Response extends HttpMessage implements Sendable {
         bufferedWriter.newLine();
         bufferedWriter.newLine();
         bufferedWriter.write(body);
+        bufferedWriter.newLine();
 
         bufferedWriter.flush();
     }

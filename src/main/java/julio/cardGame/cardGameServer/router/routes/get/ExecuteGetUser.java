@@ -3,6 +3,7 @@ package julio.cardGame.cardGameServer.router.routes.get;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import julio.cardGame.cardGameServer.application.serverLogic.db.DbConnection;
+import julio.cardGame.cardGameServer.application.serverLogic.repositories.UserRepo;
 import julio.cardGame.cardGameServer.http.HeadersValidator;
 import julio.cardGame.cardGameServer.http.RequestContext;
 import julio.cardGame.cardGameServer.http.Response;
@@ -10,9 +11,9 @@ import julio.cardGame.cardGameServer.router.Routeable;
 import julio.cardGame.common.DefaultMessages;
 import julio.cardGame.common.HttpStatus;
 import julio.cardGame.common.RequestParameters;
-import julio.cardGame.common.models.CompleteUserModel;
-import julio.cardGame.common.models.UserAdditionalDataModel;
-import julio.cardGame.common.models.UserStats;
+import julio.cardGame.cardGameServer.application.serverLogic.models.CompleteUserModel;
+import julio.cardGame.cardGameServer.application.serverLogic.models.UserAdditionalDataModel;
+import julio.cardGame.cardGameServer.application.serverLogic.models.UserStatsModel;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -33,6 +34,21 @@ public class ExecuteGetUser implements Routeable {
         if (authToken == null)
             return new Response(HttpStatus.UNAUTHORIZED.getStatusMessage(), HttpStatus.UNAUTHORIZED);
 
+        /*try {
+
+            CompleteUserModel userData = new UserRepo().getUser(requestedUser);
+
+            String body = new ObjectMapper()
+                    .writeValueAsString(userData);
+
+            return new Response(body, HttpStatus.OK);
+
+        } catch (JsonProcessingException e) {
+            return new Response(DefaultMessages.ERR_JSON_PARSE_USER.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+        }  catch (SQLException e) {
+            return new Response(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+        }*/
+
         try (PreparedStatement preparedStatement = DbConnection.getInstance().prepareStatement(
                 """
                         SELECT * 
@@ -52,8 +68,8 @@ public class ExecuteGetUser implements Routeable {
                 completeUserModel = new CompleteUserModel(
                         resultSet.getString(2),
                         new UserAdditionalDataModel(resultSet.getString(4), resultSet.getString(6), resultSet.getString(5)),
-                        new UserStats(resultSet.getInt(8), resultSet.getInt(9),resultSet.getInt(10)),
-                        resultSet.getInt(11)
+                        new UserStatsModel(resultSet.getInt(8), resultSet.getInt(9),resultSet.getInt(10)),
+                        resultSet.getInt(11), resultSet.getBoolean(13)
                 );
 
                 try {
@@ -74,8 +90,6 @@ public class ExecuteGetUser implements Routeable {
             return new Response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
             //throw new RuntimeException(e);
         }
-
-
 
     }
 }

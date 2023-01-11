@@ -13,7 +13,7 @@ import julio.cardGame.common.CardTypes;
 import julio.cardGame.common.DefaultMessages;
 import julio.cardGame.common.HttpStatus;
 import julio.cardGame.common.RequestParameters;
-import julio.cardGame.common.models.TradeModel;
+import julio.cardGame.cardGameServer.application.serverLogic.models.TradeModel;
 
 import java.sql.*;
 import java.util.UUID;
@@ -47,7 +47,7 @@ public class ExecutePostTrading extends AuthenticatedRoute implements Routeable 
             TradeModel tradeModel = new ObjectMapper()
                     .readValue(requestContext.getBody(), TradeModel.class);
 
-            CardTypes requiredType = DataTransformation.convertIntoCardType(tradeModel.Type);
+            CardTypes requiredType = DataTransformation.convertIntoCardType(tradeModel.type);
 
             if (requiredType == null)
                 throw new IllegalArgumentException();
@@ -56,7 +56,7 @@ public class ExecutePostTrading extends AuthenticatedRoute implements Routeable 
             try (Connection dbConnection = DbConnection.getInstance().connect()) {
 
                 //check if card belongs to user
-                if (!this.checkIfOwnsCard(dbConnection, userName, tradeModel.CardToTrade))
+                if (!this.checkIfOwnsCard(dbConnection, userName, tradeModel.cardToTrade))
                     return new Response(DefaultMessages.ERR_CARD_NOT_OWNED.getMessage(), HttpStatus.BAD_REQUEST);
 
                 //execute insert trade deal
@@ -84,9 +84,9 @@ public class ExecutePostTrading extends AuthenticatedRoute implements Routeable 
 
         try (PreparedStatement preparedStatement = dbConnection.prepareStatement(sql)) {
 
-            preparedStatement.setObject(1, DataTransformation.prepareUUID(tradeModel.Id));
-            preparedStatement.setObject(2, DataTransformation.prepareUUID(tradeModel.CardToTrade));
-            preparedStatement.setInt(3, tradeModel.MinimumDamage);
+            preparedStatement.setObject(1, DataTransformation.prepareUUID(tradeModel.id));
+            preparedStatement.setObject(2, DataTransformation.prepareUUID(tradeModel.cardToTrade));
+            preparedStatement.setInt(3, tradeModel.minimumDamage);
             preparedStatement.setString(4, userName);
             preparedStatement.setObject(5, requiredType.getCardType(), Types.OTHER);
 

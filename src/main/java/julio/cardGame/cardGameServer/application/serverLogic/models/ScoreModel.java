@@ -1,4 +1,4 @@
-package julio.cardGame.common.models;
+package julio.cardGame.cardGameServer.application.serverLogic.models;
 
 public class ScoreModel extends StatsModel {
     public String userName;

@@ -1,6 +1,6 @@
 package julio.cardGame.cardGameServer.http;
 
-import julio.cardGame.cardGameServer.application.serverLogic.BattleResultObs;
+import julio.cardGame.cardGameServer.application.serverLogic.BattleExecutor;
 import julio.cardGame.common.Constants;
 import julio.cardGame.cardGameServer.router.Routeable;
 import julio.cardGame.cardGameServer.router.RouteIdentifier;
@@ -19,7 +19,7 @@ public class HttpServer {
 
     private final Router router = new Router();
 
-    public static BattleResultObs battleRes = new BattleResultObs();
+    public static BattleExecutor battleRes = new BattleExecutor();
 
     public void start() {
 

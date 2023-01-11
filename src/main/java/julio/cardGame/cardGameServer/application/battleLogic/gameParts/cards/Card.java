@@ -1,6 +1,6 @@
 package julio.cardGame.cardGameServer.application.battleLogic.gameParts.cards;
 
-import julio.cardGame.cardGameServer.application.battleLogic.gameParts.User;
+import julio.cardGame.cardGameServer.application.battleLogic.gameParts.BattleUser;
 import julio.cardGame.cardGameServer.application.battleLogic.gameParts.cards.monsters.Monster;
 import julio.cardGame.cardGameServer.application.battleLogic.gameParts.cards.spells.Spell;
 import julio.cardGame.cardGameServer.application.battleLogic.gameParts.helpers.Fighter.CardDmgCalculator;
@@ -21,7 +21,7 @@ public abstract class Card implements ICard {
 
     }
 
-    public final void trade(User targetPlayer) {
+    public final void trade(BattleUser targetPlayer) {
 
     };
 

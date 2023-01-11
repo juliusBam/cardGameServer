@@ -11,8 +11,8 @@ import julio.cardGame.cardGameServer.http.Response;
 import julio.cardGame.cardGameServer.router.Routeable;
 import julio.cardGame.common.DefaultMessages;
 import julio.cardGame.common.HttpStatus;
-import julio.cardGame.common.models.CardDbModel;
-import julio.cardGame.common.models.CardRequestModel;
+import julio.cardGame.cardGameServer.application.serverLogic.models.CardDbModel;
+import julio.cardGame.cardGameServer.application.serverLogic.models.CardRequestModel;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public class ExecutePostPackage implements Routeable {
             //converts the request object to a desired format
             for (CardRequestModel card : newPackage) {
                 cardsToInsert.add(new CardDbModel(card));
-                cardIDs.add(card.Id);
+                cardIDs.add(card.id);
             }
 
             String sqlInsertCards = """

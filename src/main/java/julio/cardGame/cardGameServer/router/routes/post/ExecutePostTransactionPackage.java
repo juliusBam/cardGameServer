@@ -9,7 +9,7 @@ import julio.cardGame.cardGameServer.router.Routeable;
 import julio.cardGame.common.Constants;
 import julio.cardGame.common.DefaultMessages;
 import julio.cardGame.common.HttpStatus;
-import julio.cardGame.common.models.PackageModel;
+import julio.cardGame.cardGameServer.application.serverLogic.models.PackageModel;
 
 import java.sql.*;
 import java.util.UUID;

@@ -1,4 +1,4 @@
-package julio.cardGame.common.models;
+package julio.cardGame.cardGameServer.application.serverLogic.models;
 
 
 //composition is used, since we cannot inherit from 2 classes
@@ -10,14 +10,16 @@ public class CompleteUserModel {
 
     public String userName;
 
-    public UserStats userStats;
+    public UserStatsModel userStatsModel;
 
     public int coins;
 
-    public CompleteUserModel(String userName, UserAdditionalDataModel additionalData, UserStats userStats, int coins) {
+    public boolean isAdmin;
+
+    public CompleteUserModel(String userName, UserAdditionalDataModel additionalData, UserStatsModel userStatsModel, int coins, boolean isAdmin) {
         this.userName = userName;
         this.userAdditionalData = additionalData;
-        this.userStats = userStats;
+        this.userStatsModel = userStatsModel;
         this.coins = coins;
     }
 

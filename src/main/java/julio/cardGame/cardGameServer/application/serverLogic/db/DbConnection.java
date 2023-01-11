@@ -1,6 +1,7 @@
 package julio.cardGame.cardGameServer.application.serverLogic.db;
 
-import julio.cardGame.common.Constants;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 
 import java.io.Closeable;
 import java.sql.*;
@@ -11,20 +12,30 @@ public class DbConnection implements Closeable {
     private Connection connection;
 
     public DbConnection() {
-        try {
+        /*try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
             System.err.println("PostgreSQL JDBC driver not found");
             e.printStackTrace();
-        }
+        }*/
     }
 
-    public Connection connect(String database) throws SQLException {
+    /*public Connection connect(String database) throws SQLException {
         return DriverManager.getConnection("jdbc:postgresql://localhost:5432/" + database, "mtcgbackend", "mtcgBackendPwd");
-    }
+    }*/
+
+    /*public Connection connect() throws SQLException {
+        //HikariConfig config = new HikariConfig()
+
+        return connect(Constants.DB_NAME);
+    }*/
 
     public Connection connect() throws SQLException {
-        return connect(Constants.DB_NAME);
+        HikariConfig config = new HikariConfig("src/main/resources/hikari.properties");
+        HikariDataSource ds = new HikariDataSource(config);
+
+        return ds.getConnection();
+                //connect(Constants.DB_NAME);
     }
 
 
@@ -44,11 +55,11 @@ public class DbConnection implements Closeable {
         return getConnection().prepareStatement(sql);
     }
 
-    public boolean executeSql(String sql) throws SQLException {
+    /*public boolean executeSql(String sql) throws SQLException {
         return executeSql(getConnection(), sql, false);
-    }
+    }*/
 
-    public static boolean executeSql(Connection connection, String sql, boolean ignoreIfFails) throws SQLException {
+    /*public static boolean executeSql(Connection connection, String sql, boolean ignoreIfFails) throws SQLException {
         try ( Statement statement = connection.createStatement() ) {
             statement.execute(sql );
             return true;
@@ -61,7 +72,7 @@ public class DbConnection implements Closeable {
 
     public static boolean executeSql(Connection connection, String sql) throws SQLException {
         return executeSql(connection, sql, false);
-    }
+    }*/
 
 
     @Override

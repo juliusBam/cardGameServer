@@ -7,7 +7,7 @@ import julio.cardGame.cardGameClient.helpers.readers.GenericStringReader;
 import julio.cardGame.cardGameClient.helpers.requests.PutRequestBuilder;
 import julio.cardGame.cardGameClient.services.Actions.Action;
 import julio.cardGame.cardGameServer.http.HttpPath;
-import julio.cardGame.common.models.UserAdditionalDataModel;
+import julio.cardGame.cardGameServer.application.serverLogic.models.UserAdditionalDataModel;
 
 import javax.security.auth.login.CredentialException;
 import java.io.IOException;

@@ -47,4 +47,13 @@ public class DataTransformation {
         return null;
 
     }
+
+    public static double calculateWinRate(int wins, int losses) {
+
+        if (wins + losses != 0 || wins != 0)
+            return (double) (wins / (wins + losses));
+
+        return 0;
+
+    }
 }

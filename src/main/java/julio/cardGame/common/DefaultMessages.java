@@ -6,6 +6,10 @@ public enum DefaultMessages {
 
     ERR_NO_COINS("Not enough coins, to buy the package"),
 
+    ERR_BATTLE_RES_NULL("An error occurred in the battle logic"),
+
+    ERR_USERS_BATTLE_QUEUE("Could not retrieve the users from the battle queue"),
+
     ERR_NO_PACKAGES("There are no packages to buy"),
 
     ERR_CARD_NOT_OWNED("The offered card is not owned by you"),

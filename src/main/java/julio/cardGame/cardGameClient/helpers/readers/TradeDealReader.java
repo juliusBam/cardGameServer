@@ -1,6 +1,6 @@
 package julio.cardGame.cardGameClient.helpers.readers;
 
-import julio.cardGame.common.models.TradeModel;
+import julio.cardGame.cardGameServer.application.serverLogic.models.TradeModel;
 
 import java.io.IOException;
 import java.util.UUID;

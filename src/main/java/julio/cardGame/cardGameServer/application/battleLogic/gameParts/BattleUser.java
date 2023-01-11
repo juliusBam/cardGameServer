@@ -5,31 +5,29 @@ import julio.cardGame.cardGameServer.application.battleLogic.gameParts.cards.Car
 import julio.cardGame.cardGameServer.application.battleLogic.gameParts.cards.Deck;
 import julio.cardGame.cardGameServer.application.battleLogic.gameParts.cards.ICard;
 import julio.cardGame.cardGameServer.application.battleLogic.gameParts.services.CardsFetcher;
-import julio.cardGame.common.models.UserInfo;
+import julio.cardGame.cardGameServer.application.serverLogic.models.UserInfoModel;
 
 import java.security.InvalidParameterException;
 import java.util.List;
 
-public class User {
+public class BattleUser {
 
-    private UserInfo info;
+    public UserInfoModel getInfo() {
+        return info;
+    }
+
+    private UserInfoModel info;
     private final Deck deck;
-    private final Deck collection;
 
-    public User(UserInfo newUser) {
+    public BattleUser(UserInfoModel newUser) {
 
         this.info = newUser;
         this.deck = new Deck();
-        this.collection = new Deck();
 
     }
 
     public void insertIntoDeck(ICard cardToInsert) {
         this.deck.addCard(cardToInsert);
-    }
-
-    public void insertIntoCollection(ICard cardToInsert) {
-        this.collection.addCard(cardToInsert);
     }
 
     public void createDeck() throws InvalidParameterException {
@@ -97,6 +95,16 @@ public class User {
 
     public int getDeckSize() {
         return this.deck.getDeckSize();
+    }
+
+    public Deck getDeck(){return this.deck;}
+
+    public void moveCardTo(BattleUser targetPlayer) {
+
+        targetPlayer.deck.addCard(
+                this.deck.removeFirstCard()
+        );
+
     }
 
 }

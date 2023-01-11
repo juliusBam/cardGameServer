@@ -9,7 +9,7 @@ import julio.cardGame.cardGameServer.http.Response;
 import julio.cardGame.cardGameServer.router.Routeable;
 import julio.cardGame.common.DefaultMessages;
 import julio.cardGame.common.HttpStatus;
-import julio.cardGame.common.models.UserLoginDataModel;
+import julio.cardGame.cardGameServer.application.serverLogic.models.UserLoginDataModel;
 
 import java.security.NoSuchAlgorithmException;
 import java.sql.PreparedStatement;
@@ -21,11 +21,11 @@ public class ExecutePostUser implements Routeable {
     @Override
     public Response process(RequestContext requestContext) {
 
-        UserLoginDataModel userModel = null;
+        //todo distinguish between admin and normal user
 
         try {
 
-            userModel = new ObjectMapper()
+            UserLoginDataModel userModel = new ObjectMapper()
                     .readValue(requestContext.getBody(), UserLoginDataModel.class);
 
             try (PreparedStatement preparedStatement = DbConnection.getInstance().prepareStatement(
@@ -39,9 +39,9 @@ public class ExecutePostUser implements Routeable {
 
                 preparedStatement.setObject(1, DataTransformation.prepareUUID(UUID.randomUUID()));
 
-                preparedStatement.setString(2, userModel.Username);
+                preparedStatement.setString(2, userModel.userName);
 
-                preparedStatement.setString(3, DataTransformation.calculateHash(userModel.Password));
+                preparedStatement.setString(3, DataTransformation.calculateHash(userModel.password));
 
                 preparedStatement.execute();
 

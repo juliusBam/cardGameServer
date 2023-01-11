@@ -5,7 +5,7 @@ import julio.cardGame.cardGameServer.http.RequestContext;
 import julio.cardGame.cardGameServer.http.Response;
 import julio.cardGame.cardGameServer.router.Routeable;
 import julio.cardGame.common.HttpStatus;
-import julio.cardGame.common.models.UserInfo;
+import julio.cardGame.cardGameServer.application.serverLogic.models.UserInfoModel;
 
 import java.util.List;
 import java.util.Observable;
@@ -20,7 +20,7 @@ public class ExecutePostBattle implements Routeable, Observer {
 
         HttpServer.battleRes.addObserver(this);
 
-        HttpServer.battleRes.addUserQueue(new UserInfo("julio", UUID.fromString("6cd85277-4590-49d4-b0cf-ba0a921faad0"), 800));
+        HttpServer.battleRes.addUserQueue(new UserInfoModel("julio", UUID.fromString("6cd85277-4590-49d4-b0cf-ba0a921faad0"), 800));
 
         //waits until the battleResults are changed
         while (!listChanged) {
@@ -33,7 +33,17 @@ public class ExecutePostBattle implements Routeable, Observer {
             body += line + "/n";
         }
 
-        return new Response(body, HttpStatus.OK);
+        //if there is only one message it is an error
+        if (this.battleRes.size() == 1) {
+
+            return new Response(body, HttpStatus.INTERNAL_SERVER_ERROR);
+
+        } else {
+
+            return new Response(body, HttpStatus.OK);
+
+        }
+
         //here we have the list
         //return null;
     }

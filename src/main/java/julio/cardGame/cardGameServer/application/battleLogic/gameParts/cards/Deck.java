@@ -28,6 +28,10 @@ public class Deck {
         return cards.get(0);
     }
 
+    public ICard removeFirstCard() {
+        return cards.remove(0);
+    }
+
     public void removeCard(int position) {
         this.cards.remove(position);
     }

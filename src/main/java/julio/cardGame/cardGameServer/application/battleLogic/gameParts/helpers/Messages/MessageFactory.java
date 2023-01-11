@@ -1,13 +1,13 @@
 package julio.cardGame.cardGameServer.application.battleLogic.gameParts.helpers.Messages;
 
-import julio.cardGame.cardGameServer.application.battleLogic.gameParts.User;
+import julio.cardGame.cardGameServer.application.battleLogic.gameParts.BattleUser;
 import julio.cardGame.cardGameServer.application.battleLogic.gameParts.cards.ICard;
 import julio.cardGame.cardGameServer.application.battleLogic.gameParts.helpers.Fighter.CardFighterResult;
 
 public class MessageFactory implements IMessageFactory {
 
     //todo refactor param
-    public String createCardFightMsg(User firstPlayer, ICard firstCard, User secondPlayer, ICard secondCard, CardFighterResult fightResult) {
+    public String createCardFightMsg(BattleUser firstPlayer, ICard firstCard, BattleUser secondPlayer, ICard secondCard, CardFighterResult fightResult) {
 
         //in the case we have a draw
 
@@ -27,7 +27,7 @@ public class MessageFactory implements IMessageFactory {
         return formattedFirstMsg.concat(formattedSecondMsg).concat(lastMsgPart);
     }
 
-    public String createUserErrorMsg(User user, String msg) {
+    public String createUserErrorMsg(BattleUser user, String msg) {
 
         return "";
     }
@@ -40,7 +40,7 @@ public class MessageFactory implements IMessageFactory {
         return "The round limit was reached";
     }
 
-    public String createEndGameMsg(User winner) {
+    public String createEndGameMsg(BattleUser winner) {
         if (winner == null) {
             return "The game was a draw";
         } else {

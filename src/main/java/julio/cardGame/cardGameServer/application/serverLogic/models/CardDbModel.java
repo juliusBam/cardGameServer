@@ -1,4 +1,4 @@
-package julio.cardGame.common.models;
+package julio.cardGame.cardGameServer.application.serverLogic.models;
 
 import julio.cardGame.cardGameServer.application.battleLogic.gameParts.cards.Elements;
 import julio.cardGame.cardGameServer.application.battleLogic.gameParts.cards.monsters.Races;
@@ -25,10 +25,10 @@ public class CardDbModel {
 
     public CardDbModel(CardRequestModel requestModel) {
 
-        this.cardID = requestModel.Id;
-        this.card_damage = requestModel.Damage;
-        this.cardName = requestModel.Name;
-        this.parseName(requestModel.Name);
+        this.cardID = requestModel.id;
+        this.card_damage = requestModel.damage;
+        this.cardName = requestModel.name;
+        this.parseName(requestModel.name);
 
     }
 
