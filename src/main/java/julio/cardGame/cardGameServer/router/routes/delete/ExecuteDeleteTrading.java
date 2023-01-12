@@ -1,7 +1,7 @@
 package julio.cardGame.cardGameServer.router.routes.delete;
 
-import julio.cardGame.cardGameServer.application.serverLogic.db.DataTransformation;
-import julio.cardGame.cardGameServer.application.serverLogic.db.DbConnection;
+import julio.cardGame.cardGameServer.application.dbLogic.db.DataTransformation;
+import julio.cardGame.cardGameServer.application.dbLogic.db.DbConnection;
 import julio.cardGame.cardGameServer.http.HeadersValidator;
 import julio.cardGame.cardGameServer.http.RequestContext;
 import julio.cardGame.cardGameServer.http.Response;
@@ -21,12 +21,22 @@ public class ExecuteDeleteTrading extends AuthenticatedRoute implements Routeabl
 
         String stringTradeId = requestContext.fetchParameter(RequestParameters.SELECTED_TRADE_DEAL.getParamValue());
 
-        AuthorizationWrapper auth = this.requireAuthToken(requestContext.getHeaders());
+        //todo refactor;
+        String userName;
 
-        if (auth.response != null)
-            return auth.response;
+        try {
+            AuthorizationWrapper auth = this.requireAuthToken(requestContext.getHeaders());
 
-        String userName = auth.userName;
+            if (auth.response != null)
+                return auth.response;
+
+            userName = auth.userName;
+
+        } catch (SQLException e) {
+            return new Response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+
 
         if (stringTradeId == null)
             return new Response(HttpStatus.BAD_REQUEST.getStatusMessage(), HttpStatus.BAD_REQUEST);

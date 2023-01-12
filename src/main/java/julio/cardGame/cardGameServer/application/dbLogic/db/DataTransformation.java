@@ -1,4 +1,4 @@
-package julio.cardGame.cardGameServer.application.serverLogic.db;
+package julio.cardGame.cardGameServer.application.dbLogic.db;
 
 import julio.cardGame.common.CardTypes;
 import julio.cardGame.common.Constants;
@@ -12,7 +12,9 @@ import java.util.UUID;
 
 public class DataTransformation {
 
-    public static int winValue;
+    public static final int winValue = 1;
+
+    public static final int loseValue = -1;
     public static String calculateHash(String input) throws NoSuchAlgorithmException {
 
         MessageDigest md = MessageDigest.getInstance("MD5");
@@ -73,7 +75,7 @@ public class DataTransformation {
         if (winnerElo > 1600)
             eloIncrease = 16;
 
-        int expectedOutcome = winnerElo > loserElo ? 1 : -1;
+        int expectedOutcome = winnerElo > loserElo ? DataTransformation.winValue : -1;
 
         int newElo = winnerElo + (eloIncrease * (DataTransformation.winValue - expectedOutcome));
 
@@ -88,7 +90,7 @@ public class DataTransformation {
         if (loserElo > 1600)
             eloIncrease = 16;
 
-        int expectedOutcome = loserElo > winnerElo ? 1 : -1;
+        int expectedOutcome = loserElo > winnerElo ? DataTransformation.winValue : -1;
 
         int newElo = winnerElo + (eloIncrease * (DataTransformation.winValue - expectedOutcome));
 

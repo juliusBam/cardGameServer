@@ -2,7 +2,7 @@ package julio.cardGame.cardGameServer.router.routes.get;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import julio.cardGame.cardGameServer.application.serverLogic.db.DbConnection;
+import julio.cardGame.cardGameServer.application.dbLogic.repositories.CardRepo;
 import julio.cardGame.cardGameServer.http.RequestContext;
 import julio.cardGame.cardGameServer.router.AuthorizationWrapper;
 import julio.cardGame.cardGameServer.router.AuthenticatedRoute;
@@ -10,27 +10,46 @@ import julio.cardGame.cardGameServer.router.Routeable;
 import julio.cardGame.common.DefaultMessages;
 import julio.cardGame.common.HttpStatus;
 import julio.cardGame.cardGameServer.http.Response;
-import julio.cardGame.cardGameServer.application.serverLogic.models.CardDbModel;
+import julio.cardGame.cardGameServer.application.dbLogic.models.CardDbModel;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class ExecuteGetCard extends AuthenticatedRoute implements Routeable {
     @Override
     public Response process(RequestContext requestContext) {
 
-        AuthorizationWrapper auth = this.requireAuthToken(requestContext.getHeaders());
+        try {
 
-        if (auth.response != null)
-            return auth.response;
+            AuthorizationWrapper auth = this.requireAuthToken(requestContext.getHeaders());
 
-        String userName = auth.userName;
+            if (auth.response != null)
+                return auth.response;
 
-        String sql = """
+            List<CardDbModel> cards = new CardRepo().fetchUserCards(auth.userName);
+
+            if (cards.size() == 0)
+                return new Response(DefaultMessages.USER_NO_CARDS.getMessage(), HttpStatus.OK);
+
+            String body = new ObjectMapper()
+                    .writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(cards);
+
+            return new Response(body, HttpStatus.OK);
+
+
+        } catch (SQLException e) {
+
+            return new Response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+
+        } catch (JsonProcessingException e) {
+
+            return new Response(DefaultMessages.ERR_JSON_PARSE_CARDS.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+
+        }
+
+
+        /*String sql = """
                 SELECT * 
                     FROM cards 
                         WHERE "ownerID"=(SELECT "userID" 
@@ -73,7 +92,7 @@ public class ExecuteGetCard extends AuthenticatedRoute implements Routeable {
 
         } catch (SQLException | JsonProcessingException e) {
             return new Response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        }*/
 
     }
 }

@@ -1,8 +1,7 @@
-package julio.cardGame.cardGameServer.application.serverLogic;
+package julio.cardGame.cardGameServer.application.dbLogic;
 
 import julio.cardGame.cardGameServer.application.battleLogic.gameParts.CardGame;
-import julio.cardGame.cardGameServer.application.serverLogic.models.UserInfoModel;
-import julio.cardGame.common.Constants;
+import julio.cardGame.cardGameServer.application.dbLogic.models.UserInfoModel;
 import julio.cardGame.common.DefaultMessages;
 
 import java.util.ArrayList;

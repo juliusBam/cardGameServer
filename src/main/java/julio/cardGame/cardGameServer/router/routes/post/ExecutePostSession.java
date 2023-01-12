@@ -2,19 +2,15 @@ package julio.cardGame.cardGameServer.router.routes.post;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import julio.cardGame.cardGameServer.application.serverLogic.db.DataTransformation;
-import julio.cardGame.cardGameServer.application.serverLogic.db.DbConnection;
-import julio.cardGame.cardGameServer.application.serverLogic.repositories.UserRepo;
+import julio.cardGame.cardGameServer.application.dbLogic.repositories.UserRepo;
 import julio.cardGame.cardGameServer.http.RequestContext;
 import julio.cardGame.cardGameServer.http.Response;
 import julio.cardGame.cardGameServer.router.Routeable;
 import julio.cardGame.common.DefaultMessages;
 import julio.cardGame.common.HttpStatus;
-import julio.cardGame.cardGameServer.application.serverLogic.models.UserLoginDataModel;
+import julio.cardGame.cardGameServer.application.dbLogic.models.UserLoginDataModel;
 
 import java.security.NoSuchAlgorithmException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ExecutePostSession implements Routeable {

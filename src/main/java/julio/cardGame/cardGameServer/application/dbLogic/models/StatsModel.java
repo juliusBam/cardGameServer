@@ -1,4 +1,4 @@
-package julio.cardGame.cardGameServer.application.serverLogic.models;
+package julio.cardGame.cardGameServer.application.dbLogic.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

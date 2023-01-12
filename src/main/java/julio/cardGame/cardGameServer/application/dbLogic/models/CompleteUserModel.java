@@ -1,4 +1,4 @@
-package julio.cardGame.cardGameServer.application.serverLogic.models;
+package julio.cardGame.cardGameServer.application.dbLogic.models;
 
 
 //composition is used, since we cannot inherit from 2 classes

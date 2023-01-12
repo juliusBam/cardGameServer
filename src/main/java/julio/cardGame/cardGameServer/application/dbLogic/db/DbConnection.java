@@ -1,4 +1,4 @@
-package julio.cardGame.cardGameServer.application.serverLogic.db;
+package julio.cardGame.cardGameServer.application.dbLogic.db;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;

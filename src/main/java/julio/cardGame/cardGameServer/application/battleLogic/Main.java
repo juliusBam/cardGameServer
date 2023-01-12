@@ -1,9 +1,15 @@
 package julio.cardGame.cardGameServer.application.battleLogic;
 
+import julio.cardGame.cardGameServer.application.battleLogic.gameParts.cards.Elements;
+
 import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws IOException, RuntimeException {
+
+        /*Elements cardEl = Elements.valueOf("blabla");
+
+        System.out.println(cardEl.getElement());*/
 
         //todo will be the login
         /*BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));

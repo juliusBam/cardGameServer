@@ -1,6 +1,6 @@
 package julio.cardGame.cardGameServer.http;
 
-import julio.cardGame.cardGameServer.application.serverLogic.BattleExecutor;
+import julio.cardGame.cardGameServer.application.dbLogic.BattleExecutor;
 import julio.cardGame.common.Constants;
 import julio.cardGame.cardGameServer.router.Routeable;
 import julio.cardGame.cardGameServer.router.RouteIdentifier;

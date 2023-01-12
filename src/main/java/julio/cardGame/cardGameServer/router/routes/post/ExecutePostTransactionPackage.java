@@ -1,25 +1,34 @@
 package julio.cardGame.cardGameServer.router.routes.post;
 
-import julio.cardGame.cardGameServer.application.serverLogic.db.DataTransformation;
-import julio.cardGame.cardGameServer.application.serverLogic.db.DbConnection;
+import julio.cardGame.cardGameServer.application.dbLogic.db.DataTransformation;
+import julio.cardGame.cardGameServer.application.dbLogic.db.DbConnection;
+import julio.cardGame.cardGameServer.application.dbLogic.repositories.CardRepo;
+import julio.cardGame.cardGameServer.application.dbLogic.repositories.PackageRepo;
+import julio.cardGame.cardGameServer.application.dbLogic.repositories.UserRepo;
 import julio.cardGame.cardGameServer.http.HeadersValidator;
 import julio.cardGame.cardGameServer.http.RequestContext;
 import julio.cardGame.cardGameServer.http.Response;
+import julio.cardGame.cardGameServer.router.AuthenticatedRoute;
 import julio.cardGame.cardGameServer.router.Routeable;
 import julio.cardGame.common.Constants;
 import julio.cardGame.common.DefaultMessages;
 import julio.cardGame.common.HttpStatus;
-import julio.cardGame.cardGameServer.application.serverLogic.models.PackageModel;
+import julio.cardGame.cardGameServer.application.dbLogic.models.PackageModel;
 
 import java.sql.*;
 import java.util.UUID;
 
-public class ExecutePostTransactionPackage implements Routeable {
+public class ExecutePostTransactionPackage extends AuthenticatedRoute implements Routeable {
 
+    private UserRepo userRepo;
+
+    private PackageRepo packageRepo;
+
+    private CardRepo cardRepo;
     @Override
     public Response process(RequestContext requestContext) {
 
-        //todo refactor
+        //todo refactor, add authenticatoin
         String authToken = HeadersValidator.validateToken(requestContext.getHeaders());
 
         if (authToken == null)
@@ -33,7 +42,13 @@ public class ExecutePostTransactionPackage implements Routeable {
         //extract the connection
         try (Connection dbConnection = DbConnection.getInstance().connect()) {
 
-            int coins = this.checkUsersCoins(dbConnection, userName);
+            this.userRepo = new UserRepo();
+
+            this.packageRepo = new PackageRepo();
+
+            this.cardRepo = new CardRepo();
+
+            int coins = userRepo.checkUsersCoins(dbConnection, userName);
 
             //no money for pack
             if (coins < Constants.PACKAGE_COST)
@@ -72,7 +87,7 @@ public class ExecutePostTransactionPackage implements Routeable {
     }
 
 
-    private int checkUsersCoins(Connection dbConnection, String userName) throws SQLException {
+    /*private int checkUsersCoins(Connection dbConnection, String userName) throws SQLException {
 
         String sqlCheckCoins =
                 """
@@ -100,26 +115,26 @@ public class ExecutePostTransactionPackage implements Routeable {
             throw e;
         }
 
-    }
+    }*/
 
     private Response buyPackage(Connection dbConnection, String userName, int userCoins) throws SQLException {
 
-        PackageModel packageData = this.fetchPackage(dbConnection, userName);
+        PackageModel packageData = this.packageRepo.fetchPackage(dbConnection, userName);
 
         if (packageData == null || packageData.packageID == null)
             return new Response(DefaultMessages.ERR_NO_PACKAGES.getMessage(), HttpStatus.BAD_REQUEST);
 
-        this.updateCardOwner(dbConnection, userName, packageData);
+        this.cardRepo.updateCardOwner(dbConnection, userName, packageData);
 
-        this.deletePackage(dbConnection, packageData.packageID);
+        this.packageRepo.deletePackage(dbConnection, packageData.packageID);
 
-        this.scaleUserCoin(dbConnection, userName, userCoins);
+        this.userRepo.scaleUserCoin(dbConnection, userName, userCoins);
 
         return new Response(HttpStatus.OK.getStatusMessage(), HttpStatus.OK);
 
     }
 
-    private void scaleUserCoin(Connection dbConnection, String userName, int userCoins) throws SQLException {
+    /*private void scaleUserCoin(Connection dbConnection, String userName, int userCoins) throws SQLException {
 
         String sql = """
                 UPDATE users 
@@ -138,9 +153,9 @@ public class ExecutePostTransactionPackage implements Routeable {
             throw e;
         }
 
-    }
+    }*/
 
-    private void deletePackage(Connection dbConnection, UUID packageID) throws SQLException {
+    /*private void deletePackage(Connection dbConnection, UUID packageID) throws SQLException {
 
         String sql = """
                 DELETE 
@@ -158,9 +173,9 @@ public class ExecutePostTransactionPackage implements Routeable {
             throw e;
         }
 
-    }
+    }*/
 
-    private void updateCardOwner(Connection dbConnection, String userName, PackageModel packageData) throws SQLException {
+    /*private void updateCardOwner(Connection dbConnection, String userName, PackageModel packageData) throws SQLException {
 
         String sql = """
                 UPDATE cards
@@ -184,9 +199,9 @@ public class ExecutePostTransactionPackage implements Routeable {
             throw e;
         }
 
-    }
+    }*/
 
-    private PackageModel fetchPackage(Connection dbConnection, String userName) throws SQLException {
+    /*private PackageModel fetchPackage(Connection dbConnection, String userName) throws SQLException {
 
         String sql = """
                 SELECT * 
@@ -218,5 +233,5 @@ public class ExecutePostTransactionPackage implements Routeable {
             throw e;
         }
 
-    }
+    }*/
 }

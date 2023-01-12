@@ -26,6 +26,8 @@ public enum DefaultMessages {
 
     USER_NO_DECK("No deck was found"),
 
+    ERR_NO_STATS("Error no stats could be found"),
+
     SCORE_NO_RESULTS("No scoreboard found"),
 
     ERR_NO_FOUND_USER("The requested user could not be found"),

@@ -2,9 +2,8 @@ package julio.cardGame.cardGameServer.router.routes.get;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import julio.cardGame.cardGameServer.application.serverLogic.db.DbConnection;
-import julio.cardGame.cardGameServer.application.serverLogic.repositories.UserRepo;
-import julio.cardGame.cardGameServer.http.HeadersValidator;
+import julio.cardGame.cardGameServer.application.dbLogic.repositories.UserRepo;
+
 import julio.cardGame.cardGameServer.http.RequestContext;
 import julio.cardGame.cardGameServer.http.Response;
 import julio.cardGame.cardGameServer.router.AuthenticatedRoute;
@@ -12,12 +11,8 @@ import julio.cardGame.cardGameServer.router.Routeable;
 import julio.cardGame.common.DefaultMessages;
 import julio.cardGame.common.HttpStatus;
 import julio.cardGame.common.RequestParameters;
-import julio.cardGame.cardGameServer.application.serverLogic.models.CompleteUserModel;
-import julio.cardGame.cardGameServer.application.serverLogic.models.UserAdditionalDataModel;
-import julio.cardGame.cardGameServer.application.serverLogic.models.UserStatsModel;
+import julio.cardGame.cardGameServer.application.dbLogic.models.CompleteUserModel;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ExecuteGetUser extends AuthenticatedRoute implements Routeable {
@@ -96,8 +91,6 @@ public class ExecuteGetUser extends AuthenticatedRoute implements Routeable {
 
             String requestedUser = requestContext.fetchParameter(RequestParameters.USERNAME.getParamValue());
 
-            String authToken = HeadersValidator.validateToken(requestContext.getHeaders());
-
             if (requestedUser == null || requestedUser.isEmpty() || requestedUser.isBlank())
                 return new Response(DefaultMessages.ERR_NO_USER.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 
@@ -117,7 +110,7 @@ public class ExecuteGetUser extends AuthenticatedRoute implements Routeable {
 
         } catch (JsonProcessingException e) {
 
-            return new Response(DefaultMessages.ERR_JSON_PARSE_USER.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+            return new Response(DefaultMessages.ERR_JSON_PARSE_USER.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 
         }
 

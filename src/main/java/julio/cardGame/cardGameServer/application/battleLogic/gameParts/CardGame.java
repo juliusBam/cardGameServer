@@ -6,9 +6,9 @@ import julio.cardGame.cardGameServer.application.battleLogic.gameParts.helpers.F
 import julio.cardGame.cardGameServer.application.battleLogic.gameParts.helpers.Messages.IMessageFactory;
 import julio.cardGame.cardGameServer.application.battleLogic.gameParts.helpers.Messages.MessageFactory;
 import julio.cardGame.cardGameServer.application.battleLogic.gameParts.helpers.UserBattleResultWrapper;
-import julio.cardGame.cardGameServer.application.serverLogic.db.DbConnection;
-import julio.cardGame.cardGameServer.application.serverLogic.models.UserInfoModel;
-import julio.cardGame.cardGameServer.application.serverLogic.repositories.UserRepo;
+import julio.cardGame.cardGameServer.application.dbLogic.db.DbConnection;
+import julio.cardGame.cardGameServer.application.dbLogic.models.UserInfoModel;
+import julio.cardGame.cardGameServer.application.dbLogic.repositories.UserRepo;
 import julio.cardGame.common.DefaultMessages;
 
 import java.sql.Connection;
@@ -36,7 +36,7 @@ public class CardGame {
 
     }
 
-    public void createDecks() {
+    public void createDecks() throws SQLException {
 
         this.firstPlayer.createDeck();
         this.secondPlayer.createDeck();

@@ -1,7 +1,7 @@
 package julio.cardGame.cardGameServer.router;
 
 
-import julio.cardGame.cardGameServer.application.serverLogic.repositories.UserRepo;
+import julio.cardGame.cardGameServer.application.dbLogic.repositories.UserRepo;
 import julio.cardGame.cardGameServer.http.Header;
 import julio.cardGame.cardGameServer.http.HeadersValidator;
 import julio.cardGame.cardGameServer.http.Response;
@@ -12,7 +12,7 @@ import java.util.List;
 
 public abstract class AuthenticatedRoute {
 
-    protected AuthorizationWrapper requireAuthToken(List<Header> headers) {
+    protected AuthorizationWrapper requireAuthToken(List<Header> headers) throws SQLException {
 
         String authToken = HeadersValidator.validateToken(headers);
 
@@ -24,7 +24,7 @@ public abstract class AuthenticatedRoute {
 
         }
 
-        String userName = HeadersValidator.extractUserName(authToken);
+        String userName = new UserRepo().checkTokenReturnUser(authToken);
 
         if (userName == null) {
             return new AuthorizationWrapper(null,

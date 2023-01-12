@@ -3,16 +3,17 @@ package julio.cardGame.cardGameServer.router.routes.post;
 import julio.cardGame.cardGameServer.http.HttpServer;
 import julio.cardGame.cardGameServer.http.RequestContext;
 import julio.cardGame.cardGameServer.http.Response;
+import julio.cardGame.cardGameServer.router.AuthenticatedRoute;
 import julio.cardGame.cardGameServer.router.Routeable;
 import julio.cardGame.common.HttpStatus;
-import julio.cardGame.cardGameServer.application.serverLogic.models.UserInfoModel;
+import julio.cardGame.cardGameServer.application.dbLogic.models.UserInfoModel;
 
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.UUID;
 
-public class ExecutePostBattle implements Routeable, Observer {
+public class ExecutePostBattle extends AuthenticatedRoute implements Routeable, Observer {
 
     private boolean listChanged = false;
     @Override
@@ -20,12 +21,16 @@ public class ExecutePostBattle implements Routeable, Observer {
 
         HttpServer.battleRes.addObserver(this);
 
+        //todo fetch data from db and put into queue
+
         HttpServer.battleRes.addUserQueue(new UserInfoModel("julio", UUID.fromString("6cd85277-4590-49d4-b0cf-ba0a921faad0"), 800));
 
         //waits until the battleResults are changed
         while (!listChanged) {
 
         }
+
+        HttpServer.battleRes.deleteObserver(this);
 
         String body = "";
 

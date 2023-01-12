@@ -1,8 +1,7 @@
 package julio.cardGame.cardGameServer.router.routes.get;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import julio.cardGame.cardGameServer.application.serverLogic.db.DbConnection;
+import julio.cardGame.cardGameServer.application.dbLogic.repositories.TradeRepo;
 import julio.cardGame.cardGameServer.http.RequestContext;
 import julio.cardGame.cardGameServer.http.Response;
 import julio.cardGame.cardGameServer.router.AuthenticatedRoute;
@@ -10,30 +9,21 @@ import julio.cardGame.cardGameServer.router.AuthorizationWrapper;
 import julio.cardGame.cardGameServer.router.Routeable;
 import julio.cardGame.common.DefaultMessages;
 import julio.cardGame.common.HttpStatus;
-import julio.cardGame.cardGameServer.application.serverLogic.models.TradeViewModel;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ExecuteGetTrading extends AuthenticatedRoute implements Routeable {
     @Override
     public Response process(RequestContext requestContext) {
 
-        //todo fetch from db
+        try {
 
-        AuthorizationWrapper auth = this.requireAuthToken(requestContext.getHeaders());
+            AuthorizationWrapper auth = this.requireAuthToken(requestContext.getHeaders());
 
-        if (auth.response != null)
-            return auth.response;
+            if (auth.response != null)
+                return auth.response;
 
-        try (Connection connection = DbConnection.getInstance().connect()) {
-
-
-            String body = this.fetchTrades(connection);
+            String body = new TradeRepo().fetchTrades();
 
             return new Response(body, HttpStatus.OK);
 
@@ -46,7 +36,7 @@ public class ExecuteGetTrading extends AuthenticatedRoute implements Routeable {
 
     }
 
-    private String fetchTrades(Connection connection) throws JsonProcessingException, SQLException {
+    /*private String fetchTrades(Connection connection) throws JsonProcessingException, SQLException {
 
         String sql = """
                         SELECT t.* 
@@ -92,7 +82,7 @@ public class ExecuteGetTrading extends AuthenticatedRoute implements Routeable {
         }
 
 
-    }
+    }*/
 
 
 }

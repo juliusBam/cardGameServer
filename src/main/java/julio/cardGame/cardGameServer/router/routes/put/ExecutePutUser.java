@@ -2,9 +2,8 @@ package julio.cardGame.cardGameServer.router.routes.put;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import julio.cardGame.cardGameServer.application.serverLogic.db.DbConnection;
-import julio.cardGame.cardGameServer.application.serverLogic.repositories.UserRepo;
-import julio.cardGame.cardGameServer.http.HeadersValidator;
+import julio.cardGame.cardGameServer.application.dbLogic.db.DbConnection;
+import julio.cardGame.cardGameServer.application.dbLogic.repositories.UserRepo;
 import julio.cardGame.cardGameServer.http.RequestContext;
 import julio.cardGame.cardGameServer.http.Response;
 import julio.cardGame.cardGameServer.router.AuthenticatedRoute;
@@ -12,7 +11,7 @@ import julio.cardGame.cardGameServer.router.Routeable;
 import julio.cardGame.common.DefaultMessages;
 import julio.cardGame.common.HttpStatus;
 import julio.cardGame.common.RequestParameters;
-import julio.cardGame.cardGameServer.application.serverLogic.models.UserAdditionalDataModel;
+import julio.cardGame.cardGameServer.application.dbLogic.models.UserAdditionalDataModel;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -27,8 +26,6 @@ public class ExecutePutUser extends AuthenticatedRoute implements Routeable {
 
             String requestedUser = requestContext.fetchParameter(RequestParameters.USERNAME.getParamValue());
 
-            String authToken = HeadersValidator.validateToken(requestContext.getHeaders());
-
             if (requestedUser == null || requestedUser.isEmpty() || requestedUser.isBlank())
                 return new Response(DefaultMessages.ERR_NO_USER.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 
@@ -37,8 +34,6 @@ public class ExecutePutUser extends AuthenticatedRoute implements Routeable {
 
             UserAdditionalDataModel userModel = new ObjectMapper()
                     .readValue(requestContext.getBody(), UserAdditionalDataModel.class);
-
-
 
             if (!requestedUser.equals(requestedUser))
                 return new Response(DefaultMessages.ERR_MISMATCHING_USERS.getMessage(), HttpStatus.BAD_REQUEST);
@@ -57,7 +52,7 @@ public class ExecutePutUser extends AuthenticatedRoute implements Routeable {
 
     }
 
-    private void updateUser(String requestedUser, UserAdditionalDataModel userModel) throws SQLException {
+    /*private void updateUser(String requestedUser, UserAdditionalDataModel userModel) throws SQLException {
 
         String sql = """
                     UPDATE
@@ -79,5 +74,5 @@ public class ExecutePutUser extends AuthenticatedRoute implements Routeable {
             throw e;
         }
 
-    }
+    }*/
 }

@@ -1,4 +1,4 @@
-package julio.cardGame.cardGameServer.application.serverLogic.models;
+package julio.cardGame.cardGameServer.application.dbLogic.models;
 
 import julio.cardGame.cardGameServer.application.battleLogic.gameParts.cards.Elements;
 import julio.cardGame.cardGameServer.application.battleLogic.gameParts.cards.monsters.Races;

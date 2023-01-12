@@ -3,8 +3,9 @@ package julio.cardGame.cardGameServer.router.routes.put;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import julio.cardGame.cardGameServer.application.serverLogic.db.DataTransformation;
-import julio.cardGame.cardGameServer.application.serverLogic.db.DbConnection;
+import julio.cardGame.cardGameServer.application.dbLogic.db.DbConnection;
+import julio.cardGame.cardGameServer.application.dbLogic.repositories.CardRepo;
+import julio.cardGame.cardGameServer.application.dbLogic.repositories.UserRepo;
 import julio.cardGame.cardGameServer.http.RequestContext;
 import julio.cardGame.cardGameServer.router.AuthorizationWrapper;
 import julio.cardGame.cardGameServer.router.AuthenticatedRoute;
@@ -16,8 +17,6 @@ import julio.cardGame.common.HttpStatus;
 
 import javax.naming.AuthenticationException;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
@@ -26,12 +25,12 @@ public class ExecutePutDeck extends AuthenticatedRoute implements Routeable {
     @Override
     public Response process(RequestContext requestContext) {
 
-        AuthorizationWrapper auth = this.requireAuthToken(requestContext.getHeaders());
-
-        if (auth.response != null)
-            return auth.response;
-
         try {
+
+            AuthorizationWrapper auth = this.requireAuthToken(requestContext.getHeaders());
+
+            if (auth.response != null)
+                return auth.response;
 
             List<UUID> cardIds = new ObjectMapper()
                     .readValue(requestContext.getBody(), new TypeReference<List<UUID>>() {
@@ -46,8 +45,9 @@ public class ExecutePutDeck extends AuthenticatedRoute implements Routeable {
                 try {
 
                     //once the cardids are parsed we can execute the sqls
+                    UserRepo userRepo = new UserRepo();
 
-                    boolean hasDeck = this.checkIfDeck(dbConn, auth.userName);
+                    boolean hasDeck = userRepo.checkIfDeck(dbConn, auth.userName);
 
                     //user already has a deck
                     if (hasDeck) {
@@ -56,7 +56,7 @@ public class ExecutePutDeck extends AuthenticatedRoute implements Routeable {
                     }
 
                     //we check if all the cards belong to the user
-                    int ownedCards = this.checkCardsOwnership(dbConn, cardIds, auth.userName);
+                    int ownedCards = userRepo.checkCardsOwnership(dbConn, cardIds, auth.userName);
 
                     if (ownedCards != Constants.DECK_SIZE) {
                         //dbConn.close();
@@ -67,9 +67,11 @@ public class ExecutePutDeck extends AuthenticatedRoute implements Routeable {
 
                     dbConn.setAutoCommit(false);
 
-                    this.addDeckID(dbConn, newDeckID, auth.userName);
+                    userRepo.addDeckID(dbConn, newDeckID, auth.userName);
 
-                    this.moveCardsToDeck(dbConn, newDeckID, cardIds);
+                    CardRepo cardRepo = new CardRepo();
+
+                    cardRepo.moveCardsToDeck(dbConn, newDeckID, cardIds);
 
                     dbConn.commit();
 
@@ -98,13 +100,17 @@ public class ExecutePutDeck extends AuthenticatedRoute implements Routeable {
 
             return new Response(DefaultMessages.ERR_JSON_PARSE_DECK.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 
+        } catch (SQLException e) {
+
+            return new Response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+
         }
 
         return new Response(HttpStatus.OK.getStatusMessage(), HttpStatus.OK);
 
     }
 
-    private void moveCardsToDeck(Connection dbConn, UUID newDeckID, List<UUID> cardIds) throws SQLException {
+    /*private void moveCardsToDeck(Connection dbConn, UUID newDeckID, List<UUID> cardIds) throws SQLException {
 
         String sql = """
                UPDATE cards
@@ -126,9 +132,9 @@ public class ExecutePutDeck extends AuthenticatedRoute implements Routeable {
             throw e;
         }
 
-    }
+    }*/
 
-    private void addDeckID(Connection dbConn, UUID newDeckID, String userName) throws SQLException {
+    /*private void addDeckID(Connection dbConn, UUID newDeckID, String userName) throws SQLException {
 
         String sql = """
                     UPDATE users
@@ -147,9 +153,9 @@ public class ExecutePutDeck extends AuthenticatedRoute implements Routeable {
             throw e;
         }
 
-    }
+    }*/
 
-    private boolean checkIfDeck(Connection dbConn, String userName) throws SQLException, AuthenticationException {
+    /*private boolean checkIfDeck(Connection dbConn, String userName) throws SQLException, AuthenticationException {
 
         String sql = """
                     SELECT "deckID"
@@ -183,9 +189,9 @@ public class ExecutePutDeck extends AuthenticatedRoute implements Routeable {
 
         return hasDeck;
 
-    }
+    }*/
 
-    private int checkCardsOwnership(Connection dbConn, List<UUID> cardIds, String userName) throws SQLException {
+    /*private int checkCardsOwnership(Connection dbConn, List<UUID> cardIds, String userName) throws SQLException {
 
         String sql = """
                     SELECT distinct COUNT("cardID")
@@ -216,6 +222,6 @@ public class ExecutePutDeck extends AuthenticatedRoute implements Routeable {
 
         return ownedCards;
 
-    }
+    }*/
 
 }

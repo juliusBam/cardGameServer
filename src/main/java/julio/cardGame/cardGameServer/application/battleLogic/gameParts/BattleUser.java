@@ -1,13 +1,13 @@
 package julio.cardGame.cardGameServer.application.battleLogic.gameParts;
 
-import julio.cardGame.cardGameServer.application.battleLogic.gameParts.cards.CardCreationDataset;
-import julio.cardGame.cardGameServer.application.battleLogic.gameParts.cards.CardFactory;
-import julio.cardGame.cardGameServer.application.battleLogic.gameParts.cards.Deck;
-import julio.cardGame.cardGameServer.application.battleLogic.gameParts.cards.ICard;
-import julio.cardGame.cardGameServer.application.battleLogic.gameParts.services.CardsFetcher;
-import julio.cardGame.cardGameServer.application.serverLogic.models.UserInfoModel;
+import julio.cardGame.cardGameServer.application.battleLogic.gameParts.cards.*;
+import julio.cardGame.cardGameServer.application.battleLogic.gameParts.cards.monsters.Races;
+import julio.cardGame.cardGameServer.application.dbLogic.models.CardDeckModel;
+import julio.cardGame.cardGameServer.application.dbLogic.models.UserInfoModel;
+import julio.cardGame.cardGameServer.application.dbLogic.repositories.UserRepo;
 
 import java.security.InvalidParameterException;
+import java.sql.SQLException;
 import java.util.List;
 
 public class BattleUser {
@@ -30,38 +30,33 @@ public class BattleUser {
         this.deck.addCard(cardToInsert);
     }
 
-    public void createDeck() throws InvalidParameterException {
+    public void createDeck() throws InvalidParameterException, SQLException, IllegalArgumentException {
 
-        CardsFetcher cardsFetcher = new CardsFetcher();
+        List<CardDeckModel> deckFromDb = new UserRepo().fetchDeckCards(this.info.userID);
 
-        try {
+        this.processCardResponse(deckFromDb);
 
-            List<CardCreationDataset> creationResponse = cardsFetcher.getDeck(this.info.userID);
 
-            this.processCardResponse(creationResponse);
-
-        } catch (InvalidParameterException e) {
-
-            throw e;
-
-        }
 
     }
 
     //to do use function pointer
-    public void processCardResponse(List<CardCreationDataset> creationResponse) {
+    public void processCardResponse(List<CardDeckModel> deckFromDb) throws IllegalArgumentException {
 
         CardFactory myFactory = new CardFactory();
 
         //try {
 
-            for (CardCreationDataset el: creationResponse) {
+            for (CardDeckModel card: deckFromDb) {
+
+                Elements cardEl = Elements.valueOf(card.cardElement);
+                Races cardRace =  card.monsterRace == null ? null : Races.valueOf(card.monsterRace);
 
                 //we execute the reflection of the passed method
                 //method.invoke(this, myFactory.createCard(el.race, el.name, el.type, el.dmg));
                 //if (actionType == 'd') {
 
-                    this.insertIntoDeck(myFactory.createCard(el.race, el.name, el.type, el.dmg));
+                this.insertIntoDeck(myFactory.createCard(cardRace, card.cardName, cardEl, (int)card.card_damage));
 
                 /*} else if (actionType == 'c'){
 

@@ -2,8 +2,7 @@ package julio.cardGame.cardGameServer.router.routes.get;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import julio.cardGame.cardGameServer.application.serverLogic.db.DataTransformation;
-import julio.cardGame.cardGameServer.application.serverLogic.db.DbConnection;
+import julio.cardGame.cardGameServer.application.dbLogic.repositories.UserRepo;
 import julio.cardGame.cardGameServer.http.RequestContext;
 import julio.cardGame.cardGameServer.http.Response;
 import julio.cardGame.cardGameServer.router.AuthorizationWrapper;
@@ -11,59 +10,39 @@ import julio.cardGame.cardGameServer.router.AuthenticatedRoute;
 import julio.cardGame.cardGameServer.router.Routeable;
 import julio.cardGame.common.DefaultMessages;
 import julio.cardGame.common.HttpStatus;
-import julio.cardGame.cardGameServer.application.serverLogic.models.StatsModel;
+import julio.cardGame.cardGameServer.application.dbLogic.models.StatsModel;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ExecuteGetStats extends AuthenticatedRoute implements Routeable {
     @Override
     public Response process(RequestContext requestContext) {
 
-        AuthorizationWrapper auth = this.requireAuthToken(requestContext.getHeaders());
+        try {
 
-        if (auth.response != null)
-            return auth.response;
+            AuthorizationWrapper auth = this.requireAuthToken(requestContext.getHeaders());
 
-        String sql = """
-                    SELECT wins, losses, elo
-                        FROM users
-                            WHERE "userName"=?;
-                """;
+            if (auth.response != null)
+                return auth.response;
 
-        try (PreparedStatement preparedStatement = DbConnection.getInstance().prepareStatement(sql)){
+            StatsModel stats = new UserRepo().fetchUserStats(auth.userName);
 
-            preparedStatement.setString(1, auth.userName);
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            if (!resultSet.next()) {
-                preparedStatement.close();
-                return new Response(HttpStatus.BAD_REQUEST.getStatusMessage(), HttpStatus.BAD_REQUEST);
-            }
-
-            int wins = resultSet.getInt(1);
-            int losses = resultSet.getInt(2);
-            double winRate = DataTransformation.calculateWinRate(wins, losses);
-
-            //todo change variables to stored
-            StatsModel statsModel = new StatsModel(
-                    wins,
-                    losses,
-                    winRate,
-                    resultSet.getInt(3)
-            );
+            if (stats == null)
+                return new Response(DefaultMessages.ERR_NO_STATS.getMessage(), HttpStatus.OK);
 
             String body = new ObjectMapper()
-                    .writeValueAsString(statsModel);
+                    .writeValueAsString(stats);
 
             return new Response(body, HttpStatus.OK);
 
-        } catch (JsonProcessingException e) {
-            return new Response(DefaultMessages.ERR_JSON_PARSE_STATS.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (SQLException e) {
+
             return new Response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+
+        } catch (JsonProcessingException e) {
+
+            return new Response(DefaultMessages.ERR_JSON_PARSE_STATS.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+
         }
 
     }

@@ -1,30 +1,21 @@
 package julio.cardGame.cardGameServer.router.routes.get;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import julio.cardGame.cardGameServer.application.serverLogic.db.DataTransformation;
-import julio.cardGame.cardGameServer.application.serverLogic.db.DbConnection;
+import julio.cardGame.cardGameServer.application.dbLogic.repositories.ScoreboardRepo;
 import julio.cardGame.cardGameServer.http.RequestContext;
 import julio.cardGame.cardGameServer.router.Routeable;
 import julio.cardGame.cardGameServer.http.Response;
 import julio.cardGame.common.DefaultMessages;
 import julio.cardGame.common.HttpStatus;
-import julio.cardGame.cardGameServer.application.serverLogic.models.ScoreModel;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ExecuteGetScore implements Routeable {
     @Override
     public Response process(RequestContext requestContext) {
 
-        try (Connection connection = DbConnection.getInstance().connect()) {
+        try {
 
-            String body = this.fetchScoreBoard(connection);
+            String body = new ScoreboardRepo().fetchScoreBoard();
 
             if (body == null)
                 return new Response(DefaultMessages.SCORE_NO_RESULTS.getMessage(), HttpStatus.OK);
@@ -43,7 +34,7 @@ public class ExecuteGetScore implements Routeable {
 
     }
 
-    private String fetchScoreBoard(Connection dbConnection) throws SQLException, JsonProcessingException {
+    /*private String fetchScoreBoard(Connection dbConnection) throws SQLException, JsonProcessingException {
 
         String sql = """
                     SELECT
@@ -91,5 +82,5 @@ public class ExecuteGetScore implements Routeable {
             throw e;
         }
 
-    }
+    }*/
 }

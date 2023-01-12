@@ -3,16 +3,17 @@ package julio.cardGame.cardGameServer.router.routes.post;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import julio.cardGame.cardGameServer.application.serverLogic.db.DataTransformation;
-import julio.cardGame.cardGameServer.application.serverLogic.db.DbConnection;
+import julio.cardGame.cardGameServer.application.dbLogic.db.DataTransformation;
+import julio.cardGame.cardGameServer.application.dbLogic.db.DbConnection;
+import julio.cardGame.cardGameServer.application.dbLogic.repositories.CardRepo;
 import julio.cardGame.cardGameServer.http.HeadersValidator;
 import julio.cardGame.cardGameServer.http.RequestContext;
 import julio.cardGame.cardGameServer.http.Response;
 import julio.cardGame.cardGameServer.router.Routeable;
 import julio.cardGame.common.DefaultMessages;
 import julio.cardGame.common.HttpStatus;
-import julio.cardGame.cardGameServer.application.serverLogic.models.CardDbModel;
-import julio.cardGame.cardGameServer.application.serverLogic.models.CardRequestModel;
+import julio.cardGame.cardGameServer.application.dbLogic.models.CardDbModel;
+import julio.cardGame.cardGameServer.application.dbLogic.models.CardRequestModel;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -43,37 +44,21 @@ public class ExecutePostPackage implements Routeable {
                 cardIDs.add(card.id);
             }
 
-            String sqlInsertCards = """
-                INSERT INTO
-                    cards("cardID", "cardName", "card_damage", "cardElement", "cardType", "monsterRace")
-                VALUES
-                    (?,?,?,?,?,?),
-                    (?,?,?,?,?,?),
-                    (?,?,?,?,?,?),
-                    (?,?,?,?,?,?),
-                    (?,?,?,?,?,?);
-                """;
-
-            String sqlInsertPackage = """
-                INSERT INTO public.packages
-                    VALUES (?,?,?,?,?,?);
-                """;
-
             //dbConnection has to be in a separeted try catch, so that the the rollback can be executed at line 74
             try (Connection dbConn = DbConnection.getInstance().connect()) {
 
-                try (PreparedStatement statementInsertCards = dbConn.prepareStatement(sqlInsertCards);
-                     PreparedStatement statementInsertPackage = dbConn.prepareStatement(sqlInsertPackage)
-                ){
+                try {
 
-                    //begin transaction, since we have to execute 2 sqls depending upon each other
+                    CardRepo cardRepo = new CardRepo();
+
                     dbConn.setAutoCommit(false);
 
-                    addCards(statementInsertCards, cardsToInsert);
-                    createPackage(statementInsertPackage, cardIDs);
+                    cardRepo.addCards(dbConn, cardsToInsert);
+                    cardRepo.createPackage(dbConn, cardIDs);
 
                     dbConn.commit();
 
+                    //begin transaction, since we have to execute 2 sqls depending upon each other
                 } catch (SQLException e) {
                     try {
                         dbConn.rollback();
@@ -101,7 +86,20 @@ public class ExecutePostPackage implements Routeable {
 
     }
 
-    private void addCards(PreparedStatement preparedStatement, List<CardDbModel> cards) throws SQLException {
+    /*private void addCards(Connection dbConnection, List<CardDbModel> cards) throws SQLException {
+
+        String sqlInsertCards = """
+                INSERT INTO
+                    cards("cardID", "cardName", "card_damage", "cardElement", "cardType", "monsterRace")
+                VALUES
+                    (?,?,?,?,?,?),
+                    (?,?,?,?,?,?),
+                    (?,?,?,?,?,?),
+                    (?,?,?,?,?,?),
+                    (?,?,?,?,?,?);
+                """;
+
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(sqlInsertCards)) {
 
             for (int i = 0; i < 5; ++i) {
 
@@ -115,11 +113,19 @@ public class ExecutePostPackage implements Routeable {
             }
 
             preparedStatement.execute();
-            preparedStatement.close();
 
-    }
+        }
 
-    private void createPackage(PreparedStatement preparedStatement, List<UUID> cardsIDs) throws SQLException {
+    }*/
+
+    /*private void createPackage(Connection dbConnection, List<UUID> cardsIDs) throws SQLException {
+
+        String sqlInsertPackage = """
+                INSERT INTO public.packages
+                    VALUES (?,?,?,?,?,?);
+                """;
+
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(sqlInsertPackage)) {
 
             preparedStatement.setObject(1, DataTransformation.prepareUUID(UUID.randomUUID()));
             preparedStatement.setObject(2, DataTransformation.prepareUUID(cardsIDs.get(0)));
@@ -129,7 +135,8 @@ public class ExecutePostPackage implements Routeable {
             preparedStatement.setObject(6, DataTransformation.prepareUUID(cardsIDs.get(4)));
 
             preparedStatement.execute();
-            preparedStatement.close();
 
-    }
+        }
+
+    }*/
 }
