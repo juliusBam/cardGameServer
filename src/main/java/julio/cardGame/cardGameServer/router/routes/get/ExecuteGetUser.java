@@ -7,6 +7,7 @@ import julio.cardGame.cardGameServer.application.serverLogic.repositories.UserRe
 import julio.cardGame.cardGameServer.http.HeadersValidator;
 import julio.cardGame.cardGameServer.http.RequestContext;
 import julio.cardGame.cardGameServer.http.Response;
+import julio.cardGame.cardGameServer.router.AuthenticatedRoute;
 import julio.cardGame.cardGameServer.router.Routeable;
 import julio.cardGame.common.DefaultMessages;
 import julio.cardGame.common.HttpStatus;
@@ -19,11 +20,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ExecuteGetUser implements Routeable {
+public class ExecuteGetUser extends AuthenticatedRoute implements Routeable {
     @Override
     public Response process(RequestContext requestContext) {
 
-        String requestedUser = requestContext.fetchParameter(RequestParameters.USERNAME.getParamValue());
+        /*String requestedUser = requestContext.fetchParameter(RequestParameters.USERNAME.getParamValue());
 
         if (requestedUser == null || requestedUser.isEmpty() || requestedUser.isBlank()) {
             return new Response(DefaultMessages.ERR_NO_USER.getMessage(), HttpStatus.BAD_REQUEST);
@@ -49,7 +50,7 @@ public class ExecuteGetUser implements Routeable {
             return new Response(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         }*/
 
-        try (PreparedStatement preparedStatement = DbConnection.getInstance().prepareStatement(
+        /*try (PreparedStatement preparedStatement = DbConnection.getInstance().prepareStatement(
                 """
                         SELECT * 
                             FROM public.users 
@@ -89,6 +90,35 @@ public class ExecuteGetUser implements Routeable {
         } catch (SQLException e) {
             return new Response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
             //throw new RuntimeException(e);
+        }*/
+
+        try {
+
+            String requestedUser = requestContext.fetchParameter(RequestParameters.USERNAME.getParamValue());
+
+            String authToken = HeadersValidator.validateToken(requestContext.getHeaders());
+
+            if (requestedUser == null || requestedUser.isEmpty() || requestedUser.isBlank())
+                return new Response(DefaultMessages.ERR_NO_USER.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+
+            if (!this.canAccessUserData(requestContext.getHeaders(), requestedUser))
+                return new Response(DefaultMessages.ERR_MISMATCHING_USERS.getMessage(), HttpStatus.BAD_REQUEST);
+
+            CompleteUserModel userData = new UserRepo().getUser(requestedUser);
+
+            String body = new ObjectMapper()
+                    .writeValueAsString(userData);
+
+            return new Response(body, HttpStatus.OK);
+
+        } catch (SQLException e) {
+
+            return new Response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+
+        } catch (JsonProcessingException e) {
+
+            return new Response(DefaultMessages.ERR_JSON_PARSE_USER.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+
         }
 
     }

@@ -1,18 +1,14 @@
 package julio.cardGame.cardGameServer.application.serverLogic.repositories;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import julio.cardGame.cardGameServer.application.serverLogic.db.DataTransformation;
 import julio.cardGame.cardGameServer.application.serverLogic.db.DbConnection;
 import julio.cardGame.cardGameServer.application.serverLogic.models.CompleteUserModel;
 import julio.cardGame.cardGameServer.application.serverLogic.models.UserAdditionalDataModel;
 import julio.cardGame.cardGameServer.application.serverLogic.models.UserLoginDataModel;
 import julio.cardGame.cardGameServer.application.serverLogic.models.UserStatsModel;
-import julio.cardGame.cardGameServer.http.Response;
-import julio.cardGame.common.DefaultMessages;
-import julio.cardGame.common.HttpStatus;
 
 import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -125,6 +121,30 @@ public class UserRepo {
 
     }
 
+    public boolean checkTokenBelongsToUser(String token, String userName) throws SQLException {
+
+        String sql = """
+                    SELECT
+                        "authToken"
+                    FROM users
+                        WHERE "userName"=?;
+                """;
+
+        try (PreparedStatement preparedStatement = DbConnection.getInstance().prepareStatement(sql)) {
+
+            preparedStatement.setString(1, userName);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (!resultSet.next())
+                return false;
+
+            return token.equals(resultSet.getString(1));
+
+        }
+
+    }
+
     public boolean checkAdmin(String token) throws SQLException {
 
         String sql = """
@@ -148,19 +168,74 @@ public class UserRepo {
 
     }
 
-    public void createAdmin(UserLoginDataModel userLoginDataModel) throws SQLException {
+    public void createUser(UserLoginDataModel userLoginDataModel, boolean isAdmin) throws SQLException, NoSuchAlgorithmException {
+
+        String sql = """
+                        INSERT INTO public.users 
+                        ("userID", "userName", pwd, "isAdmin", "authToken") 
+                        VALUES (?, ?, ?, ?, ?)
+                        """;
+
+        try (PreparedStatement preparedStatement = DbConnection.getInstance().prepareStatement(sql)) {
+
+            preparedStatement.setObject(1, DataTransformation.prepareUUID(UUID.randomUUID()));
+
+            preparedStatement.setString(2, userLoginDataModel.userName);
+
+            preparedStatement.setString(3, DataTransformation.calculateHash(userLoginDataModel.password));
+
+            preparedStatement.setBoolean(4, isAdmin);
+
+            preparedStatement.setString(5, DataTransformation.createAuthToken(userLoginDataModel.userName));
+
+            preparedStatement.execute();
+
+        }
 
     }
 
-    public void createNormalUser(UserLoginDataModel userLoginDataModel) throws SQLException {
+    //Connection has to be provided since we execute a transaction
+    public void updateWinsElo(Connection dbConnection, UUID userID, int eloWinner, int eloLooser) throws SQLException {
+
+        String sql = """
+                UPDATE
+                    users
+                        SET "wins"=(SELECT "wins" from users where "userID"='?') + 1 , "elo"=?
+                WHERE "userID"='?';
+                """;
+
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(sql)) {
+
+            preparedStatement.setObject(1, DataTransformation.prepareUUID(userID));
+            preparedStatement.setInt(2, DataTransformation.calculateWinnerElo(eloWinner, eloLooser));
+            preparedStatement.setObject(3, DataTransformation.prepareUUID(userID));
+
+            preparedStatement.execute();
+
+        }
+
 
     }
 
-    public void updateWinsElo(UUID userID, int eloWinner, int eloLooser) throws SQLException {
+    //need connection for the transaction
+    public void updateLossesElo(Connection dbConnection, UUID userID, int eloLooser, int eloWinner) throws SQLException {
 
-    }
+        String sql = """
+                UPDATE
+                    users
+                        SET "losses"=(SELECT "losses" from users where "userID"='?') + 1 , "elo"=?
+                WHERE "userID"='?';
+                """;
 
-    public void updateLossesElo(UUID userID, int eloLooser, int eloWinner) throws SQLException {
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(sql)) {
+
+            preparedStatement.setObject(1, DataTransformation.prepareUUID(userID));
+            preparedStatement.setInt(2, DataTransformation.calculateLoserElo(eloWinner, eloLooser));
+            preparedStatement.setObject(3, DataTransformation.prepareUUID(userID));
+
+            preparedStatement.execute();
+
+        }
 
     }
 

@@ -1,6 +1,7 @@
 package julio.cardGame.cardGameServer.router;
 
 
+import julio.cardGame.cardGameServer.application.serverLogic.repositories.UserRepo;
 import julio.cardGame.cardGameServer.http.Header;
 import julio.cardGame.cardGameServer.http.HeadersValidator;
 import julio.cardGame.cardGameServer.http.Response;
@@ -50,6 +51,23 @@ public abstract class AuthenticatedRoute {
                     new Response(HttpStatus.UNAUTHORIZED.getStatusMessage(), HttpStatus.UNAUTHORIZED)
             );
         }
+
+    }
+
+    protected boolean canAccessUserData(List<Header> headers, String requestedUser) throws SQLException {
+
+        UserRepo userRepo = new UserRepo();
+
+        String token = HeadersValidator.validateToken(headers);
+
+        if (token == null)
+            return false;
+
+        if (userRepo.checkAdmin(token))
+            return true;
+
+        return userRepo.checkTokenBelongsToUser(token, requestedUser);
+
 
     }
 

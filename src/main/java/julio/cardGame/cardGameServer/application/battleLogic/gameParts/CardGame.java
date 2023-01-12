@@ -6,10 +6,12 @@ import julio.cardGame.cardGameServer.application.battleLogic.gameParts.helpers.F
 import julio.cardGame.cardGameServer.application.battleLogic.gameParts.helpers.Messages.IMessageFactory;
 import julio.cardGame.cardGameServer.application.battleLogic.gameParts.helpers.Messages.MessageFactory;
 import julio.cardGame.cardGameServer.application.battleLogic.gameParts.helpers.UserBattleResultWrapper;
+import julio.cardGame.cardGameServer.application.serverLogic.db.DbConnection;
 import julio.cardGame.cardGameServer.application.serverLogic.models.UserInfoModel;
 import julio.cardGame.cardGameServer.application.serverLogic.repositories.UserRepo;
 import julio.cardGame.common.DefaultMessages;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -104,19 +106,36 @@ public class CardGame {
 
                 UserRepo userRepo = new UserRepo();
 
-                //update the winner
-                userRepo.updateWinsElo(
-                        battleResultWrapper.winner.getInfo().userID,
-                        battleResultWrapper.winner.getInfo().elo,
-                        battleResultWrapper.loser.getInfo().elo
-                );
+                try (Connection dbConnection = DbConnection.getInstance().connect()) {
 
-                //update the loser
-                userRepo.updateLossesElo(
-                        battleResultWrapper.loser.getInfo().userID,
-                        battleResultWrapper.loser.getInfo().elo,
-                        battleResultWrapper.winner.getInfo().elo
-                );
+                    try {
+
+                        dbConnection.setAutoCommit(false);
+                        //update the winner
+                        userRepo.updateWinsElo(
+                                dbConnection,
+                                battleResultWrapper.winner.getInfo().userID,
+                                battleResultWrapper.winner.getInfo().elo,
+                                battleResultWrapper.loser.getInfo().elo
+                        );
+
+                        //update the loser
+                        userRepo.updateLossesElo(
+                                dbConnection,
+                                battleResultWrapper.loser.getInfo().userID,
+                                battleResultWrapper.loser.getInfo().elo,
+                                battleResultWrapper.winner.getInfo().elo
+                        );
+
+                        dbConnection.commit();
+
+                    } catch (SQLException e) {
+                        //we need to catch the exception here to set the rollback
+                        dbConnection.rollback();
+                        throw e;
+                    }
+
+                }
 
             }
 

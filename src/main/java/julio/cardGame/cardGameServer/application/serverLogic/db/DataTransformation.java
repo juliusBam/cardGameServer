@@ -1,6 +1,7 @@
 package julio.cardGame.cardGameServer.application.serverLogic.db;
 
 import julio.cardGame.common.CardTypes;
+import julio.cardGame.common.Constants;
 import org.postgresql.util.PGobject;
 
 import java.math.BigInteger;
@@ -10,6 +11,8 @@ import java.sql.SQLException;
 import java.util.UUID;
 
 public class DataTransformation {
+
+    public static int winValue;
     public static String calculateHash(String input) throws NoSuchAlgorithmException {
 
         MessageDigest md = MessageDigest.getInstance("MD5");
@@ -55,5 +58,40 @@ public class DataTransformation {
 
         return 0;
 
+    }
+
+    public static String createAuthToken(String userName) {
+
+        return String.format(Constants.USER_AUTH, userName);
+
+    }
+
+    public static int calculateWinnerElo(int winnerElo, int loserElo) {
+
+        int eloIncrease = 32;
+
+        if (winnerElo > 1600)
+            eloIncrease = 16;
+
+        int expectedOutcome = winnerElo > loserElo ? 1 : -1;
+
+        int newElo = winnerElo + (eloIncrease * (DataTransformation.winValue - expectedOutcome));
+
+        return Math.max(newElo, 0);
+
+    }
+
+    public static int calculateLoserElo(int winnerElo, int loserElo) {
+
+        int eloIncrease = 32;
+
+        if (loserElo > 1600)
+            eloIncrease = 16;
+
+        int expectedOutcome = loserElo > winnerElo ? 1 : -1;
+
+        int newElo = winnerElo + (eloIncrease * (DataTransformation.winValue - expectedOutcome));
+
+        return Math.max(newElo, 0);
     }
 }

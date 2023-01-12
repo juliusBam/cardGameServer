@@ -28,6 +28,8 @@ public enum DefaultMessages {
 
     SCORE_NO_RESULTS("No scoreboard found"),
 
+    ERR_NO_FOUND_USER("The requested user could not be found"),
+
     NO_TRADES("No trades could be found"),
 
     ERR_INVALID_TRADE_UUID("Invalid trade uuid"),

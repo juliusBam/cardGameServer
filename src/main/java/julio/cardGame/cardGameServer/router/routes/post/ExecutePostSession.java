@@ -27,7 +27,16 @@ public class ExecutePostSession implements Routeable {
             UserLoginDataModel userModel = new ObjectMapper()
                     .readValue(requestContext.getBody(), UserLoginDataModel.class);
 
-            try (PreparedStatement preparedStatement = DbConnection.getInstance().prepareStatement(
+            UserRepo userRepo = new UserRepo();
+
+            String token = userRepo.loginUser(userModel);
+
+            if (token == null)
+                return new Response(DefaultMessages.ERR_NO_FOUND_USER.getMessage(), HttpStatus.BAD_REQUEST);
+
+            return new Response(token, HttpStatus.OK);
+
+            /*try (PreparedStatement preparedStatement = DbConnection.getInstance().prepareStatement(
                     """
                         SELECT "authToken"
                             FROM public.users 
@@ -54,9 +63,12 @@ public class ExecutePostSession implements Routeable {
             } catch (SQLException | NoSuchAlgorithmException e) {
                 return new Response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
                 //throw new RuntimeException(e);
-            }
+            }*/
 
-        } catch (JsonProcessingException e) {
+        } catch (SQLException | NoSuchAlgorithmException e) {
+            return new Response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        catch (JsonProcessingException e) {
             return new Response(DefaultMessages.ERR_JSON_PARSE_USER.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
