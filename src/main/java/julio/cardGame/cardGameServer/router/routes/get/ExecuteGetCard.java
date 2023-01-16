@@ -35,7 +35,7 @@ public class ExecuteGetCard extends AuthenticatedRoute implements Routeable {
                     .writerWithDefaultPrettyPrinter()
                     .writeValueAsString(cards);
 
-            return new Response(body, HttpStatus.OK);
+            return new Response(body, HttpStatus.OK, true);
 
 
         } catch (SQLException e) {

@@ -90,8 +90,9 @@ public class CardGame {
 
                             }
 
-                            //fightResult.getLoser().move(fightResult.getWinner().get);
-                            //System.out.println("Moving loser");
+                        } else {
+
+                            this.handleDraw();
 
                         }
 
@@ -114,7 +115,7 @@ public class CardGame {
                         //update the winner
                         userRepo.updateWinsElo(
                                 dbConnection,
-                                battleResultWrapper.winner.getInfo().userID,
+                                battleResultWrapper.winner.getName(),
                                 battleResultWrapper.winner.getInfo().elo,
                                 battleResultWrapper.loser.getInfo().elo
                         );
@@ -122,7 +123,7 @@ public class CardGame {
                         //update the loser
                         userRepo.updateLossesElo(
                                 dbConnection,
-                                battleResultWrapper.loser.getInfo().userID,
+                                battleResultWrapper.loser.getName(),
                                 battleResultWrapper.loser.getInfo().elo,
                                 battleResultWrapper.winner.getInfo().elo
                         );
@@ -163,6 +164,11 @@ public class CardGame {
 
         }
 
+    }
+
+    private void handleDraw() {
+        this.firstPlayer.putCardBack();
+        this.secondPlayer.putCardBack();
     }
 
     public BattleUser getFirstPlayer() {

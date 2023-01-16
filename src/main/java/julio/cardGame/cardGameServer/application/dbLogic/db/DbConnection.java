@@ -11,6 +11,10 @@ public class DbConnection implements Closeable {
 
     private Connection connection;
 
+//
+    private static final HikariConfig config = new HikariConfig("src/main/resources/hikari.properties");
+    private static final HikariDataSource ds = new HikariDataSource(config);
+
     public DbConnection() {
         /*try {
             Class.forName("org.postgresql.Driver");
@@ -31,8 +35,8 @@ public class DbConnection implements Closeable {
     }*/
 
     public Connection connect() throws SQLException {
-        HikariConfig config = new HikariConfig("src/main/resources/hikari.properties");
-        HikariDataSource ds = new HikariDataSource(config);
+        //HikariConfig config = new HikariConfig("src/main/resources/hikari.properties");
+        //HikariDataSource ds = new HikariDataSource(config);
 
         return ds.getConnection();
                 //connect(Constants.DB_NAME);
@@ -55,11 +59,11 @@ public class DbConnection implements Closeable {
         return getConnection().prepareStatement(sql);
     }
 
-    /*public boolean executeSql(String sql) throws SQLException {
+    public boolean executeSql(String sql) throws SQLException {
         return executeSql(getConnection(), sql, false);
-    }*/
+    }
 
-    /*public static boolean executeSql(Connection connection, String sql, boolean ignoreIfFails) throws SQLException {
+    public static boolean executeSql(Connection connection, String sql, boolean ignoreIfFails) throws SQLException {
         try ( Statement statement = connection.createStatement() ) {
             statement.execute(sql );
             return true;
@@ -70,7 +74,7 @@ public class DbConnection implements Closeable {
         }
     }
 
-    public static boolean executeSql(Connection connection, String sql) throws SQLException {
+    /*public static boolean executeSql(Connection connection, String sql) throws SQLException {
         return executeSql(connection, sql, false);
     }*/
 
@@ -81,6 +85,7 @@ public class DbConnection implements Closeable {
             try {
                 connection.close();
             } catch (SQLException throwables) {
+                System.out.println("HERE");
                 throwables.printStackTrace();
             }
             connection = null;

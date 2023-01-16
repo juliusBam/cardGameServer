@@ -36,6 +36,7 @@ public abstract class AuthenticatedRoute {
 
     }
 
+    //todo check in the db if admin
     protected AuthorizationWrapper requireAdmin(List<Header> headers) throws SQLException {
 
         AuthorizationWrapper authorizationWrapper = this.requireAuthToken(headers);

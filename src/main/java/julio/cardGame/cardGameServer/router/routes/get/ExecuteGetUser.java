@@ -91,6 +91,8 @@ public class ExecuteGetUser extends AuthenticatedRoute implements Routeable {
 
             String requestedUser = requestContext.fetchParameter(RequestParameters.USERNAME.getParamValue());
 
+            wait(20);
+
             if (requestedUser == null || requestedUser.isEmpty() || requestedUser.isBlank())
                 return new Response(DefaultMessages.ERR_NO_USER.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 
@@ -102,7 +104,7 @@ public class ExecuteGetUser extends AuthenticatedRoute implements Routeable {
             String body = new ObjectMapper()
                     .writeValueAsString(userData);
 
-            return new Response(body, HttpStatus.OK);
+            return new Response(body, HttpStatus.OK, true);
 
         } catch (SQLException e) {
 
@@ -112,6 +114,8 @@ public class ExecuteGetUser extends AuthenticatedRoute implements Routeable {
 
             return new Response(DefaultMessages.ERR_JSON_PARSE_USER.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
 
     }

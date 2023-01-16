@@ -5,6 +5,7 @@ import julio.cardGame.cardGameServer.application.dbLogic.models.UserInfoModel;
 import julio.cardGame.common.DefaultMessages;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Observable;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -20,9 +21,9 @@ public class BattleExecutor extends Observable {
     }
 
     public void updateBattleResult(List<String> newResults) {
-        battleResult = new ArrayList<>(newResults);
+        battleResult = Collections.synchronizedList(new ArrayList<>(newResults));
         setChanged();
-        notifyObservers(newResults);
+        notifyObservers(battleResult);
     }
 
     public void addUserQueue(UserInfoModel newUser) {

@@ -46,15 +46,18 @@ public class ExecuteGetDeck extends AuthenticatedRoute implements Routeable {
                     body += card.monsterRace + "\n";
                 }
 
+                return new Response(body, HttpStatus.OK);
+
             } else {
 
                 body = new ObjectMapper()
                         .writerWithDefaultPrettyPrinter()
                         .writeValueAsString(deckObj);
 
+                return new Response(body, HttpStatus.OK, true);
             }
 
-            return new Response(body, HttpStatus.OK);
+
 
         } catch (SQLException e) {
 

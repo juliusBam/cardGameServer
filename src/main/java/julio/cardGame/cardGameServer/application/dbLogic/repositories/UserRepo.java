@@ -196,20 +196,20 @@ public class UserRepo {
     }
 
     //Connection has to be provided since we execute a transaction
-    public void updateWinsElo(Connection dbConnection, UUID userID, int eloWinner, int eloLooser) throws SQLException {
+    public void updateWinsElo(Connection dbConnection, String userName, int eloWinner, int eloLooser) throws SQLException {
 
         String sql = """
                 UPDATE
                     users
-                        SET "wins"=(SELECT "wins" from users where "userID"='?') + 1 , "elo"=?
-                WHERE "userID"='?';
+                        SET "wins"=(SELECT "wins" from users where "userName"='?') + 1 , "elo"=?
+                WHERE "userName"='?';
                 """;
 
         try (PreparedStatement preparedStatement = dbConnection.prepareStatement(sql)) {
 
-            preparedStatement.setObject(1, DataTransformation.prepareUUID(userID));
+            preparedStatement.setString(1, userName);
             preparedStatement.setInt(2, DataTransformation.calculateWinnerElo(eloWinner, eloLooser));
-            preparedStatement.setObject(3, DataTransformation.prepareUUID(userID));
+            preparedStatement.setString(3, userName);
 
             preparedStatement.execute();
 
@@ -219,20 +219,20 @@ public class UserRepo {
     }
 
     //need connection for the transaction
-    public void updateLossesElo(Connection dbConnection, UUID userID, int eloLooser, int eloWinner) throws SQLException {
+    public void updateLossesElo(Connection dbConnection, String userName, int eloLooser, int eloWinner) throws SQLException {
 
         String sql = """
                 UPDATE
                     users
-                        SET "losses"=(SELECT "losses" from users where "userID"='?') + 1 , "elo"=?
-                WHERE "userID"='?';
+                        SET "losses"=(SELECT "losses" from users where "userName"='?') + 1 , "elo"=?
+                WHERE "userName"='?';
                 """;
 
         try (PreparedStatement preparedStatement = dbConnection.prepareStatement(sql)) {
 
-            preparedStatement.setObject(1, DataTransformation.prepareUUID(userID));
+            preparedStatement.setString(1, userName);
             preparedStatement.setInt(2, DataTransformation.calculateLoserElo(eloWinner, eloLooser));
-            preparedStatement.setObject(3, DataTransformation.prepareUUID(userID));
+            preparedStatement.setString(3, userName);
 
             preparedStatement.execute();
 

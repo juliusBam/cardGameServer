@@ -2,7 +2,6 @@ package julio.cardGame.cardGameServer.router.routes.put;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import julio.cardGame.cardGameServer.application.dbLogic.db.DbConnection;
 import julio.cardGame.cardGameServer.application.dbLogic.repositories.UserRepo;
 import julio.cardGame.cardGameServer.http.RequestContext;
 import julio.cardGame.cardGameServer.http.Response;
@@ -13,7 +12,6 @@ import julio.cardGame.common.HttpStatus;
 import julio.cardGame.common.RequestParameters;
 import julio.cardGame.cardGameServer.application.dbLogic.models.UserAdditionalDataModel;
 
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class ExecutePutUser extends AuthenticatedRoute implements Routeable {

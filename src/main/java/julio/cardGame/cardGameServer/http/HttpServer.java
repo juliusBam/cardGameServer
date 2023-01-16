@@ -1,6 +1,8 @@
 package julio.cardGame.cardGameServer.http;
 
 import julio.cardGame.cardGameServer.application.dbLogic.BattleExecutor;
+import julio.cardGame.cardGameServer.router.FunctionalRouter;
+import julio.cardGame.cardGameServer.router.routes.post.ExecutePostBattle;
 import julio.cardGame.common.Constants;
 import julio.cardGame.cardGameServer.router.Routeable;
 import julio.cardGame.cardGameServer.router.RouteIdentifier;
@@ -12,6 +14,7 @@ import java.net.Socket;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -19,7 +22,11 @@ public class HttpServer {
 
     private final Router router = new Router();
 
-    public static BattleExecutor battleRes = new BattleExecutor();
+    private final FunctionalRouter functionalRouter = new FunctionalRouter();
+
+    //public static BattleExecutor battleRes = new BattleExecutor();
+
+    //public static BattleWrapper battleWrapper = new BattleWrapper();
 
     public void start() {
 
@@ -60,24 +67,47 @@ public class HttpServer {
                 */
 
                 //now that we parsed the request into the correct context we can handle it
-                Routeable routeable = router.findRoute(new RouteIdentifier(requestContext.getPath(), requestContext.getHttpVerb()));
+                //Routeable routeable = router.findRoute(new RouteIdentifier(requestContext.getPath(), requestContext.getHttpVerb()));
+
+                Routeable routeable = functionalRouter
+                        .findRoute(
+                                new RouteIdentifier(requestContext.getPath(), requestContext.getHttpVerb())
+                        )
+                        .generateRoute();
+
+                //Sendable response;
+                BufferedWriter w = new BufferedWriter(
+                        new OutputStreamWriter(this.actualSocket.getOutputStream()));
 
                 Sendable response;
 
                 if (routeable != null) {
-                    response = routeable.process(requestContext);
-                } else {
-                    response = new Response(true);
-                }
 
-                BufferedWriter w = new BufferedWriter(
-                        new OutputStreamWriter(this.actualSocket.getOutputStream()));
+                    response = routeable.process(requestContext);
+
+
+                    //if (routeable instanceof ExecutePostBattle)
+                        //BattleWrapper.removePlayerFromQueue();
+
+                } else {
+
+                    response = new Response(true);
+
+                }
 
                 response.sendResponse(w);
                 w.close();
                 actualSocket.close();
 
+
+
+
+
             } catch (IOException | NoSuchAlgorithmException e) {
+                System.err.println(e.getMessage());
+            } catch (ExecutionException e) {
+                System.err.println(e.getMessage());
+            } catch (InterruptedException e) {
                 System.err.println(e.getMessage());
             }
         }

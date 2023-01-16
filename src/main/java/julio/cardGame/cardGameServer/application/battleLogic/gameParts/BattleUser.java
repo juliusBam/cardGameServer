@@ -32,11 +32,9 @@ public class BattleUser {
 
     public void createDeck() throws InvalidParameterException, SQLException, IllegalArgumentException {
 
-        List<CardDeckModel> deckFromDb = new UserRepo().fetchDeckCards(this.info.userID);
+        List<CardDeckModel> deckFromDb = new UserRepo().fetchDeckCards(this.info.userName);
 
         this.processCardResponse(deckFromDb);
-
-
 
     }
 
@@ -102,4 +100,11 @@ public class BattleUser {
 
     }
 
+    public void putCardBack() {
+
+        ICard playedCard = this.deck.removeFirstCard();
+
+        this.deck.addCard(playedCard);
+
+    }
 }

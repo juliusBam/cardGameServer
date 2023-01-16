@@ -33,7 +33,7 @@ public class ExecuteGetStats extends AuthenticatedRoute implements Routeable {
             String body = new ObjectMapper()
                     .writeValueAsString(stats);
 
-            return new Response(body, HttpStatus.OK);
+            return new Response(body, HttpStatus.OK, true);
 
         } catch (SQLException e) {
 

@@ -24,7 +24,8 @@ public class MessageFactory implements IMessageFactory {
         String lastMsgPart = " => %s %s %s";
         String formattedLastMsg = String.format(lastMsgPart, fightResult.getWinner().getName(), " kills ", fightResult.getLoser().getName());
 
-        return formattedFirstMsg.concat(formattedSecondMsg).concat(lastMsgPart);
+        String totalMsg = formattedFirstMsg.concat(formattedSecondMsg).concat(formattedLastMsg);
+        return totalMsg;
     }
 
     public String createUserErrorMsg(BattleUser user, String msg) {

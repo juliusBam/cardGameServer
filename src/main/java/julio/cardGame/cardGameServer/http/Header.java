@@ -27,6 +27,6 @@ public class Header {
 
     @Override
     public String toString() {
-       return "Name: " + name + ", Value: " + value;
+       return name +": " + value;
     }
 }

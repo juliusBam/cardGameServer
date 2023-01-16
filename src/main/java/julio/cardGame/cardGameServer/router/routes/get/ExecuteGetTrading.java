@@ -25,7 +25,7 @@ public class ExecuteGetTrading extends AuthenticatedRoute implements Routeable {
 
             String body = new TradeRepo().fetchTrades();
 
-            return new Response(body, HttpStatus.OK);
+            return new Response(body, HttpStatus.OK, true);
 
 
         } catch (SQLException e) {

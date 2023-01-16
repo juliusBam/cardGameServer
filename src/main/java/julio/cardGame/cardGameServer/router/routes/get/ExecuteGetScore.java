@@ -20,7 +20,7 @@ public class ExecuteGetScore implements Routeable {
             if (body == null)
                 return new Response(DefaultMessages.SCORE_NO_RESULTS.getMessage(), HttpStatus.OK);
 
-            return new Response(body, HttpStatus.OK);
+            return new Response(body, HttpStatus.OK, true);
 
         } catch (SQLException e) {
 
