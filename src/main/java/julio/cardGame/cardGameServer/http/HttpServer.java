@@ -105,10 +105,6 @@ public class HttpServer {
 
             } catch (IOException | NoSuchAlgorithmException e) {
                 System.err.println(e.getMessage());
-            } catch (ExecutionException e) {
-                System.err.println(e.getMessage());
-            } catch (InterruptedException e) {
-                System.err.println(e.getMessage());
             }
         }
 
