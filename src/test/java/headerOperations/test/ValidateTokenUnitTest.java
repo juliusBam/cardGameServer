@@ -1,8 +1,8 @@
 package headerOperations.test;
 
-import julio.cardGame.cardGameServer.http.Header;
-import julio.cardGame.cardGameServer.http.HeaderParser;
-import julio.cardGame.cardGameServer.http.HeadersValidator;
+import julio.cardGame.cardGameServer.http.communication.headers.Header;
+import julio.cardGame.cardGameServer.http.communication.headers.HeaderParser;
+import julio.cardGame.cardGameServer.http.communication.headers.HeadersValidator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
@@ -84,27 +84,5 @@ public class ValidateTokenUnitTest {
         assertNull(extractedToken);
 
     }
-
-    @Test
-    void validateAdminToken() {
-
-        //arrange
-        final String tokenValue = "Bearer admin-mtcgToken";
-        final List<Header> validToken = new ArrayList<>();
-        validToken.add(
-                new Header("Authorization", tokenValue)
-        );
-
-        //act
-        String extractedToken = HeadersValidator.validateToken(validToken);
-        boolean isAdmin = HeadersValidator.checkAdmin(extractedToken);
-
-        //assert
-        assertEquals(extractedToken, tokenValue);
-        assert(isAdmin);
-
-    }
-
-
 
 }

@@ -1,6 +1,6 @@
 package julio.cardGame.cardGameClient.helpers.readers;
 
-import julio.cardGame.cardGameServer.application.dbLogic.models.UserLoginDataModel;
+import julio.cardGame.cardGameServer.database.models.UserLoginDataModel;
 
 import java.io.IOException;
 

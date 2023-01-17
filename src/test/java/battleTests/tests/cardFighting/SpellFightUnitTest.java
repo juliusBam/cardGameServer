@@ -1,8 +1,8 @@
 package battleTests.tests.cardFighting;
 
-import julio.cardGame.cardGameServer.application.battleLogic.gameParts.cards.CardFactory;
-import julio.cardGame.cardGameServer.application.battleLogic.gameParts.cards.Elements;
-import julio.cardGame.cardGameServer.application.battleLogic.gameParts.cards.ICard;
+import julio.cardGame.cardGameServer.battle.cards.CardFactory;
+import julio.cardGame.cardGameServer.battle.cards.Elements;
+import julio.cardGame.cardGameServer.battle.cards.ICard;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;

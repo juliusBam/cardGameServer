@@ -1,6 +1,6 @@
 package julio.cardGame.cardGameClient.helpers;
 
-import julio.cardGame.common.HttpStatus;
+import julio.cardGame.cardGameServer.http.communication.HttpStatus;
 
 public class ServerResponse {
     private String responseText;

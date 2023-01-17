@@ -1,7 +1,7 @@
 package julio.cardGame.cardGameClient.helpers;
 
 import julio.cardGame.cardGameClient.application.CardGame;
-import julio.cardGame.cardGameServer.http.Header;
+import julio.cardGame.cardGameServer.http.communication.headers.Header;
 
 import java.util.ArrayList;
 import java.util.List;

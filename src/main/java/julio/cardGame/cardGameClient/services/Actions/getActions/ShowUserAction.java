@@ -5,7 +5,7 @@ import julio.cardGame.cardGameClient.helpers.readers.UsernameReader;
 import julio.cardGame.cardGameClient.helpers.requests.GetRequestBuilder;
 import julio.cardGame.cardGameClient.helpers.requests.RequestBuilder;
 import julio.cardGame.cardGameClient.services.Actions.Action;
-import julio.cardGame.cardGameServer.http.HttpPath;
+import julio.cardGame.cardGameServer.http.routing.HttpPath;
 
 import java.io.IOException;
 import java.net.http.HttpRequest;

@@ -1,7 +1,7 @@
 package julio.cardGame.cardGameClient.helpers.requests;
 
 import julio.cardGame.cardGameClient.application.CardGame;
-import julio.cardGame.cardGameServer.http.Header;
+import julio.cardGame.cardGameServer.http.communication.headers.Header;
 
 import java.io.IOException;
 import java.net.URI;
@@ -9,8 +9,8 @@ import java.net.http.HttpRequest;
 import java.util.ArrayList;
 import java.util.List;
 
-import static julio.cardGame.common.Constants.HOST_ADDR;
-import static julio.cardGame.common.Constants.LISTENING_PORT_STR;
+import static julio.cardGame.cardGameServer.Constants.HOST_ADDR;
+import static julio.cardGame.cardGameServer.Constants.LISTENING_PORT_STR;
 
 public abstract class RequestBuilder {
 

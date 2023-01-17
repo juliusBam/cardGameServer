@@ -1,6 +1,6 @@
 package dataTransformation.test;
 
-import julio.cardGame.cardGameServer.application.dbLogic.db.DataTransformation;
+import julio.cardGame.cardGameServer.database.db.DataTransformation;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 

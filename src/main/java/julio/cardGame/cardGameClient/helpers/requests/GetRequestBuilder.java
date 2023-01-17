@@ -1,6 +1,6 @@
 package julio.cardGame.cardGameClient.helpers.requests;
 
-import julio.cardGame.cardGameServer.http.Header;
+import julio.cardGame.cardGameServer.http.communication.headers.Header;
 
 import java.io.IOException;
 import java.net.http.HttpRequest;

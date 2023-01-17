@@ -4,13 +4,6 @@ import julio.cardGame.cardGameClient.application.CardGame;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-
-import static julio.cardGame.common.Constants.HOST_ADDR;
-import static julio.cardGame.common.Constants.LISTENING_PORT_STR;
 
 public class Main {
     public static void main(String[] args) {

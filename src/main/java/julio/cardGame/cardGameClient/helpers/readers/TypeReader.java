@@ -1,6 +1,6 @@
 package julio.cardGame.cardGameClient.helpers.readers;
 
-import julio.cardGame.common.CardTypes;
+import julio.cardGame.cardGameServer.battle.cards.CardTypes;
 
 import java.io.IOException;
 
