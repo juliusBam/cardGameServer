@@ -78,11 +78,12 @@ public class CardDmgCalculator {
                 }
             }
             case Normal -> {
-                if (defendingEl == Elements.Water) {
+                return 1;
+                /*if (defendingEl == Elements.Water) {
                     return 2;
                 } else if (defendingEl == Elements.Fire) {
                     return 0.5;
-                }
+                }*/
             }
         }
         return 1;

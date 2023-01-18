@@ -1,14 +1,13 @@
 package julio.cardGame.cardGameServer.http.routing.routes.post;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import julio.cardGame.cardGameServer.database.db.DataTransformation;
 import julio.cardGame.cardGameServer.database.db.DbConnection;
 import julio.cardGame.cardGameServer.database.repositories.TradeRepo;
 import julio.cardGame.cardGameServer.database.repositories.UserRepo;
 import julio.cardGame.cardGameServer.http.communication.RequestContext;
 import julio.cardGame.cardGameServer.http.routing.AuthorizationWrapper;
-import julio.cardGame.cardGameServer.http.routing.routes.AuthenticatedRoute;
+import julio.cardGame.cardGameServer.http.routing.routes.AuthenticatedMappingRoute;
 import julio.cardGame.cardGameServer.http.routing.routes.Routeable;
 import julio.cardGame.cardGameServer.http.communication.Response;
 import julio.cardGame.cardGameServer.battle.cards.CardTypes;
@@ -20,7 +19,17 @@ import julio.cardGame.cardGameServer.database.models.TradeModel;
 import java.sql.*;
 import java.util.UUID;
 
-public class ExecutePostTrading extends AuthenticatedRoute implements Routeable {
+public class ExecutePostTrading extends AuthenticatedMappingRoute implements Routeable {
+
+    private final TradeRepo tradeRepo;
+
+    private final UserRepo userRepo;
+
+    public ExecutePostTrading() {
+        this.tradeRepo = new TradeRepo();
+        this.userRepo = new UserRepo();
+    }
+
     @Override
     public Response process(RequestContext requestContext) {
 
@@ -53,7 +62,7 @@ public class ExecutePostTrading extends AuthenticatedRoute implements Routeable 
     public Response executePostNewDeal(RequestContext requestContext, String userName) {
         try {
 
-            TradeModel tradeModel = new ObjectMapper()
+            TradeModel tradeModel = this.objectMapper
                     .readValue(requestContext.getBody(), TradeModel.class);
 
             CardTypes requiredType = DataTransformation.convertIntoCardType(tradeModel.type);
@@ -62,10 +71,6 @@ public class ExecutePostTrading extends AuthenticatedRoute implements Routeable 
                 throw new IllegalArgumentException();
 
             try (Connection dbConnection = DbConnection.getInstance().connect()) {
-
-                TradeRepo tradeRepo = new TradeRepo();
-
-                UserRepo userRepo = new UserRepo();
 
                 //check if card belongs to user
                 if (!userRepo.checkIfOwnsCard(dbConnection, userName, tradeModel.cardToTrade))
@@ -77,12 +82,18 @@ public class ExecutePostTrading extends AuthenticatedRoute implements Routeable 
                 return new Response(HttpStatus.CREATED.getStatusMessage(), HttpStatus.CREATED);
 
             } catch (SQLException e) {
-                return new Response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+
+                return new Response(e);
+
             }
 
-        } catch (JsonProcessingException | IllegalArgumentException e) {
+        } catch (JsonProcessingException e) {
 
-            return new Response(DefaultMessages.ERR_JSON_PARSE_TRADE.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new Response(DefaultMessages.ERR_JSON_PARSE_TRADE.getMessage(), e);
+
+        } catch (IllegalArgumentException e) {
+
+            return new Response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 
         }
     }
@@ -96,10 +107,6 @@ public class ExecutePostTrading extends AuthenticatedRoute implements Routeable 
             UUID cardUUID = UUID.fromString(requestContext.getBody().replace("\"",""));
 
             try (Connection dbConnection = DbConnection.getInstance().connect()) {
-
-                TradeRepo tradeRepo = new TradeRepo();
-
-                UserRepo userRepo = new UserRepo();
 
                 //first check if card belongs to user
                 if (!userRepo.checkIfOwnsCard(dbConnection, userName, cardUUID)) {
@@ -134,18 +141,22 @@ public class ExecutePostTrading extends AuthenticatedRoute implements Routeable 
 
                 } catch (SQLException e) {
                     dbConnection.rollback();
-                    return new Response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+
+                    return new Response(e);
+
                 }
 
                 return new Response(HttpStatus.OK.getStatusMessage(), HttpStatus.OK);
 
             } catch (SQLException e) {
-                return new Response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+
+                return new Response(e);
+
             }
 
         } catch (IllegalArgumentException e) {
 
-            return new Response(DefaultMessages.ERR_INVALID_TRADE_UUID.getMessage(), HttpStatus.BAD_REQUEST);
+            return new Response(DefaultMessages.ERR_INVALID_TRADE_UUID.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 
         }
     }

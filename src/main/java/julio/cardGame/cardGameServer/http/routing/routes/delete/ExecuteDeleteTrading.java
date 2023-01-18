@@ -2,20 +2,19 @@ package julio.cardGame.cardGameServer.http.routing.routes.delete;
 
 import julio.cardGame.cardGameServer.database.db.DataTransformation;
 import julio.cardGame.cardGameServer.database.db.DbConnection;
+import julio.cardGame.cardGameServer.http.communication.*;
 import julio.cardGame.cardGameServer.http.communication.headers.HeadersValidator;
-import julio.cardGame.cardGameServer.http.communication.RequestContext;
-import julio.cardGame.cardGameServer.http.communication.Response;
 import julio.cardGame.cardGameServer.http.routing.AuthorizationWrapper;
 import julio.cardGame.cardGameServer.http.routing.routes.AuthenticatedRoute;
 import julio.cardGame.cardGameServer.http.routing.routes.Routeable;
-import julio.cardGame.cardGameServer.http.communication.HttpStatus;
-import julio.cardGame.cardGameServer.http.communication.RequestParameters;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.UUID;
 
 public class ExecuteDeleteTrading extends AuthenticatedRoute implements Routeable {
+
+
     @Override
     public Response process(RequestContext requestContext) {
 
@@ -47,11 +46,12 @@ public class ExecuteDeleteTrading extends AuthenticatedRoute implements Routeabl
             }
 
         } catch (SQLException e) {
-            return new Response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            //return new Response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new Response(e);
         }
     }
 
-    private Response deleteAdmin(RequestContext requestContext, String tradeId) {
+    private Response deleteAdmin(RequestContext requestContext, String tradeId) throws SQLException {
         try {
 
             //validate the uuid we received
@@ -70,12 +70,7 @@ public class ExecuteDeleteTrading extends AuthenticatedRoute implements Routeabl
 
                 preparedStatement.execute();
 
-            } catch (SQLException e) {
-                return new Response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-                //throw new RuntimeException(e);
             }
-
-
             return new Response(HttpStatus.OK.getStatusMessage(), HttpStatus.OK);
 
         } catch (IllegalArgumentException e) {
@@ -83,7 +78,7 @@ public class ExecuteDeleteTrading extends AuthenticatedRoute implements Routeabl
         }
     }
 
-    private Response deleteUser(RequestContext requestContext, String tradeId, String userName) {
+    private Response deleteUser(RequestContext requestContext, String tradeId, String userName) throws SQLException {
         try {
 
             //validate the uuid we received
@@ -107,11 +102,7 @@ public class ExecuteDeleteTrading extends AuthenticatedRoute implements Routeabl
 
                 preparedStatement.execute();
 
-            } catch (SQLException e) {
-                return new Response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-                //throw new RuntimeException(e);
             }
-
 
             return new Response(HttpStatus.OK.getStatusMessage(), HttpStatus.OK);
 

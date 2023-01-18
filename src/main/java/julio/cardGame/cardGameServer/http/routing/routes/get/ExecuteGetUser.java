@@ -7,6 +7,7 @@ import julio.cardGame.cardGameServer.database.repositories.UserRepo;
 import julio.cardGame.cardGameServer.http.communication.RequestContext;
 import julio.cardGame.cardGameServer.http.communication.Response;
 import julio.cardGame.cardGameServer.http.routing.AuthorizationWrapper;
+import julio.cardGame.cardGameServer.http.routing.routes.AuthenticatedMappingRoute;
 import julio.cardGame.cardGameServer.http.routing.routes.AuthenticatedRoute;
 import julio.cardGame.cardGameServer.http.routing.routes.Routeable;
 import julio.cardGame.cardGameServer.http.communication.DefaultMessages;
@@ -16,7 +17,14 @@ import julio.cardGame.cardGameServer.database.models.CompleteUserModel;
 
 import java.sql.SQLException;
 
-public class ExecuteGetUser extends AuthenticatedRoute implements Routeable {
+public class ExecuteGetUser extends AuthenticatedMappingRoute implements Routeable {
+
+    private final UserRepo userRepo;
+
+    public ExecuteGetUser() {
+        this.userRepo = new UserRepo();
+    }
+
     @Override
     public Response process(RequestContext requestContext) {
 
@@ -34,20 +42,20 @@ public class ExecuteGetUser extends AuthenticatedRoute implements Routeable {
             if (authorizationWrapper.response != null)
                 return authorizationWrapper.response;
 
-            CompleteUserModel userData = new UserRepo().getUser(requestedUser);
+            CompleteUserModel userData = this.userRepo.getUser(requestedUser);
 
-            String body = new ObjectMapper()
+            String body = this.objectMapper
                     .writeValueAsString(userData);
 
             return new Response(body, HttpStatus.OK, true);
 
         } catch (SQLException e) {
 
-            return new Response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new Response(e);
 
         } catch (JsonProcessingException e) {
 
-            return new Response(DefaultMessages.ERR_JSON_PARSE_USER.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new Response(DefaultMessages.ERR_JSON_PARSE_USER.getMessage(), e);
 
         }
 

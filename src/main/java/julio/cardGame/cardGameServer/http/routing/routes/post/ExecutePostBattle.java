@@ -19,6 +19,13 @@ import java.util.*;
 public class ExecutePostBattle extends AuthenticatedRoute implements Routeable, PropertyChangeListener, Observer {
 
     private boolean listChanged = false;
+
+    private final UserRepo userRepo;
+
+    public ExecutePostBattle() {
+        this.userRepo = new UserRepo();
+    }
+
     @Override
     public Response process(RequestContext requestContext) {
 
@@ -29,7 +36,7 @@ public class ExecutePostBattle extends AuthenticatedRoute implements Routeable, 
             if (auth.response != null)
                 return auth.response;
 
-            CompleteUserModel userData = new UserRepo().getUser(auth.userName);
+            CompleteUserModel userData = this.userRepo.getUser(auth.userName);
 
             HttpServer.battleWrapper.addPropertyChangeListener(this);
 
@@ -48,6 +55,7 @@ public class ExecutePostBattle extends AuthenticatedRoute implements Routeable, 
 
             //System.out.println(Thread.currentThread().getName() + " waiting for list change");
             HttpServer.battleWrapper.removePropertyChangeListener(this);
+            //HttpServer.battleWrapper.removePlayerFromQueue();
             //List<String> battleRes = BattleWrapper.completableBattleRes.join();
 
             //System.out.println(Thread.currentThread().getName() + " has changed list");
@@ -69,14 +77,18 @@ public class ExecutePostBattle extends AuthenticatedRoute implements Routeable, 
             }
 
         } catch (SQLException e) {
-            return new Response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+
+            return new Response(e);
+
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+
     }
 
     @Override
     public void update(Observable observable, Object object) {
+
         System.out.println(Thread.currentThread().getName() + " notified of the change");
         setBattleRes(new ArrayList<>((List<String>) object));
         this.listChanged = true;

@@ -15,6 +15,12 @@ import java.sql.SQLException;
 
 public class ExecutePostUser implements Routeable {
 
+    private final UserRepo userRepo;
+
+    public ExecutePostUser() {
+        this.userRepo = new UserRepo();
+    }
+
     @Override
     public Response process(RequestContext requestContext) {
 
@@ -23,14 +29,22 @@ public class ExecutePostUser implements Routeable {
             UserLoginDataModel userModel = new ObjectMapper()
                     .readValue(requestContext.getBody(), UserLoginDataModel.class);
 
-            new UserRepo().createUser(userModel, userModel.userName.equals("admin"));
+            this.userRepo.createUser(userModel, userModel.userName.equals("admin"));
 
             return new Response(HttpStatus.CREATED.getStatusMessage(), HttpStatus.CREATED);
 
         } catch (JsonProcessingException e) {
-            return new Response(DefaultMessages.ERR_JSON_PARSE_USER.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        } catch (SQLException | NoSuchAlgorithmException e) {
+
+            return new Response(DefaultMessages.ERR_JSON_PARSE_USER.getMessage(), e);
+
+        } catch (NoSuchAlgorithmException e) {
+
             return new Response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+
+        } catch (SQLException e) {
+
+            return new Response(e);
+
         }
 
     }

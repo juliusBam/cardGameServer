@@ -16,6 +16,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+//TODO check why some multiplier are wrong
+
 public class CardGame {
     public int roundCounter = 0;
 

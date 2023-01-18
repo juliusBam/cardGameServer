@@ -95,7 +95,7 @@ public class ClientExecutor implements Runnable {
 
     private Sendable generateResponse(RequestContext requestContext) throws IOException {
 
-        Routeable routeable = HttpServer.functionalRouter
+        Routeable routeable = HttpServer.FUNCTIONAL_ROUTER
                 .findRoute(
                         new RouteIdentifier(requestContext.getPath(), requestContext.getHttpVerb())
                 )

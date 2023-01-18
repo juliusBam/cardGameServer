@@ -9,6 +9,7 @@ import julio.cardGame.cardGameServer.http.communication.headers.HeadersValidator
 import julio.cardGame.cardGameServer.http.communication.RequestContext;
 import julio.cardGame.cardGameServer.http.communication.Response;
 import julio.cardGame.cardGameServer.http.routing.AuthorizationWrapper;
+import julio.cardGame.cardGameServer.http.routing.routes.AuthenticatedMappingRoute;
 import julio.cardGame.cardGameServer.http.routing.routes.AuthenticatedRoute;
 import julio.cardGame.cardGameServer.http.routing.routes.Routeable;
 import julio.cardGame.cardGameServer.http.communication.DefaultMessages;
@@ -21,7 +22,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class ExecutePostPackage extends AuthenticatedRoute implements Routeable {
+public class ExecutePostPackage extends AuthenticatedMappingRoute implements Routeable {
+
+    private final CardRepo cardRepo;
+
+    public ExecutePostPackage() {
+        this.cardRepo = new CardRepo();
+    }
+
     @Override
     public Response process(RequestContext requestContext) {
 
@@ -37,7 +45,7 @@ public class ExecutePostPackage extends AuthenticatedRoute implements Routeable 
             if (authorizationWrapper.response != null)
                 return authorizationWrapper.response;
 
-            List<CardRequestModel> newPackage = new ObjectMapper()
+            List<CardRequestModel> newPackage = this.objectMapper
                     .readValue(requestContext.getBody(), new TypeReference<List<CardRequestModel>>() {
                     });
 
@@ -55,7 +63,7 @@ public class ExecutePostPackage extends AuthenticatedRoute implements Routeable 
 
                 try {
 
-                    CardRepo cardRepo = new CardRepo();
+                    //CardRepo cardRepo = new CardRepo();
 
                     dbConn.setAutoCommit(false);
 
@@ -82,15 +90,19 @@ public class ExecutePostPackage extends AuthenticatedRoute implements Routeable 
                 return new Response(HttpStatus.CREATED.getStatusMessage(), HttpStatus.CREATED);
 
             } catch (SQLException e) {
-                return new Response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+
+                return new Response(e);
+
             }
 
         } catch (JsonProcessingException e) {
             //throw new RuntimeException(e);
-            return new Response(DefaultMessages.ERR_JSON_PARSE_PACKAGE.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new Response(DefaultMessages.ERR_JSON_PARSE_PACKAGE.getMessage(), e);
+
         } catch (SQLException e) {
 
-            return new Response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            //return new Response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new Response(e);
 
         }
 

@@ -6,6 +6,7 @@ import julio.cardGame.cardGameServer.database.repositories.UserRepo;
 import julio.cardGame.cardGameServer.http.communication.RequestContext;
 import julio.cardGame.cardGameServer.http.communication.Response;
 import julio.cardGame.cardGameServer.http.routing.AuthorizationWrapper;
+import julio.cardGame.cardGameServer.http.routing.routes.AuthenticatedMappingRoute;
 import julio.cardGame.cardGameServer.http.routing.routes.AuthenticatedRoute;
 import julio.cardGame.cardGameServer.http.routing.routes.Routeable;
 import julio.cardGame.cardGameServer.http.communication.DefaultMessages;
@@ -14,7 +15,13 @@ import julio.cardGame.cardGameServer.database.models.StatsModel;
 
 import java.sql.SQLException;
 
-public class ExecuteGetStats extends AuthenticatedRoute implements Routeable {
+public class ExecuteGetStats extends AuthenticatedMappingRoute implements Routeable {
+
+    private final UserRepo userRepo;
+    public ExecuteGetStats() {
+        this.userRepo = new UserRepo();
+    }
+
     @Override
     public Response process(RequestContext requestContext) {
 
@@ -25,23 +32,23 @@ public class ExecuteGetStats extends AuthenticatedRoute implements Routeable {
             if (auth.response != null)
                 return auth.response;
 
-            StatsModel stats = new UserRepo().fetchUserStats(auth.userName);
+            StatsModel stats = userRepo.fetchUserStats(auth.userName);
 
             if (stats == null)
                 return new Response(DefaultMessages.ERR_NO_STATS.getMessage(), HttpStatus.OK);
 
-            String body = new ObjectMapper()
+            String body = this.objectMapper
                     .writeValueAsString(stats);
 
             return new Response(body, HttpStatus.OK, true);
 
         } catch (SQLException e) {
 
-            return new Response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new Response(e);
 
         } catch (JsonProcessingException e) {
 
-            return new Response(DefaultMessages.ERR_JSON_PARSE_STATS.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new Response(DefaultMessages.ERR_JSON_PARSE_STATS.getMessage(), e);
 
         }
 

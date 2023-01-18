@@ -8,6 +8,7 @@ import julio.cardGame.cardGameServer.database.repositories.CardRepo;
 import julio.cardGame.cardGameServer.database.repositories.UserRepo;
 import julio.cardGame.cardGameServer.http.communication.RequestContext;
 import julio.cardGame.cardGameServer.http.routing.AuthorizationWrapper;
+import julio.cardGame.cardGameServer.http.routing.routes.AuthenticatedMappingRoute;
 import julio.cardGame.cardGameServer.http.routing.routes.AuthenticatedRoute;
 import julio.cardGame.cardGameServer.http.routing.routes.Routeable;
 import julio.cardGame.cardGameServer.http.communication.Response;
@@ -21,7 +22,14 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
 
-public class ExecutePutDeck extends AuthenticatedRoute implements Routeable {
+public class ExecutePutDeck extends AuthenticatedMappingRoute implements Routeable {
+
+    private final UserRepo userRepo;
+
+    public ExecutePutDeck() {
+        this.userRepo = new UserRepo();
+    }
+
     @Override
     public Response process(RequestContext requestContext) {
 
@@ -45,9 +53,8 @@ public class ExecutePutDeck extends AuthenticatedRoute implements Routeable {
                 try {
 
                     //once the cardids are parsed we can execute the sqls
-                    UserRepo userRepo = new UserRepo();
 
-                    boolean hasDeck = userRepo.checkIfDeck(dbConn, auth.userName);
+                    boolean hasDeck = this.userRepo.checkIfDeck(dbConn, auth.userName);
 
                     //user already has a deck
                     if (hasDeck) {
@@ -56,7 +63,7 @@ public class ExecutePutDeck extends AuthenticatedRoute implements Routeable {
                     }
 
                     //we check if all the cards belong to the user
-                    int ownedCards = userRepo.checkCardsOwnership(dbConn, cardIds, auth.userName);
+                    int ownedCards = this.userRepo.checkCardsOwnership(dbConn, cardIds, auth.userName);
 
                     if (ownedCards != Constants.DECK_SIZE) {
                         //dbConn.close();
@@ -67,7 +74,7 @@ public class ExecutePutDeck extends AuthenticatedRoute implements Routeable {
 
                     dbConn.setAutoCommit(false);
 
-                    userRepo.addDeckID(dbConn, newDeckID, auth.userName);
+                    this.userRepo.addDeckID(dbConn, newDeckID, auth.userName);
 
                     CardRepo cardRepo = new CardRepo();
 
@@ -83,7 +90,7 @@ public class ExecutePutDeck extends AuthenticatedRoute implements Routeable {
                     }
 
                     //dbConn.close();
-                    return new Response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+                    return new Response(e);
 
                 } catch (AuthenticationException e) {
 
@@ -93,16 +100,18 @@ public class ExecutePutDeck extends AuthenticatedRoute implements Routeable {
                 }
 
             } catch (SQLException e) {
-                return new Response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+
+                return new Response(e);
+
             }
 
         } catch (JsonProcessingException e) {
 
-            return new Response(DefaultMessages.ERR_JSON_PARSE_DECK.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new Response(DefaultMessages.ERR_JSON_PARSE_DECK.getMessage(), e);
 
         } catch (SQLException e) {
 
-            return new Response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new Response(e);
 
         }
 

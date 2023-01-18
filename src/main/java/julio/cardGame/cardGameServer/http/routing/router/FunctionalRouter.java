@@ -7,12 +7,11 @@ import julio.cardGame.cardGameServer.http.routing.routes.get.*;
 import julio.cardGame.cardGameServer.http.routing.routes.post.*;
 import julio.cardGame.cardGameServer.http.routing.routes.put.ExecutePutDeck;
 import julio.cardGame.cardGameServer.http.routing.routes.put.ExecutePutUser;
-
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+
+//TODO change http status when sql exception, if it is cause of bad request (e.g. duplicate key) send bad request
 public class FunctionalRouter {
 
         private final ConcurrentMap<RouteIdentifier, RouteEntry> routes = new ConcurrentHashMap<>();

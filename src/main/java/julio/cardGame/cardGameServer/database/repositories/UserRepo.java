@@ -454,8 +454,6 @@ public class UserRepo {
                 throw new AuthenticationException("User does not exist");
             }
 
-        } catch (SQLException e) {
-            throw e;
         }
 
         return hasDeck;
@@ -483,11 +481,8 @@ public class UserRepo {
                 userCoins = resultSet.getInt(1);
             }
 
-            preparedStatement.close();
             return userCoins;
 
-        } catch (SQLException e) {
-            throw e;
         }
 
     }

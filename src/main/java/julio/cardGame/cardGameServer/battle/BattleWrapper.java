@@ -9,6 +9,7 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Observable;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CompletableFuture;
@@ -22,12 +23,9 @@ public class BattleWrapper {
     protected PropertyChangeSupport propertyChangeSupport;
     private List<String> battleResult;
 
+    //TODO implement observer pattern from "scratch" -> implement observable and observer
     public CompletableFuture<List<String>> completableBattleRes = new CompletableFuture<>();
     private BlockingQueue<UserInfoModel> battleQueue = new ArrayBlockingQueue<>(2);
-
-    private boolean resultChanged = false;
-
-    private String btlRs = "blabla result";
 
     public BattleWrapper() {
 
@@ -41,7 +39,6 @@ public class BattleWrapper {
         //List<String> oldValue = Collections.synchronizedList(new ArrayList<>());
         //oldValue.add("");
         this.battleResult = Collections.synchronizedList(new ArrayList<>(newResults));
-        this.resultChanged = true;
         //this.battleResult = Collections.synchronizedList(new ArrayList<>(newResults));
                 //new ArrayList<>(newResults);
 
@@ -55,13 +52,13 @@ public class BattleWrapper {
         this.battleQueue.add(newUser);
         if (this.battleQueue.size() == 2) {
 
-            System.out.println(Thread.currentThread().getName() + " playing battle");
             this.play();
 
         }
     }
 
     public void play() {
+
         List<String> battleRes;
 
         try {
@@ -89,22 +86,6 @@ public class BattleWrapper {
 
         this.propertyChangeSupport.removePropertyChangeListener(listener);
 
-    }
-
-    public void removePlayerFromQueue() {
-        battleQueue.remove();
-        if (battleQueue.size() == 0) {
-
-            battleQueue = new ArrayBlockingQueue<>(2);
-
-            this.battleResult = Collections.synchronizedList(new ArrayList<>());
-
-            resultChanged = false;
-
-        }
-    }
-    public boolean getResultChanged() {
-        return resultChanged;
     }
 
 }

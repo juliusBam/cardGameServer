@@ -24,6 +24,13 @@ public class ExecutePostTransactionPackage extends AuthenticatedRoute implements
     private PackageRepo packageRepo;
 
     private CardRepo cardRepo;
+
+    public ExecutePostTransactionPackage() {
+        this.userRepo = new UserRepo();
+        this.packageRepo = new PackageRepo();
+        this.cardRepo = new CardRepo();
+    }
+
     @Override
     public Response process(RequestContext requestContext) {
 
@@ -45,12 +52,6 @@ public class ExecutePostTransactionPackage extends AuthenticatedRoute implements
         //extract the connection
         try (Connection dbConnection = DbConnection.getInstance().connect()) {
 
-            this.userRepo = new UserRepo();
-
-            this.packageRepo = new PackageRepo();
-
-            this.cardRepo = new CardRepo();
-
             int coins = userRepo.checkUsersCoins(dbConnection, authorizationWrapper.userName);
 
             //no money for pack
@@ -71,20 +72,23 @@ public class ExecutePostTransactionPackage extends AuthenticatedRoute implements
             } catch (SQLException e) {
 
                 try {
+
                     dbConnection.rollback();
 
                 } catch (SQLException ex) {
 
-                    return new Response(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+                    return new Response(ex);
 
                 }
 
-                return new Response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+                return new Response(e);
 
             }
 
         } catch (SQLException e) {
-            return new Response(HttpStatus.INTERNAL_SERVER_ERROR.getStatusMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+
+            return new Response(e);
+
         }
 
     }
