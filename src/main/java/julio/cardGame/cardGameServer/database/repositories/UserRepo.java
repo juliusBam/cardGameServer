@@ -92,7 +92,7 @@ public class UserRepo {
             preparedStatement.setString(3, userModel.name);
             preparedStatement.setString(4, requestedUser);
 
-            preparedStatement.execute();
+            int res = preparedStatement.executeUpdate();
 
         }
 
@@ -211,7 +211,7 @@ public class UserRepo {
             preparedStatement.setInt(2, DataTransformation.calculateWinnerElo(eloWinner, eloLooser));
             preparedStatement.setString(3, userName);
 
-            preparedStatement.execute();
+            int res = preparedStatement.executeUpdate();
 
         }
 
@@ -234,7 +234,7 @@ public class UserRepo {
             preparedStatement.setInt(2, DataTransformation.calculateLoserElo(eloWinner, eloLooser));
             preparedStatement.setString(3, userName);
 
-            preparedStatement.execute();
+            int res = preparedStatement.executeUpdate();
 
         }
 
@@ -418,7 +418,7 @@ public class UserRepo {
             preparedStatement.setObject(1, DataTransformation.prepareUUID(newDeckID));
             preparedStatement.setString(2, userName);
 
-            preparedStatement.execute();
+            int res = preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
             throw e;
@@ -500,7 +500,7 @@ public class UserRepo {
             preparedStatement.setInt(1, userCoins - Constants.PACKAGE_COST);
             preparedStatement.setString(2, userName);
 
-            preparedStatement.execute();
+            int res = preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
             throw e;
@@ -524,7 +524,7 @@ public class UserRepo {
             preparedStatement.setString(3, userModel.name);
             preparedStatement.setString(4, requestedUser);
 
-            preparedStatement.execute();
+            int res = preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
             throw e;

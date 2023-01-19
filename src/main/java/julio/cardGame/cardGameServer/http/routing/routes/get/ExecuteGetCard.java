@@ -1,12 +1,10 @@
 package julio.cardGame.cardGameServer.http.routing.routes.get;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import julio.cardGame.cardGameServer.database.repositories.CardRepo;
 import julio.cardGame.cardGameServer.http.communication.*;
 import julio.cardGame.cardGameServer.http.routing.AuthorizationWrapper;
 import julio.cardGame.cardGameServer.http.routing.routes.AuthenticatedMappingRoute;
-import julio.cardGame.cardGameServer.http.routing.routes.AuthenticatedRoute;
 import julio.cardGame.cardGameServer.http.routing.routes.Routeable;
 import julio.cardGame.cardGameServer.database.models.CardDbModel;
 

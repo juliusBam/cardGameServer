@@ -70,7 +70,7 @@ public class CardRepo {
                 preparedStatement.setObject(i + 2, DataTransformation.prepareUUID(cardIds.get(i)));
             }
 
-            preparedStatement.execute();
+            int res = preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
             throw e;
@@ -150,7 +150,49 @@ public class CardRepo {
             preparedStatement.setObject(5, DataTransformation.prepareUUID(packageData.fourthCardID));
             preparedStatement.setObject(6, DataTransformation.prepareUUID(packageData.fifthCardID));
 
-            preparedStatement.execute();
+            int res = preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw e;
+        }
+
+    }
+
+    public void changeOwnershipOfferedCard(Connection dbConnection, UUID tradeUUID, UUID cardUUID) throws SQLException {
+
+        String sql = """
+                    UPDATE cards
+                        SET "deckID"=null, "ownerID"=(SELECT "userID" FROM trades WHERE "tradeID"=?)
+                        WHERE "cardID"=?;
+                """;
+
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(sql)) {
+
+            preparedStatement.setObject(1, DataTransformation.prepareUUID(tradeUUID));
+            preparedStatement.setObject(2, DataTransformation.prepareUUID(cardUUID));
+
+            int res = preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw e;
+        }
+
+    }
+
+    public void changeOwnershipCardInTrade(Connection dbConnection, String userName, UUID tradeUUID) throws SQLException {
+
+        String sql = """
+                UPDATE cards
+                    SET "deckID"=null, "ownerID"=(SELECT "userID" FROM users WHERE "userName"=?)
+                        WHERE "cardID"=(SELECT "offeredCardID" FROM trades WHERE "tradeID"=?);
+                """;
+
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(sql)) {
+
+            preparedStatement.setString(1, userName);
+            preparedStatement.setObject(2, DataTransformation.prepareUUID(tradeUUID));
+
+            int res = preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
             throw e;

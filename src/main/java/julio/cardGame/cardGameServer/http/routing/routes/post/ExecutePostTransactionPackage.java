@@ -19,11 +19,11 @@ import java.sql.*;
 
 public class ExecutePostTransactionPackage extends AuthenticatedRoute implements Routeable {
 
-    private UserRepo userRepo;
+    private final UserRepo userRepo;
 
-    private PackageRepo packageRepo;
+    private final PackageRepo packageRepo;
 
-    private CardRepo cardRepo;
+    private final CardRepo cardRepo;
 
     public ExecutePostTransactionPackage() {
         this.userRepo = new UserRepo();
@@ -42,7 +42,7 @@ public class ExecutePostTransactionPackage extends AuthenticatedRoute implements
 
         } catch (SQLException e) {
 
-            return new Response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new Response(e);
 
         }
 

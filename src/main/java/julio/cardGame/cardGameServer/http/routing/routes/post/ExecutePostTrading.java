@@ -3,6 +3,7 @@ package julio.cardGame.cardGameServer.http.routing.routes.post;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import julio.cardGame.cardGameServer.database.db.DataTransformation;
 import julio.cardGame.cardGameServer.database.db.DbConnection;
+import julio.cardGame.cardGameServer.database.repositories.CardRepo;
 import julio.cardGame.cardGameServer.database.repositories.TradeRepo;
 import julio.cardGame.cardGameServer.database.repositories.UserRepo;
 import julio.cardGame.cardGameServer.http.communication.RequestContext;
@@ -25,9 +26,12 @@ public class ExecutePostTrading extends AuthenticatedMappingRoute implements Rou
 
     private final UserRepo userRepo;
 
+    private final CardRepo cardRepo;
+
     public ExecutePostTrading() {
         this.tradeRepo = new TradeRepo();
         this.userRepo = new UserRepo();
+        this.cardRepo = new CardRepo();
     }
 
     @Override
@@ -129,10 +133,10 @@ public class ExecutePostTrading extends AuthenticatedMappingRoute implements Rou
                 try {
 
                     //card in trade --> logged user ID will become new owner
-                    tradeRepo.changeOwnershipCardInTrade(dbConnection, userName, tradeUUID);
+                    cardRepo.changeOwnershipCardInTrade(dbConnection, userName, tradeUUID);
 
                     //offered card --> user ID of the trade will become new owner
-                    tradeRepo.changeOwnershipOfferedCard(dbConnection, tradeUUID, cardUUID);
+                    cardRepo.changeOwnershipOfferedCard(dbConnection, tradeUUID, cardUUID);
 
                     //if both succeeded delete trade deal
                     tradeRepo.deleteTrade(dbConnection, tradeUUID);
