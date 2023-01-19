@@ -1,52 +1,25 @@
 package julio.cardGame.cardGameServer.http.routing.routes.post;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import julio.cardGame.cardGameServer.database.repositories.UserRepo;
 import julio.cardGame.cardGameServer.http.communication.RequestContext;
 import julio.cardGame.cardGameServer.http.communication.Response;
 import julio.cardGame.cardGameServer.http.routing.routes.Routeable;
 import julio.cardGame.cardGameServer.http.communication.DefaultMessages;
-import julio.cardGame.cardGameServer.http.communication.HttpStatus;
-import julio.cardGame.cardGameServer.database.models.UserLoginDataModel;
+import julio.cardGame.cardGameServer.http.routing.routes.ServiceableRoute;
+import julio.cardGame.cardGameServer.services.CardGameService;
+import julio.cardGame.cardGameServer.services.PostUserService;
 
-import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
-
-public class ExecutePostUser implements Routeable {
-
-    private final UserRepo userRepo;
-
-    public ExecutePostUser() {
-        this.userRepo = new UserRepo();
-    }
+public class ExecutePostUser extends ServiceableRoute implements Routeable {
 
     @Override
     public Response process(RequestContext requestContext) {
 
-        try {
+        return this.executeService(requestContext, DefaultMessages.ERR_JSON_PARSE_USER.getMessage());
 
-            UserLoginDataModel userModel = new ObjectMapper()
-                    .readValue(requestContext.getBody(), UserLoginDataModel.class);
+    }
 
-            this.userRepo.createUser(userModel, userModel.userName.equals("admin"));
-
-            return new Response(HttpStatus.CREATED.getStatusMessage(), HttpStatus.CREATED);
-
-        } catch (JsonProcessingException e) {
-
-            return new Response(DefaultMessages.ERR_JSON_PARSE_USER.getMessage(), e);
-
-        } catch (NoSuchAlgorithmException e) {
-
-            return new Response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-
-        } catch (SQLException e) {
-
-            return new Response(e);
-
-        }
-
+    @Override
+    protected CardGameService initiateCardGameService() {
+        return new PostUserService();
     }
 }
 

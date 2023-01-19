@@ -4,19 +4,31 @@ import julio.cardGame.cardGameServer.database.db.DataTransformation;
 import julio.cardGame.cardGameServer.database.models.PackageModel;
 
 import java.sql.*;
+import java.util.List;
 import java.util.UUID;
 
 public class PackageRepo {
 
-    public void deletePackage(Connection dbConnection, UUID packageID) throws SQLException {
-
-        String sql = """
+    private final String stmtDeletePkg = """
                 DELETE 
                     FROM packages 
                         WHERE "packageID"=?;
                 """;
 
-        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(sql)) {
+    private final String stmtFetchPkg = """
+                SELECT * 
+                    FROM "packages"
+                    LIMIT 1;
+                """;
+
+    private final String stmtInsertPkg = """
+                INSERT INTO public.packages
+                    VALUES (?,?,?,?,?,?);
+                """;
+
+    public void deletePackage(Connection dbConnection, UUID packageID) throws SQLException {
+
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(this.stmtDeletePkg)) {
 
             preparedStatement.setObject(1, DataTransformation.prepareUUID(packageID));
 
@@ -30,15 +42,9 @@ public class PackageRepo {
 
     public PackageModel fetchPackage(Connection dbConnection, String userName) throws SQLException {
 
-        String sql = """
-                SELECT * 
-                    FROM "packages"
-                    LIMIT 1;
-                """;
-
         try (Statement statement = dbConnection.createStatement()) {
 
-            ResultSet resultSet = statement.executeQuery(sql);
+            ResultSet resultSet = statement.executeQuery(stmtFetchPkg);
 
             PackageModel packageModel = null;
 
@@ -58,6 +64,23 @@ public class PackageRepo {
 
         } catch (SQLException e) {
             throw e;
+        }
+
+    }
+
+    public void insertNewPackage(Connection dbConnection, List<UUID> cardsIDs) throws SQLException {
+
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(this.stmtInsertPkg)) {
+
+            preparedStatement.setObject(1, DataTransformation.prepareUUID(UUID.randomUUID()));
+            preparedStatement.setObject(2, DataTransformation.prepareUUID(cardsIDs.get(0)));
+            preparedStatement.setObject(3, DataTransformation.prepareUUID(cardsIDs.get(1)));
+            preparedStatement.setObject(4, DataTransformation.prepareUUID(cardsIDs.get(2)));
+            preparedStatement.setObject(5, DataTransformation.prepareUUID(cardsIDs.get(3)));
+            preparedStatement.setObject(6, DataTransformation.prepareUUID(cardsIDs.get(4)));
+
+            preparedStatement.execute();
+
         }
 
     }

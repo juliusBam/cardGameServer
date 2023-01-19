@@ -43,6 +43,22 @@ public class TradeRepo {
                             FROM public."tradesMetaData" t;
                     """;
 
+    private final String stmtDeleteTradeNormalUser = """
+                        DELETE 
+                            FROM trades 
+                            WHERE "tradeID"=? 
+                                AND "userID"=
+                                    (SELECT "userID" 
+                                        FROM users 
+                                        WHERE users."userName"=?)
+                    """;
+
+    private final String stmtDeleteTradeAdmin = """
+                        DELETE 
+                            FROM public.trades 
+                            WHERE "tradeID"=?
+                    """;
+
     public void insertNewTradeDeal(Connection dbConnection, String userName, TradeModel tradeModel, CardTypes requiredType) throws SQLException {
 
         try (PreparedStatement preparedStatement = dbConnection.prepareStatement(this.stmtInsertNewTrade)) {
@@ -55,10 +71,7 @@ public class TradeRepo {
 
             preparedStatement.execute();
 
-        } catch (SQLException e) {
-            throw e;
         }
-
 
     }
 
@@ -70,8 +83,6 @@ public class TradeRepo {
 
             preparedStatement.execute();
 
-        } catch (SQLException e) {
-            throw e;
         }
 
     }
@@ -88,8 +99,6 @@ public class TradeRepo {
 
             return resultSet.next() && resultSet.getInt(1) == 1;
 
-        } catch (Exception e) {
-            throw e;
         }
 
     }
@@ -105,8 +114,6 @@ public class TradeRepo {
 
             return resultSet.next() && resultSet.getInt(1) > 0;
 
-        } catch (SQLException e) {
-            throw e;
         }
 
     }
@@ -134,10 +141,32 @@ public class TradeRepo {
 
             return trades;
 
-        } catch (SQLException e) {
-            throw e;
         }
 
+    }
+
+    public void deleteTradeNormalUser(UUID tradeID, String userName) throws SQLException {
+
+        try (PreparedStatement preparedStatement = DbConnection.getInstance().prepareStatement(this.stmtDeleteTradeNormalUser)) {
+
+            preparedStatement.setObject(1, DataTransformation.prepareUUID(tradeID));
+            preparedStatement.setString(2, userName);
+
+            preparedStatement.execute();
+
+        }
+
+    }
+
+    public void deleteTradeAdmin(UUID tradeID) throws SQLException {
+
+        try (PreparedStatement preparedStatement = DbConnection.getInstance().prepareStatement(this.stmtDeleteTradeAdmin)) {
+
+            preparedStatement.setObject(1, DataTransformation.prepareUUID(tradeID));
+
+            preparedStatement.execute();
+
+        }
 
     }
 

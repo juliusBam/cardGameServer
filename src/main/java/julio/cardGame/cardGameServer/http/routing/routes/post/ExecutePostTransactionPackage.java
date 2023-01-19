@@ -15,100 +15,24 @@ import julio.cardGame.cardGameServer.Constants;
 import julio.cardGame.cardGameServer.http.communication.DefaultMessages;
 import julio.cardGame.cardGameServer.http.communication.HttpStatus;
 import julio.cardGame.cardGameServer.database.models.PackageModel;
+import julio.cardGame.cardGameServer.http.routing.routes.ServiceableRoute;
+import julio.cardGame.cardGameServer.services.CardGameService;
+import julio.cardGame.cardGameServer.services.PostPackageService;
+import julio.cardGame.cardGameServer.services.PostTransactionPackagesService;
 
 import java.sql.*;
 
-public class ExecutePostTransactionPackage implements Routeable {
-
-    private final UserRepo userRepo;
-
-    private final PackageRepo packageRepo;
-
-    private final CardRepo cardRepo;
-
-    public ExecutePostTransactionPackage() {
-        this.userRepo = new UserRepo();
-        this.packageRepo = new PackageRepo();
-        this.cardRepo = new CardRepo();
-    }
+public class ExecutePostTransactionPackage extends ServiceableRoute implements Routeable {
 
     @Override
     public Response process(RequestContext requestContext) {
 
-        AuthorizationWrapper authorizationWrapper;
-
-        try {
-
-            authorizationWrapper = AuthenticationController.requireAuthToken(requestContext.getHeaders());
-
-        } catch (SQLException e) {
-
-            return new Response(e);
-
-        }
-
-        if (authorizationWrapper.response != null)
-            return authorizationWrapper.response;
-
-        //extract the connection
-        try (Connection dbConnection = DbConnection.getInstance().connect()) {
-
-            int coins = userRepo.checkUsersCoins(dbConnection, authorizationWrapper.userName);
-
-            //no money for pack
-            if (coins < Constants.PACKAGE_COST)
-                return new Response(DefaultMessages.ERR_NO_COINS.getMessage(), HttpStatus.BAD_REQUEST);
-
-            //begin transaction
-            try {
-
-                dbConnection.setAutoCommit(false);
-
-                Response response = this.buyPackage(dbConnection, authorizationWrapper.userName, coins);
-
-                dbConnection.commit();
-
-                return response;
-
-            } catch (SQLException e) {
-
-                try {
-
-                    dbConnection.rollback();
-
-                } catch (SQLException ex) {
-
-                    return new Response(ex);
-
-                }
-
-                return new Response(e);
-
-            }
-
-        } catch (SQLException e) {
-
-            return new Response(e);
-
-        }
+        return this.executeAuthenticatedService(requestContext, null);
 
     }
 
-    private Response buyPackage(Connection dbConnection, String userName, int userCoins) throws SQLException {
-
-        PackageModel packageData = this.packageRepo.fetchPackage(dbConnection, userName);
-
-        if (packageData == null || packageData.packageID == null)
-            return new Response(DefaultMessages.ERR_NO_PACKAGES.getMessage(), HttpStatus.BAD_REQUEST);
-
-        this.cardRepo.updateCardOwner(dbConnection, userName, packageData);
-
-        this.packageRepo.deletePackage(dbConnection, packageData.packageID);
-
-        this.userRepo.scaleUserCoin(dbConnection, userName, userCoins);
-
-        return new Response(HttpStatus.OK.getStatusMessage(), HttpStatus.OK);
-
+    @Override
+    protected CardGameService initiateCardGameService() {
+        return new PostTransactionPackagesService();
     }
-
 }

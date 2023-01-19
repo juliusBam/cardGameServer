@@ -17,153 +17,24 @@ import julio.cardGame.cardGameServer.http.communication.DefaultMessages;
 import julio.cardGame.cardGameServer.http.communication.HttpStatus;
 import julio.cardGame.cardGameServer.http.communication.RequestParameters;
 import julio.cardGame.cardGameServer.database.models.TradeModel;
+import julio.cardGame.cardGameServer.http.routing.routes.ServiceableRoute;
+import julio.cardGame.cardGameServer.services.CardGameService;
+import julio.cardGame.cardGameServer.services.PostTradingService;
 
 import java.sql.*;
 import java.util.UUID;
 
-public class ExecutePostTrading implements Routeable {
-
-    private final TradeRepo tradeRepo;
-
-    private final UserRepo userRepo;
-
-    private final CardRepo cardRepo;
-
-    public ExecutePostTrading() {
-        this.tradeRepo = new TradeRepo();
-        this.userRepo = new UserRepo();
-        this.cardRepo = new CardRepo();
-    }
+public class ExecutePostTrading extends ServiceableRoute implements Routeable {
 
     @Override
     public Response process(RequestContext requestContext) {
 
-        AuthorizationWrapper auth;
-
-        try {
-
-            auth = AuthenticationController.requireAuthToken(requestContext.getHeaders());
-
-        } catch (SQLException e) {
-            return new Response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-        if (auth.response != null)
-            return auth.response;
-
-
-        if (requestContext.fetchParameter(RequestParameters.SELECTED_TRADE_DEAL.getParamValue()) == null) {
-
-            return this.executePostNewDeal(requestContext, auth.userName);
-
-        } else {
-
-            return this.executeAcceptDeal(requestContext, auth.userName);
-
-        }
+        return this.executeAuthenticatedService(requestContext, DefaultMessages.ERR_JSON_PARSE_TRADE.getMessage());
 
     }
 
-    public Response executePostNewDeal(RequestContext requestContext, String userName) {
-        try {
-
-            TradeModel tradeModel = new ObjectMapper()
-                    .readValue(requestContext.getBody(), TradeModel.class);
-
-            CardTypes requiredType = DataTransformation.convertIntoCardType(tradeModel.type);
-
-            if (requiredType == null)
-                throw new IllegalArgumentException();
-
-            try (Connection dbConnection = DbConnection.getInstance().connect()) {
-
-                //check if card belongs to user
-                if (!userRepo.checkIfOwnsCard(dbConnection, userName, tradeModel.cardToTrade))
-                    return new Response(DefaultMessages.ERR_CARD_NOT_OWNED.getMessage(), HttpStatus.BAD_REQUEST);
-
-                //execute insert trade deal
-                tradeRepo.insertNewTradeDeal(dbConnection, userName, tradeModel, requiredType);
-
-                return new Response(HttpStatus.CREATED.getStatusMessage(), HttpStatus.CREATED);
-
-            } catch (SQLException e) {
-
-                return new Response(e);
-
-            }
-
-        } catch (JsonProcessingException e) {
-
-            return new Response(DefaultMessages.ERR_JSON_PARSE_TRADE.getMessage(), e);
-
-        } catch (IllegalArgumentException e) {
-
-            return new Response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-
-        }
+    @Override
+    protected CardGameService initiateCardGameService() {
+        return new PostTradingService();
     }
-
-    public Response executeAcceptDeal(RequestContext requestContext, String userName) {
-
-        try {
-
-            UUID tradeUUID = UUID.fromString(requestContext.fetchParameter(RequestParameters.SELECTED_TRADE_DEAL.getParamValue()));
-
-            UUID cardUUID = UUID.fromString(requestContext.getBody().replace("\"",""));
-
-            try (Connection dbConnection = DbConnection.getInstance().connect()) {
-
-                //first check if card belongs to user
-                if (!userRepo.checkIfOwnsCard(dbConnection, userName, cardUUID)) {
-                    return new Response(DefaultMessages.ERR_CARD_NOT_OWNED.getMessage(), HttpStatus.BAD_REQUEST);
-                }
-
-                //check if the card fulfills the trade criteria
-                if (!tradeRepo.checkIfCardFulfillsTradeReq(dbConnection, cardUUID, tradeUUID)) {
-                    return new Response(DefaultMessages.ERR_CARD_NOT_VALID.getMessage(), HttpStatus.BAD_REQUEST);
-                }
-
-                //check if self trading
-                if (tradeRepo.checkIfSelfTrade(dbConnection, tradeUUID, userName)) {
-                    return new Response(DefaultMessages.ERR_NO_SELF_TRADE.getMessage(), HttpStatus.BAD_REQUEST);
-                }
-
-                //start transaction
-                dbConnection.setAutoCommit(false);
-
-                try {
-
-                    //card in trade --> logged user ID will become new owner
-                    cardRepo.changeOwnershipCardInTrade(dbConnection, userName, tradeUUID);
-
-                    //offered card --> user ID of the trade will become new owner
-                    cardRepo.changeOwnershipOfferedCard(dbConnection, tradeUUID, cardUUID);
-
-                    //if both succeeded delete trade deal
-                    tradeRepo.deleteTrade(dbConnection, tradeUUID);
-
-                    dbConnection.commit();
-
-                } catch (SQLException e) {
-                    dbConnection.rollback();
-
-                    return new Response(e);
-
-                }
-
-                return new Response(HttpStatus.OK.getStatusMessage(), HttpStatus.OK);
-
-            } catch (SQLException e) {
-
-                return new Response(e);
-
-            }
-
-        } catch (IllegalArgumentException e) {
-
-            return new Response(DefaultMessages.ERR_INVALID_TRADE_UUID.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-
-        }
-    }
-
 }

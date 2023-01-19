@@ -11,47 +11,24 @@ import julio.cardGame.cardGameServer.http.routing.routes.Routeable;
 import julio.cardGame.cardGameServer.http.communication.Response;
 import julio.cardGame.cardGameServer.http.communication.DefaultMessages;
 import julio.cardGame.cardGameServer.http.communication.HttpStatus;
+import julio.cardGame.cardGameServer.http.routing.routes.ServiceableRoute;
+import julio.cardGame.cardGameServer.services.CardGameService;
+import julio.cardGame.cardGameServer.services.GetScoreService;
+
 import java.sql.SQLException;
 import java.util.List;
 
-public class ExecuteGetScore implements Routeable {
-
-    private final ScoreboardRepo scoreboardRepo;
-    public ExecuteGetScore() {
-        this.scoreboardRepo = new ScoreboardRepo();
-    }
+public class ExecuteGetScore extends ServiceableRoute implements Routeable {
 
     @Override
     public Response process(RequestContext requestContext) {
 
-        try {
-
-            AuthorizationWrapper auth = AuthenticationController.requireAuthToken(requestContext.getHeaders());
-
-            if (auth.response != null)
-                return auth.response;
-
-            List<ScoreModel> scoreBoard = this.scoreboardRepo.fetchScoreBoard();
-
-            if (scoreBoard.size() == 0)
-                return new Response(DefaultMessages.SCORE_NO_RESULTS.getMessage(), HttpStatus.OK);
-
-            String body = new ObjectMapper()
-                        .writerWithDefaultPrettyPrinter()
-                        .writeValueAsString(scoreBoard);
-
-            return new Response(body, HttpStatus.OK, true);
-
-        } catch (SQLException e) {
-
-            return new Response(e);
-
-        } catch (JsonProcessingException e) {
-
-            return new Response(DefaultMessages.ERR_JSON_PARSE_SCOREBOARD.getMessage(), e);
-
-        }
+        return this.executeAuthenticatedService(requestContext, null);
 
     }
 
+    @Override
+    protected CardGameService initiateCardGameService() {
+        return new GetScoreService();
+    }
 }

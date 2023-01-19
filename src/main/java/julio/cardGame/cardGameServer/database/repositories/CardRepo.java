@@ -110,28 +110,6 @@ public class CardRepo {
 
     }
 
-    public void createPackage(Connection dbConnection, List<UUID> cardsIDs) throws SQLException {
-
-        String sqlInsertPackage = """
-                INSERT INTO public.packages
-                    VALUES (?,?,?,?,?,?);
-                """;
-
-        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(sqlInsertPackage)) {
-
-            preparedStatement.setObject(1, DataTransformation.prepareUUID(UUID.randomUUID()));
-            preparedStatement.setObject(2, DataTransformation.prepareUUID(cardsIDs.get(0)));
-            preparedStatement.setObject(3, DataTransformation.prepareUUID(cardsIDs.get(1)));
-            preparedStatement.setObject(4, DataTransformation.prepareUUID(cardsIDs.get(2)));
-            preparedStatement.setObject(5, DataTransformation.prepareUUID(cardsIDs.get(3)));
-            preparedStatement.setObject(6, DataTransformation.prepareUUID(cardsIDs.get(4)));
-
-            preparedStatement.execute();
-
-        }
-
-    }
-
     public void updateCardOwner(Connection dbConnection, String userName, PackageModel packageData) throws SQLException {
 
         String sql = """

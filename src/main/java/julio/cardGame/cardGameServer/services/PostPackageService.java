@@ -7,8 +7,11 @@ import julio.cardGame.cardGameServer.database.db.DbConnection;
 import julio.cardGame.cardGameServer.database.models.CardDbModel;
 import julio.cardGame.cardGameServer.database.models.CardRequestModel;
 import julio.cardGame.cardGameServer.database.repositories.CardRepo;
+import julio.cardGame.cardGameServer.database.repositories.PackageRepo;
 import julio.cardGame.cardGameServer.http.communication.HttpStatus;
 import julio.cardGame.cardGameServer.http.communication.RequestContext;
+import julio.cardGame.cardGameServer.http.communication.Response;
+import julio.cardGame.cardGameServer.http.routing.AuthorizationWrapper;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -19,7 +22,8 @@ import java.util.UUID;
 public class PostPackageService implements CardGameService {
 
     @Override
-    public String execute(RequestContext requestContext) throws JsonProcessingException, SQLException {
+    public Response execute(RequestContext requestContext, AuthorizationWrapper authorizationWrapper) throws JsonProcessingException, SQLException {
+
         List<CardRequestModel> newPackage = new ObjectMapper()
                 .readValue(requestContext.getBody(), new TypeReference<List<CardRequestModel>>() {
                 });
@@ -39,21 +43,22 @@ public class PostPackageService implements CardGameService {
             try {
 
                 CardRepo cardRepo = new CardRepo();
+                PackageRepo packageRepo = new PackageRepo();
 
                 dbConn.setAutoCommit(false);
 
                 cardRepo.addCards(dbConn, cardsToInsert);
-                cardRepo.createPackage(dbConn, cardIDs);
+                packageRepo.insertNewPackage(dbConn, cardIDs);
 
                 dbConn.commit();
 
-                return HttpStatus.CREATED.getStatusMessage();
+                return new Response(HttpStatus.CREATED.getStatusMessage(), HttpStatus.CREATED);
 
                 //begin transaction, since we have to execute 2 sqls depending upon each other
             } catch (SQLException e) {
-
+                //ugly catch, but we have to rollback
                 dbConn.rollback();
-                throw e;
+                return new Response(e);
 
             }
         }
