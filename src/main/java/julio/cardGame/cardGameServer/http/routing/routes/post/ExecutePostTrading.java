@@ -1,6 +1,8 @@
 package julio.cardGame.cardGameServer.http.routing.routes.post;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import julio.cardGame.cardGameServer.controllers.AuthenticationController;
 import julio.cardGame.cardGameServer.database.db.DataTransformation;
 import julio.cardGame.cardGameServer.database.db.DbConnection;
 import julio.cardGame.cardGameServer.database.repositories.CardRepo;
@@ -8,7 +10,6 @@ import julio.cardGame.cardGameServer.database.repositories.TradeRepo;
 import julio.cardGame.cardGameServer.database.repositories.UserRepo;
 import julio.cardGame.cardGameServer.http.communication.RequestContext;
 import julio.cardGame.cardGameServer.http.routing.AuthorizationWrapper;
-import julio.cardGame.cardGameServer.http.routing.routes.AuthenticatedMappingRoute;
 import julio.cardGame.cardGameServer.http.routing.routes.Routeable;
 import julio.cardGame.cardGameServer.http.communication.Response;
 import julio.cardGame.cardGameServer.battle.cards.CardTypes;
@@ -20,7 +21,7 @@ import julio.cardGame.cardGameServer.database.models.TradeModel;
 import java.sql.*;
 import java.util.UUID;
 
-public class ExecutePostTrading extends AuthenticatedMappingRoute implements Routeable {
+public class ExecutePostTrading implements Routeable {
 
     private final TradeRepo tradeRepo;
 
@@ -41,7 +42,7 @@ public class ExecutePostTrading extends AuthenticatedMappingRoute implements Rou
 
         try {
 
-            auth = this.requireAuthToken(requestContext.getHeaders());
+            auth = AuthenticationController.requireAuthToken(requestContext.getHeaders());
 
         } catch (SQLException e) {
             return new Response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -66,7 +67,7 @@ public class ExecutePostTrading extends AuthenticatedMappingRoute implements Rou
     public Response executePostNewDeal(RequestContext requestContext, String userName) {
         try {
 
-            TradeModel tradeModel = this.objectMapper
+            TradeModel tradeModel = new ObjectMapper()
                     .readValue(requestContext.getBody(), TradeModel.class);
 
             CardTypes requiredType = DataTransformation.convertIntoCardType(tradeModel.type);

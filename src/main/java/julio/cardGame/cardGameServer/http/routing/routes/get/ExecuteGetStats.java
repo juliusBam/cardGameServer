@@ -2,12 +2,11 @@ package julio.cardGame.cardGameServer.http.routing.routes.get;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import julio.cardGame.cardGameServer.controllers.AuthenticationController;
 import julio.cardGame.cardGameServer.database.repositories.UserRepo;
 import julio.cardGame.cardGameServer.http.communication.RequestContext;
 import julio.cardGame.cardGameServer.http.communication.Response;
 import julio.cardGame.cardGameServer.http.routing.AuthorizationWrapper;
-import julio.cardGame.cardGameServer.http.routing.routes.AuthenticatedMappingRoute;
-import julio.cardGame.cardGameServer.http.routing.routes.AuthenticatedRoute;
 import julio.cardGame.cardGameServer.http.routing.routes.Routeable;
 import julio.cardGame.cardGameServer.http.communication.DefaultMessages;
 import julio.cardGame.cardGameServer.http.communication.HttpStatus;
@@ -15,7 +14,7 @@ import julio.cardGame.cardGameServer.database.models.StatsModel;
 
 import java.sql.SQLException;
 
-public class ExecuteGetStats extends AuthenticatedMappingRoute implements Routeable {
+public class ExecuteGetStats implements Routeable {
 
     private final UserRepo userRepo;
     public ExecuteGetStats() {
@@ -27,7 +26,7 @@ public class ExecuteGetStats extends AuthenticatedMappingRoute implements Routea
 
         try {
 
-            AuthorizationWrapper auth = this.requireAuthToken(requestContext.getHeaders());
+            AuthorizationWrapper auth = AuthenticationController.requireAuthToken(requestContext.getHeaders());
 
             if (auth.response != null)
                 return auth.response;
@@ -37,7 +36,7 @@ public class ExecuteGetStats extends AuthenticatedMappingRoute implements Routea
             if (stats == null)
                 return new Response(DefaultMessages.ERR_NO_STATS.getMessage(), HttpStatus.OK);
 
-            String body = this.objectMapper
+            String body = new ObjectMapper()
                     .writeValueAsString(stats);
 
             return new Response(body, HttpStatus.OK, true);

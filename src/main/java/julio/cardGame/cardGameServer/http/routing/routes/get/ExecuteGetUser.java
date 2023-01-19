@@ -2,13 +2,12 @@ package julio.cardGame.cardGameServer.http.routing.routes.get;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import julio.cardGame.cardGameServer.controllers.AuthenticationController;
 import julio.cardGame.cardGameServer.database.repositories.UserRepo;
 
 import julio.cardGame.cardGameServer.http.communication.RequestContext;
 import julio.cardGame.cardGameServer.http.communication.Response;
 import julio.cardGame.cardGameServer.http.routing.AuthorizationWrapper;
-import julio.cardGame.cardGameServer.http.routing.routes.AuthenticatedMappingRoute;
-import julio.cardGame.cardGameServer.http.routing.routes.AuthenticatedRoute;
 import julio.cardGame.cardGameServer.http.routing.routes.Routeable;
 import julio.cardGame.cardGameServer.http.communication.DefaultMessages;
 import julio.cardGame.cardGameServer.http.communication.HttpStatus;
@@ -17,7 +16,7 @@ import julio.cardGame.cardGameServer.database.models.CompleteUserModel;
 
 import java.sql.SQLException;
 
-public class ExecuteGetUser extends AuthenticatedMappingRoute implements Routeable {
+public class ExecuteGetUser implements Routeable {
 
     private final UserRepo userRepo;
 
@@ -37,14 +36,14 @@ public class ExecuteGetUser extends AuthenticatedMappingRoute implements Routeab
                 return new Response(DefaultMessages.ERR_NO_USER.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 
             //check if admin or requestedUser == logged user
-            AuthorizationWrapper authorizationWrapper = this.canAccessUserData(requestContext.getHeaders(), requestedUser);
+            AuthorizationWrapper authorizationWrapper = AuthenticationController.canAccessUserData(requestContext.getHeaders(), requestedUser);
 
             if (authorizationWrapper.response != null)
                 return authorizationWrapper.response;
 
             CompleteUserModel userData = this.userRepo.getUser(requestedUser);
 
-            String body = this.objectMapper
+            String body = new ObjectMapper()
                     .writeValueAsString(userData);
 
             return new Response(body, HttpStatus.OK, true);

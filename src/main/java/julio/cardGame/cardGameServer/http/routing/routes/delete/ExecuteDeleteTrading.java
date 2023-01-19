@@ -1,5 +1,6 @@
 package julio.cardGame.cardGameServer.http.routing.routes.delete;
 
+import julio.cardGame.cardGameServer.controllers.AuthenticationController;
 import julio.cardGame.cardGameServer.database.db.DataTransformation;
 import julio.cardGame.cardGameServer.database.db.DbConnection;
 import julio.cardGame.cardGameServer.http.communication.*;
@@ -24,7 +25,7 @@ public class ExecuteDeleteTrading extends AuthenticatedRoute implements Routeabl
 
             String userName;
 
-            AuthorizationWrapper auth = this.requireAuthToken(requestContext.getHeaders());
+            AuthorizationWrapper auth = AuthenticationController.requireAuthToken(requestContext.getHeaders());
 
             if (auth.response != null)
                 return auth.response;

@@ -1,5 +1,6 @@
 package julio.cardGame.cardGameServer.http.routing.routes.post;
 
+import julio.cardGame.cardGameServer.controllers.AuthenticationController;
 import julio.cardGame.cardGameServer.database.models.CompleteUserModel;
 import julio.cardGame.cardGameServer.database.repositories.UserRepo;
 import julio.cardGame.cardGameServer.http.HttpServer;
@@ -16,7 +17,7 @@ import java.beans.PropertyChangeListener;
 import java.sql.SQLException;
 import java.util.*;
 
-public class ExecutePostBattle extends AuthenticatedRoute implements Routeable, PropertyChangeListener, Observer {
+public class ExecutePostBattle implements Routeable, PropertyChangeListener, Observer {
 
     private boolean listChanged = false;
 
@@ -31,7 +32,7 @@ public class ExecutePostBattle extends AuthenticatedRoute implements Routeable, 
 
         try {
 
-            AuthorizationWrapper auth = this.requireAuthToken(requestContext.getHeaders());
+            AuthorizationWrapper auth = AuthenticationController.requireAuthToken(requestContext.getHeaders());
 
             if (auth.response != null)
                 return auth.response;

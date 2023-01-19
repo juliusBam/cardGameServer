@@ -3,13 +3,12 @@ package julio.cardGame.cardGameServer.http.routing.routes.put;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import julio.cardGame.cardGameServer.controllers.AuthenticationController;
 import julio.cardGame.cardGameServer.database.db.DbConnection;
 import julio.cardGame.cardGameServer.database.repositories.CardRepo;
 import julio.cardGame.cardGameServer.database.repositories.UserRepo;
 import julio.cardGame.cardGameServer.http.communication.RequestContext;
 import julio.cardGame.cardGameServer.http.routing.AuthorizationWrapper;
-import julio.cardGame.cardGameServer.http.routing.routes.AuthenticatedMappingRoute;
-import julio.cardGame.cardGameServer.http.routing.routes.AuthenticatedRoute;
 import julio.cardGame.cardGameServer.http.routing.routes.Routeable;
 import julio.cardGame.cardGameServer.http.communication.Response;
 import julio.cardGame.cardGameServer.Constants;
@@ -22,7 +21,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
 
-public class ExecutePutDeck extends AuthenticatedMappingRoute implements Routeable {
+public class ExecutePutDeck implements Routeable {
 
     private final UserRepo userRepo;
 
@@ -35,7 +34,7 @@ public class ExecutePutDeck extends AuthenticatedMappingRoute implements Routeab
 
         try {
 
-            AuthorizationWrapper auth = this.requireAuthToken(requestContext.getHeaders());
+            AuthorizationWrapper auth = AuthenticationController.requireAuthToken(requestContext.getHeaders());
 
             if (auth.response != null)
                 return auth.response;

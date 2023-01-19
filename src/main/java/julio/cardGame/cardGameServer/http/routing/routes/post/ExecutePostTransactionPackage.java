@@ -1,5 +1,6 @@
 package julio.cardGame.cardGameServer.http.routing.routes.post;
 
+import julio.cardGame.cardGameServer.controllers.AuthenticationController;
 import julio.cardGame.cardGameServer.database.db.DbConnection;
 import julio.cardGame.cardGameServer.database.repositories.CardRepo;
 import julio.cardGame.cardGameServer.database.repositories.PackageRepo;
@@ -17,7 +18,7 @@ import julio.cardGame.cardGameServer.database.models.PackageModel;
 
 import java.sql.*;
 
-public class ExecutePostTransactionPackage extends AuthenticatedRoute implements Routeable {
+public class ExecutePostTransactionPackage implements Routeable {
 
     private final UserRepo userRepo;
 
@@ -38,7 +39,7 @@ public class ExecutePostTransactionPackage extends AuthenticatedRoute implements
 
         try {
 
-            authorizationWrapper = this.requireAuthToken(requestContext.getHeaders());
+            authorizationWrapper = AuthenticationController.requireAuthToken(requestContext.getHeaders());
 
         } catch (SQLException e) {
 

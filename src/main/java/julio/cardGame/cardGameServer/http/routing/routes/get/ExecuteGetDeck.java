@@ -1,10 +1,11 @@
 package julio.cardGame.cardGameServer.http.routing.routes.get;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import julio.cardGame.cardGameServer.controllers.AuthenticationController;
 import julio.cardGame.cardGameServer.database.repositories.UserRepo;
 import julio.cardGame.cardGameServer.http.communication.RequestContext;
 import julio.cardGame.cardGameServer.http.communication.Response;
-import julio.cardGame.cardGameServer.http.routing.routes.AuthenticatedMappingRoute;
 import julio.cardGame.cardGameServer.http.routing.AuthorizationWrapper;
 import julio.cardGame.cardGameServer.http.routing.routes.Routeable;
 import julio.cardGame.cardGameServer.http.communication.DefaultMessages;
@@ -15,7 +16,7 @@ import julio.cardGame.cardGameServer.database.models.CardDeckModel;
 import java.sql.SQLException;
 import java.util.List;
 
-public class ExecuteGetDeck extends AuthenticatedMappingRoute implements Routeable {
+public class ExecuteGetDeck implements Routeable {
 
     private final UserRepo userRepo;
     public ExecuteGetDeck() {
@@ -27,7 +28,7 @@ public class ExecuteGetDeck extends AuthenticatedMappingRoute implements Routeab
 
         try {
 
-            AuthorizationWrapper auth = this.requireAuthToken(requestContext.getHeaders());
+            AuthorizationWrapper auth = AuthenticationController.requireAuthToken(requestContext.getHeaders());
 
             if (auth.response != null)
                 return auth.response;
@@ -53,7 +54,7 @@ public class ExecuteGetDeck extends AuthenticatedMappingRoute implements Routeab
 
             } else {
 
-                body = this.objectMapper
+                body = new ObjectMapper()
                         .writerWithDefaultPrettyPrinter()
                         .writeValueAsString(deckObj);
 

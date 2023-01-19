@@ -2,12 +2,11 @@ package julio.cardGame.cardGameServer.http.routing.routes.put;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import julio.cardGame.cardGameServer.controllers.AuthenticationController;
 import julio.cardGame.cardGameServer.database.repositories.UserRepo;
 import julio.cardGame.cardGameServer.http.communication.RequestContext;
 import julio.cardGame.cardGameServer.http.communication.Response;
 import julio.cardGame.cardGameServer.http.routing.AuthorizationWrapper;
-import julio.cardGame.cardGameServer.http.routing.routes.AuthenticatedMappingRoute;
-import julio.cardGame.cardGameServer.http.routing.routes.AuthenticatedRoute;
 import julio.cardGame.cardGameServer.http.routing.routes.Routeable;
 import julio.cardGame.cardGameServer.http.communication.DefaultMessages;
 import julio.cardGame.cardGameServer.http.communication.HttpStatus;
@@ -16,7 +15,7 @@ import julio.cardGame.cardGameServer.database.models.UserAdditionalDataModel;
 
 import java.sql.SQLException;
 
-public class ExecutePutUser extends AuthenticatedMappingRoute implements Routeable {
+public class ExecutePutUser implements Routeable {
 
     private final UserRepo userRepo;
 
@@ -34,12 +33,12 @@ public class ExecutePutUser extends AuthenticatedMappingRoute implements Routeab
             if (requestedUser == null || requestedUser.isEmpty() || requestedUser.isBlank())
                 return new Response(DefaultMessages.ERR_NO_USER.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 
-            AuthorizationWrapper authorizationWrapper = this.canAccessUserData(requestContext.getHeaders(), requestedUser);
+            AuthorizationWrapper authorizationWrapper = AuthenticationController.canAccessUserData(requestContext.getHeaders(), requestedUser);
 
             if (authorizationWrapper.response != null)
                 return authorizationWrapper.response;
 
-            UserAdditionalDataModel userModel = this.objectMapper
+            UserAdditionalDataModel userModel = new ObjectMapper()
                     .readValue(requestContext.getBody(), UserAdditionalDataModel.class);
 
 
