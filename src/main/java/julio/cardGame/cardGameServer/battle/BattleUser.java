@@ -5,8 +5,8 @@ import julio.cardGame.cardGameServer.battle.cards.Deck;
 import julio.cardGame.cardGameServer.battle.cards.Elements;
 import julio.cardGame.cardGameServer.battle.cards.ICard;
 import julio.cardGame.cardGameServer.battle.cards.monsters.Races;
-import julio.cardGame.cardGameServer.database.models.CardDeckModel;
-import julio.cardGame.cardGameServer.database.models.UserInfoModel;
+import julio.cardGame.cardGameServer.models.CardDeckModel;
+import julio.cardGame.cardGameServer.models.UserInfoModel;
 import julio.cardGame.cardGameServer.database.repositories.UserRepo;
 
 import java.security.InvalidParameterException;

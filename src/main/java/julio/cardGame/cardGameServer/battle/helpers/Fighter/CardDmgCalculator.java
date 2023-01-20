@@ -1,5 +1,6 @@
 package julio.cardGame.cardGameServer.battle.helpers.Fighter;
 
+import julio.cardGame.cardGameServer.Constants;
 import julio.cardGame.cardGameServer.battle.cards.Elements;
 import julio.cardGame.cardGameServer.battle.cards.monsters.Monster;
 import julio.cardGame.cardGameServer.battle.cards.monsters.Races;
@@ -8,6 +9,8 @@ import julio.cardGame.cardGameServer.battle.cards.spells.Spell;
 import java.security.InvalidParameterException;
 
 import static java.lang.Math.floor;
+
+//todo check why knight not working
 
 public class CardDmgCalculator {
     public int calculateDmg(Monster attackingMonster, Monster defendingMonster) {
@@ -51,6 +54,10 @@ public class CardDmgCalculator {
 
             dmgModificator = 0;
 
+        } else if (defendingMonster.getRace() == Races.Knight && attackingSpell.getType() == Elements.Water) {
+
+            return Constants.WATERSPELL_VS_KNIGHT;
+
         } else {
 
             dmgModificator = elementRatio(attackingSpell.getType(), defendingMonster.getType());
@@ -78,12 +85,11 @@ public class CardDmgCalculator {
                 }
             }
             case Normal -> {
-                return 1;
-                /*if (defendingEl == Elements.Water) {
+                if (defendingEl == Elements.Water) {
                     return 2;
                 } else if (defendingEl == Elements.Fire) {
                     return 0.5;
-                }*/
+                }
             }
         }
         return 1;
@@ -95,13 +101,11 @@ public class CardDmgCalculator {
                 if (defendingRace == Races.Dragon) {
                     return 0;
                 }
-                break;
             }
             case Ork -> {
                 if (defendingRace == Races.Wizard) {
                     return 0;
                 }
-                break;
             }
             case Dragon -> {
                 if (defendingRace == Races.Elf && defendingEl == Elements.Fire) {

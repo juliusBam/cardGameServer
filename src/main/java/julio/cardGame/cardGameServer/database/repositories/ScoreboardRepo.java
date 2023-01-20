@@ -2,7 +2,7 @@ package julio.cardGame.cardGameServer.database.repositories;
 
 import julio.cardGame.cardGameServer.database.db.DataTransformation;
 import julio.cardGame.cardGameServer.database.db.DbConnection;
-import julio.cardGame.cardGameServer.database.models.ScoreModel;
+import julio.cardGame.cardGameServer.models.ScoreModel;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

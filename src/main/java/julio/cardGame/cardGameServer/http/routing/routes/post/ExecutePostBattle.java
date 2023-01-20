@@ -4,7 +4,7 @@ import julio.cardGame.cardGameServer.http.communication.RequestContext;
 import julio.cardGame.cardGameServer.http.communication.Response;
 import julio.cardGame.cardGameServer.http.routing.routes.Routeable;
 import julio.cardGame.cardGameServer.http.routing.routes.ServiceableRoute;
-import julio.cardGame.cardGameServer.services.PostBattleService;
+import julio.cardGame.cardGameServer.services.battleServices.PostBattleService;
 import julio.cardGame.cardGameServer.services.CardGameService;
 
 

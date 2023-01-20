@@ -8,6 +8,8 @@ public interface ICard {
     void move(Deck targetDeck);
     int fight(ICard cardToFight);
 
+    int getDmg();
+
     String getName();
 }
 

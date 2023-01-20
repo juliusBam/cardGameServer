@@ -6,7 +6,7 @@ import julio.cardGame.cardGameServer.http.communication.RequestContext;
 import julio.cardGame.cardGameServer.http.communication.Response;
 import julio.cardGame.cardGameServer.http.routing.routes.Routeable;
 import julio.cardGame.cardGameServer.http.routing.routes.ServiceableRoute;
-import julio.cardGame.cardGameServer.services.ActivateUserService;
+import julio.cardGame.cardGameServer.services.userServices.ActivateUserService;
 import julio.cardGame.cardGameServer.services.CardGameService;
 
 import java.security.NoSuchAlgorithmException;

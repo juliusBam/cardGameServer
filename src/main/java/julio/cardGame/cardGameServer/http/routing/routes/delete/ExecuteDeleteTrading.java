@@ -4,7 +4,7 @@ import julio.cardGame.cardGameServer.http.communication.*;
 import julio.cardGame.cardGameServer.http.routing.routes.Routeable;
 import julio.cardGame.cardGameServer.http.routing.routes.ServiceableRoute;
 import julio.cardGame.cardGameServer.services.CardGameService;
-import julio.cardGame.cardGameServer.services.DeleteTradingService;
+import julio.cardGame.cardGameServer.services.tradingServices.DeleteTradingService;
 
 public class ExecuteDeleteTrading extends ServiceableRoute implements Routeable {
 

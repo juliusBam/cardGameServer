@@ -66,7 +66,7 @@ public class FunctionalRouter {
             registerRoute(new RouteIdentifier(HttpPath.SCORE.getPath(), HttpVerb.GET.getVerb()), ExecuteGetScore::new);
 
             //we register the battles route
-            registerRoute(new RouteIdentifier(HttpPath.BATTLES.getPath(), HttpVerb.PUT.getVerb()), ExecutePostBattle::new);
+            registerRoute(new RouteIdentifier(HttpPath.BATTLES.getPath(), HttpVerb.POST.getVerb()), ExecutePostBattle::new);
 
             registerRoute(new RouteIdentifier(HttpPath.ACTIVATE.getPath(), HttpVerb.PUT.getVerb()), ExecutePutActivate::new);
 

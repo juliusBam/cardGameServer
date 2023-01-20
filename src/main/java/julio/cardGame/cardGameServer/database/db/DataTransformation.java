@@ -12,9 +12,6 @@ import java.util.UUID;
 
 public class DataTransformation {
 
-    public static final int winValue = 1;
-
-    public static final int loseValue = -1;
     public static String calculateHash(String input) throws NoSuchAlgorithmException {
 
         MessageDigest md = MessageDigest.getInstance("MD5");
@@ -68,32 +65,4 @@ public class DataTransformation {
 
     }
 
-    public static int calculateWinnerElo(int winnerElo, int loserElo) {
-
-        int eloIncrease = 32;
-
-        if (winnerElo > 1600)
-            eloIncrease = 16;
-
-        int expectedOutcome = winnerElo > loserElo ? DataTransformation.winValue : -1;
-
-        int newElo = winnerElo + (eloIncrease * (DataTransformation.winValue - expectedOutcome));
-
-        return Math.max(newElo, 0);
-
-    }
-
-    public static int calculateLoserElo(int winnerElo, int loserElo) {
-
-        int eloIncrease = 32;
-
-        if (loserElo > 1600)
-            eloIncrease = 16;
-
-        int expectedOutcome = loserElo > winnerElo ? DataTransformation.winValue : -1;
-
-        int newElo = winnerElo + (eloIncrease * (DataTransformation.winValue - expectedOutcome));
-
-        return Math.max(newElo, 0);
-    }
 }

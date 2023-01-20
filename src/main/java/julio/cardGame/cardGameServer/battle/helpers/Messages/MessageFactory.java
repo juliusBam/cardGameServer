@@ -1,5 +1,6 @@
 package julio.cardGame.cardGameServer.battle.helpers.Messages;
 
+import julio.cardGame.cardGameServer.Constants;
 import julio.cardGame.cardGameServer.battle.BattleUser;
 import julio.cardGame.cardGameServer.battle.cards.ICard;
 import julio.cardGame.cardGameServer.battle.helpers.Fighter.CardFighterResult;
@@ -18,14 +19,31 @@ public class MessageFactory implements IMessageFactory {
             return createFightDrawMsg(formattedFirstMsg, formattedSecondMsg);
         }
 
-        String lastMsgPart = " => %s %s %s";
-        String formattedLastMsg = String.format(lastMsgPart, fightResult.getWinner().getName(), " kills ", fightResult.getLoser().getName());
+        String formattedLastMsg = "";
+
+        if (fightResult.getFirstCardDmg() == Constants.WATERSPELL_VS_KNIGHT || fightResult.getSecondCardDmg() == Constants.WATERSPELL_VS_KNIGHT) {
+
+            formattedLastMsg = "=> The knight drowned";
+
+        } else {
+            String lastMsgPart = " => %s %s %s";
+            formattedLastMsg = String.format(lastMsgPart, fightResult.getWinner().getName(), " kills ", fightResult.getLoser().getName());
+        }
+
+        if (fightResult.isRickRoll()) {
+
+            formattedLastMsg = formattedLastMsg.concat( " ||| Rickrolled! |||");
+
+        }
 
         return formattedFirstMsg.concat(formattedSecondMsg).concat(formattedLastMsg);
+
     }
 
     private String createFightDrawMsg(String firstPart, String secondPart) {
+
         return firstPart.concat(secondPart).concat(" => had the same damage, the match is a draw");
+
     }
 
     public String createRoundLimitMsg() {

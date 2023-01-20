@@ -4,8 +4,7 @@ import julio.cardGame.cardGameServer.http.communication.*;
 import julio.cardGame.cardGameServer.http.routing.routes.Routeable;
 import julio.cardGame.cardGameServer.http.routing.routes.ServiceableRoute;
 import julio.cardGame.cardGameServer.services.CardGameService;
-import julio.cardGame.cardGameServer.services.GetCardService;
-import julio.cardGame.cardGameServer.services.GetDeckService;
+import julio.cardGame.cardGameServer.services.cardsServices.GetCardService;
 
 
 public class ExecuteGetCard extends ServiceableRoute implements Routeable {

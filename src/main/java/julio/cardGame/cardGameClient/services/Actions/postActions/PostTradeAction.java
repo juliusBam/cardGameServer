@@ -6,7 +6,7 @@ import julio.cardGame.cardGameClient.helpers.readers.TradeDealReader;
 import julio.cardGame.cardGameClient.helpers.requests.PostRequestBuilder;
 import julio.cardGame.cardGameClient.services.Actions.Action;
 import julio.cardGame.cardGameServer.http.routing.HttpPath;
-import julio.cardGame.cardGameServer.database.models.TradeModel;
+import julio.cardGame.cardGameServer.models.TradeModel;
 
 import java.io.IOException;
 import java.net.http.HttpRequest;

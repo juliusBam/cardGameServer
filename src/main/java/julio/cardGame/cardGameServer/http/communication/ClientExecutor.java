@@ -88,26 +88,24 @@ public class ClientExecutor implements Runnable {
 
     private Sendable generateResponse(RequestContext requestContext) throws IOException {
 
-        RouteEntry routeEntry = HttpServer.FUNCTIONAL_ROUTER
-                .findRoute(
-                        new RouteIdentifier(requestContext.getPath(), requestContext.getHttpVerb())
-                );
-
         try {
 
+            Routeable route = HttpServer.FUNCTIONAL_ROUTER
+                    .findRoute(
+                            new RouteIdentifier(requestContext.getPath(), requestContext.getHttpVerb())
+                    ).generateRoute();
 
-            if (routeEntry != null) {
+            return route.process(requestContext);
 
-                return routeEntry.generateRoute().process(requestContext);
-
-            } else {
-
-                return new Response(DefaultMessages.ERR_ROUTE_NOT_FOUND.getMessage(), HttpStatus.BAD_REQUEST);
-
-            }
 
         } catch (JsonProcessingException | NoSuchAlgorithmException | SQLException e) {
+
             return new Response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+
+        } catch (NullPointerException e) {
+
+            return new Response(DefaultMessages.ERR_ROUTE_NOT_FOUND.getMessage(), HttpStatus.BAD_REQUEST);
+
         }
 
     }

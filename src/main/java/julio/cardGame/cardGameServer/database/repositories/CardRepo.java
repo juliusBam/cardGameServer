@@ -2,8 +2,8 @@ package julio.cardGame.cardGameServer.database.repositories;
 
 import julio.cardGame.cardGameServer.database.db.DataTransformation;
 import julio.cardGame.cardGameServer.database.db.DbConnection;
-import julio.cardGame.cardGameServer.database.models.CardDbModel;
-import julio.cardGame.cardGameServer.database.models.PackageModel;
+import julio.cardGame.cardGameServer.models.CardDbModel;
+import julio.cardGame.cardGameServer.models.PackageModel;
 import julio.cardGame.cardGameServer.Constants;
 
 import java.sql.*;
@@ -55,6 +55,18 @@ public class CardRepo {
                 UPDATE cards
                     SET "deckID"=null, "ownerID"=(SELECT "userID" FROM users WHERE "userName"=?)
                         WHERE "cardID"=(SELECT "offeredCardID" FROM trades WHERE "tradeID"=?);
+            """;
+
+    private final String getStmtCardIsInDeck = """
+                SELECT count("cardID")
+                    FROM cards
+                        WHERE "cardID"=? AND "deckID"=null
+            """;
+
+    private final String getStmtCheckCardInTrade = """
+                SELECT
+                    count("offeredCardID")
+                        FROM trades WHERE "offeredCardID"=? OR "offeredCardID"=? OR "offeredCardID"=? OR "offeredCardID"=?
             """;
 
     public List<CardDbModel> fetchUserCards(String userName) throws SQLException {
@@ -178,4 +190,52 @@ public class CardRepo {
 
     }
 
+    //returns true if the card is in a deck
+    public boolean checkIfCardInDeck(Connection dbConnection, UUID cardToTrade) throws SQLException {
+
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(getStmtCardIsInDeck)) {
+
+            preparedStatement.setObject(1, DataTransformation.prepareUUID(cardToTrade));
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                int count = resultSet.getInt(1);
+
+                return count != 1;
+
+            } else {
+
+                return true;
+
+            }
+
+        }
+
+    }
+
+    public int checkIfCardInDeck(List<UUID> cardIds) throws SQLException {
+
+        try (PreparedStatement preparedStatement = DbConnection.getInstance().prepareStatement(getStmtCheckCardInTrade)){
+
+            preparedStatement.setObject(1, DataTransformation.prepareUUID(cardIds.get(0)));
+            preparedStatement.setObject(2, DataTransformation.prepareUUID(cardIds.get(1)));
+            preparedStatement.setObject(3, DataTransformation.prepareUUID(cardIds.get(2)));
+            preparedStatement.setObject(4, DataTransformation.prepareUUID(cardIds.get(3)));
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+
+                return resultSet.getInt(1);
+
+            } else {
+
+                return 1;
+
+            }
+
+        }
+
+    }
 }

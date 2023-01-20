@@ -1,6 +1,6 @@
 package julio.cardGame.cardGameServer.battle;
 
-import julio.cardGame.cardGameServer.database.models.UserInfoModel;
+import julio.cardGame.cardGameServer.models.UserInfoModel;
 import julio.cardGame.cardGameServer.http.communication.DefaultMessages;
 
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ public class BattleWrapper implements BattleResultProvider {
         try {
 
             CardGame game = new CardGame(battleQueue.take(), battleQueue.take());
-            newBattleRes = game.playRound();
+            newBattleRes = game.executeCardBattle();
 
         } catch (InterruptedException e) {
 
@@ -69,7 +69,6 @@ public class BattleWrapper implements BattleResultProvider {
         //not notifying the other thread
         for (int i = this.subscribers.size() - 1; i > -1; i--) {
 
-            System.out.println("Updating subscriber");
             subscribers.get(i).update();
 
         }

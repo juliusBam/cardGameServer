@@ -5,7 +5,7 @@ import julio.cardGame.cardGameServer.http.communication.Response;
 import julio.cardGame.cardGameServer.http.routing.routes.Routeable;
 import julio.cardGame.cardGameServer.http.routing.routes.ServiceableRoute;
 import julio.cardGame.cardGameServer.services.CardGameService;
-import julio.cardGame.cardGameServer.services.PostTransactionPackagesService;
+import julio.cardGame.cardGameServer.services.tradingServices.PostTransactionPackagesService;
 
 public class ExecutePostTransactionPackage extends ServiceableRoute implements Routeable {
 

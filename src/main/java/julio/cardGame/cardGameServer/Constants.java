@@ -7,4 +7,6 @@ public class Constants {
     public final static String USER_AUTH = "Bearer %s-mtcgToken";
     public final static int DECK_SIZE = 4;
     public final static int PACKAGE_COST = 5;
+
+    public final static int WATERSPELL_VS_KNIGHT = 100000;
 }

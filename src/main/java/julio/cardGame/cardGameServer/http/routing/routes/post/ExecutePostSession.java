@@ -6,7 +6,7 @@ import julio.cardGame.cardGameServer.http.routing.routes.Routeable;
 import julio.cardGame.cardGameServer.http.communication.DefaultMessages;
 import julio.cardGame.cardGameServer.http.routing.routes.ServiceableRoute;
 import julio.cardGame.cardGameServer.services.CardGameService;
-import julio.cardGame.cardGameServer.services.PostSessionService;
+import julio.cardGame.cardGameServer.services.userServices.PostSessionService;
 
 
 public class ExecutePostSession extends ServiceableRoute implements Routeable {

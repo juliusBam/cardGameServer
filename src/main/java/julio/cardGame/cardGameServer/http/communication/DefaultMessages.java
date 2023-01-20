@@ -22,6 +22,8 @@ public enum DefaultMessages {
 
     ERR_MISMATCHING_USERS("The requested and logged user do not match"),
 
+    ERR_CARD_IN_TRADE("One of the requested cards are in a trade"),
+
     USER_NO_CARDS("No cards were found"),
 
     USER_NO_DECK("No deck was found"),

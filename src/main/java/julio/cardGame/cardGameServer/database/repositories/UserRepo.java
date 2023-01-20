@@ -1,9 +1,10 @@
 package julio.cardGame.cardGameServer.database.repositories;
 
+import julio.cardGame.cardGameServer.battle.helpers.EloCalculator;
 import julio.cardGame.cardGameServer.database.db.DataTransformation;
 import julio.cardGame.cardGameServer.database.db.DbConnection;
-import julio.cardGame.cardGameServer.database.models.*;
 import julio.cardGame.cardGameServer.Constants;
+import julio.cardGame.cardGameServer.models.*;
 
 import javax.naming.AuthenticationException;
 import java.security.NoSuchAlgorithmException;
@@ -236,7 +237,7 @@ public class UserRepo {
         try (PreparedStatement preparedStatement = dbConnection.prepareStatement(sql)) {
 
             preparedStatement.setString(1, userName);
-            preparedStatement.setInt(2, DataTransformation.calculateWinnerElo(eloWinner, eloLooser));
+            preparedStatement.setInt(2, EloCalculator.calculateWinnerElo(eloWinner, eloLooser));
             preparedStatement.setString(3, userName);
 
             int res = preparedStatement.executeUpdate();
@@ -259,7 +260,7 @@ public class UserRepo {
         try (PreparedStatement preparedStatement = dbConnection.prepareStatement(sql)) {
 
             preparedStatement.setString(1, userName);
-            preparedStatement.setInt(2, DataTransformation.calculateLoserElo(eloWinner, eloLooser));
+            preparedStatement.setInt(2, EloCalculator.calculateLoserElo(eloWinner, eloLooser));
             preparedStatement.setString(3, userName);
 
             int res = preparedStatement.executeUpdate();

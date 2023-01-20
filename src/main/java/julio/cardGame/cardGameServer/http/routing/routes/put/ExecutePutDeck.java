@@ -6,7 +6,7 @@ import julio.cardGame.cardGameServer.http.communication.Response;
 import julio.cardGame.cardGameServer.http.communication.DefaultMessages;
 import julio.cardGame.cardGameServer.http.routing.routes.ServiceableRoute;
 import julio.cardGame.cardGameServer.services.CardGameService;
-import julio.cardGame.cardGameServer.services.PutDeckService;
+import julio.cardGame.cardGameServer.services.cardsServices.PutDeckService;
 
 public class ExecutePutDeck extends ServiceableRoute implements Routeable {
 
