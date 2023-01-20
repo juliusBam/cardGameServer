@@ -6,16 +6,13 @@ import julio.cardGame.cardGameServer.battle.helpers.Fighter.CardFighterResult;
 
 public class MessageFactory implements IMessageFactory {
 
-    //todo refactor param
     public String createCardFightMsg(BattleUser firstPlayer, ICard firstCard, BattleUser secondPlayer, ICard secondCard, CardFighterResult fightResult) {
-
-        //in the case we have a draw
 
         String firstBaseMsg = "%s: %s (%s) vs ";
         String secondBaseMsg = "%s: %s (%s)";
 
-        String formattedFirstMsg = String.format(firstBaseMsg, firstPlayer.getName(), firstCard.getName(), Integer.toString(fightResult.getFirstCardDmg()));
-        String formattedSecondMsg = String.format(secondBaseMsg, secondPlayer.getName(), secondCard.getName(), Integer.toString(fightResult.getSecondCardDmg()));
+        String formattedFirstMsg = String.format(firstBaseMsg, firstPlayer.getName(), firstCard.getName(), fightResult.getFirstCardDmg());
+        String formattedSecondMsg = String.format(secondBaseMsg, secondPlayer.getName(), secondCard.getName(), fightResult.getSecondCardDmg());
 
         if (fightResult.getLoser() == null && fightResult.getWinner() == null) {
             return createFightDrawMsg(formattedFirstMsg, formattedSecondMsg);
@@ -24,13 +21,7 @@ public class MessageFactory implements IMessageFactory {
         String lastMsgPart = " => %s %s %s";
         String formattedLastMsg = String.format(lastMsgPart, fightResult.getWinner().getName(), " kills ", fightResult.getLoser().getName());
 
-        String totalMsg = formattedFirstMsg.concat(formattedSecondMsg).concat(formattedLastMsg);
-        return totalMsg;
-    }
-
-    public String createUserErrorMsg(BattleUser user, String msg) {
-
-        return "";
+        return formattedFirstMsg.concat(formattedSecondMsg).concat(formattedLastMsg);
     }
 
     private String createFightDrawMsg(String firstPart, String secondPart) {
@@ -42,10 +33,14 @@ public class MessageFactory implements IMessageFactory {
     }
 
     public String createEndGameMsg(BattleUser winner) {
+
+        final String endGameMsg = "Player %s won";
+
         if (winner == null) {
             return "The game was a draw";
         } else {
-            return "Player " + winner.getName() + "won";
+            return String.format(endGameMsg, winner.getName());
         }
+
     }
 }

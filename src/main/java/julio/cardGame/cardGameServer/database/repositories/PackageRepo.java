@@ -10,21 +10,21 @@ import java.util.UUID;
 public class PackageRepo {
 
     private final String stmtDeletePkg = """
-                DELETE 
-                    FROM packages 
-                        WHERE "packageID"=?;
-                """;
+            DELETE 
+                FROM packages 
+                    WHERE "packageID"=?;
+            """;
 
     private final String stmtFetchPkg = """
-                SELECT * 
-                    FROM "packages"
-                    LIMIT 1;
-                """;
+            SELECT * 
+                FROM "packages"
+                LIMIT 1;
+            """;
 
     private final String stmtInsertPkg = """
-                INSERT INTO public.packages
-                    VALUES (?,?,?,?,?,?);
-                """;
+            INSERT INTO public.packages
+                VALUES (?,?,?,?,?,?);
+            """;
 
     public void deletePackage(Connection dbConnection, UUID packageID) throws SQLException {
 
@@ -50,7 +50,7 @@ public class PackageRepo {
 
             if (resultSet.next()) {
                 packageModel = new PackageModel(
-                        resultSet.getObject(1,UUID.class),
+                        resultSet.getObject(1, UUID.class),
                         resultSet.getObject(2, UUID.class),
                         resultSet.getObject(3, UUID.class),
                         resultSet.getObject(4, UUID.class),

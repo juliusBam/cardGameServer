@@ -35,8 +35,6 @@ public class AuthenticationController {
         return new AuthorizationWrapper(userName, authToken, false);
 
     }
-
-    //todo check in the db if admin
     public static AuthorizationWrapper requireAdmin(List<Header> headers) throws SQLException {
 
         AuthorizationWrapper authorizationWrapper = AuthenticationController.requireAuthToken(headers);

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Deck {
-    //todo refactor as List --> is interface
     private final List<ICard> cards;
 
     public Deck() {

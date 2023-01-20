@@ -17,13 +17,31 @@ import java.util.UUID;
 
 public class UserRepo {
 
+    private final String stmtChangeUserStatus = """
+                UPDATE users
+                    SET "active"=? WHERE "userName"=?
+            """;
+
+    public void changeUserStatus(String userName, boolean newState) throws SQLException {
+
+        try (PreparedStatement preparedStatement = DbConnection.getInstance().prepareStatement(stmtChangeUserStatus)) {
+
+            preparedStatement.setBoolean(1, newState);
+            preparedStatement.setString(2, userName);
+
+            int changedRecords = preparedStatement.executeUpdate();
+
+        }
+
+    }
+
     public String loginUser(UserLoginDataModel userLoginData) throws SQLException, NoSuchAlgorithmException {
 
         String sql = """
                         SELECT "authToken"
                             FROM public.users 
                                 WHERE "userName"=? 
-                                    AND pwd=?
+                                    AND pwd=? AND "active"=true
                     """;
 
         try (PreparedStatement preparedStatement = DbConnection.getInstance().prepareStatement(sql)) {
@@ -47,7 +65,7 @@ public class UserRepo {
     public CompleteUserModel getUser(String userName) throws SQLException {
 
         String sql = """
-                    SELECT * 
+                    SELECT "userName", "name", "bio", "image", "elo", "wins", "losses", "coins", "isAdmin", "active"
                         FROM public.users 
                         WHERE "userName"=?
                 """;
@@ -62,10 +80,20 @@ public class UserRepo {
 
             if (resultSet.next()) {
                 completeUserModel = new CompleteUserModel(
-                        resultSet.getString(2),
-                        new UserAdditionalDataModel(resultSet.getString(4), resultSet.getString(6), resultSet.getString(5)),
-                        new UserStatsModel(resultSet.getInt(8), resultSet.getInt(9), resultSet.getInt(10)),
-                        resultSet.getInt(11), resultSet.getBoolean(13)
+                        resultSet.getString(1),
+                        new UserAdditionalDataModel(
+                                resultSet.getString(2),
+                                resultSet.getString(3),
+                                resultSet.getString(4)
+                        ),
+                        new UserStatsModel(
+                                resultSet.getInt(5),
+                                resultSet.getInt(6),
+                                resultSet.getInt(7)
+                        ),
+                        resultSet.getInt(8),
+                        resultSet.getBoolean(9),
+                        resultSet.getBoolean(10)
                 );
 
                 return completeUserModel;
@@ -201,8 +229,8 @@ public class UserRepo {
         String sql = """
                 UPDATE
                     users
-                        SET "wins"=(SELECT "wins" from users where "userName"='?') + 1 , "elo"=?
-                WHERE "userName"='?';
+                        SET "wins"=(SELECT "wins" from users where "userName"=?) + 1 , "elo"=?
+                WHERE "userName"=?;
                 """;
 
         try (PreparedStatement preparedStatement = dbConnection.prepareStatement(sql)) {
@@ -224,8 +252,8 @@ public class UserRepo {
         String sql = """
                 UPDATE
                     users
-                        SET "losses"=(SELECT "losses" from users where "userName"='?') + 1 , "elo"=?
-                WHERE "userName"='?';
+                        SET "losses"=(SELECT "losses" from users where "userName"=?) + 1 , "elo"=?
+                WHERE "userName"=?;
                 """;
 
         try (PreparedStatement preparedStatement = dbConnection.prepareStatement(sql)) {
@@ -357,15 +385,12 @@ public class UserRepo {
             int losses = resultSet.getInt(2);
             double winRate = DataTransformation.calculateWinRate(wins, losses);
 
-            //todo change variables to stored
-            StatsModel statsModel = new StatsModel(
+            return new StatsModel(
                     wins,
                     losses,
                     winRate,
                     resultSet.getInt(3)
             );
-
-            return statsModel;
 
         }
 

@@ -5,8 +5,6 @@ package julio.cardGame.cardGameServer.battle.helpers.Fighter;
 import julio.cardGame.cardGameServer.battle.cards.ICard;
 
 public class CardFighter {
-
-    //todo refactor to return the dmg, winner and loser in an object
     public CardFighterResult returnFightResults(ICard firstCard, ICard secondCard) {
 
         int dmgFirstCard = firstCard.fight(secondCard);

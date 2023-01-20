@@ -41,39 +41,18 @@ public class BattleUser {
 
     }
 
-    //to do use function pointer
     public void processCardResponse(List<CardDeckModel> deckFromDb) throws IllegalArgumentException {
 
         CardFactory myFactory = new CardFactory();
 
-        //try {
+        for (CardDeckModel card : deckFromDb) {
 
-            for (CardDeckModel card: deckFromDb) {
+            Elements cardEl = Elements.valueOf(card.cardElement);
+            Races cardRace = card.monsterRace == null ? null : Races.valueOf(card.monsterRace);
 
-                Elements cardEl = Elements.valueOf(card.cardElement);
-                Races cardRace =  card.monsterRace == null ? null : Races.valueOf(card.monsterRace);
+            this.insertIntoDeck(myFactory.createCard(cardRace, card.cardName, cardEl, (int) card.card_damage));
 
-                //we execute the reflection of the passed method
-                //method.invoke(this, myFactory.createCard(el.race, el.name, el.type, el.dmg));
-                //if (actionType == 'd') {
-
-                this.insertIntoDeck(myFactory.createCard(cardRace, card.cardName, cardEl, (int)card.card_damage));
-
-                /*} else if (actionType == 'c'){
-
-                    this.insertIntoCollection(myFactory.createCard(el.race, el.name, el.type, el.dmg));
-                } else {
-
-                    throw new InvalidParameterException("Wrong container type");
-
-                }*/
-            }
-
-        /*} catch (InvalidParameterException e) {
-
-            System.err.println(e.getMessage());
-
-        }*/
+        }
 
     }
 
@@ -93,7 +72,9 @@ public class BattleUser {
         return this.deck.getDeckSize();
     }
 
-    public Deck getDeck(){return this.deck;}
+    public Deck getDeck() {
+        return this.deck;
+    }
 
     public void moveCardTo(BattleUser targetPlayer) {
 

@@ -1,26 +1,26 @@
 package julio.cardGame.cardGameServer.database.models;
 
 
-//composition is used, since we cannot inherit from 2 classes
+//composition is used
 public class CompleteUserModel {
 
-    //public UserLoginDataModel userLoginData;
-
-    public UserAdditionalDataModel userAdditionalData;
-
     public String userName;
-
-    public UserStatsModel userStatsModel;
 
     public int coins;
 
     public boolean isAdmin;
 
-    public CompleteUserModel(String userName, UserAdditionalDataModel additionalData, UserStatsModel userStatsModel, int coins, boolean isAdmin) {
+    public boolean active;
+    public UserAdditionalDataModel userAdditionalData;
+    public UserStatsModel userStatsModel;
+
+    public CompleteUserModel(String userName, UserAdditionalDataModel additionalData, UserStatsModel userStatsModel, int coins, boolean isAdmin, boolean active) {
         this.userName = userName;
         this.userAdditionalData = additionalData;
         this.userStatsModel = userStatsModel;
         this.coins = coins;
+        this.isAdmin = isAdmin;
+        this.active = active;
     }
 
     public CompleteUserModel() {}

@@ -28,8 +28,6 @@ public enum ClientAction {
 
     DELETE_TRADE_DEAL("delete trade"),
 
-    //todo add trade requests
-
     QUIT("q");
 
     private final String clientAction;

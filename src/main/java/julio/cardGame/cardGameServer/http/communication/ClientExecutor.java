@@ -5,6 +5,7 @@ import julio.cardGame.cardGameServer.http.HttpServer;
 import julio.cardGame.cardGameServer.http.communication.headers.Header;
 import julio.cardGame.cardGameServer.http.communication.headers.HeaderParser;
 import julio.cardGame.cardGameServer.http.routing.PathParser;
+import julio.cardGame.cardGameServer.http.routing.router.RouteEntry;
 import julio.cardGame.cardGameServer.http.routing.router.RouteIdentifier;
 import julio.cardGame.cardGameServer.http.routing.routes.Routeable;
 
@@ -26,21 +27,14 @@ public class ClientExecutor implements Runnable {
     @Override
     public void run() {
 
-        System.out.println(Thread.currentThread().getName() + " responding");
-
         try {
             BufferedReader br = new BufferedReader(
                     new InputStreamReader
                             (this.actualSocket.getInputStream()));
 
             final RequestContext requestContext = this.parseRequest(br);
-                /*
-                    System.out.println("Thread: " + Thread.currentThread().getName());
-                    requestContext.print();
-                */
 
             //now that we parsed the request into the correct context we can handle it
-            //Routeable routeable = router.findRoute(new RouteIdentifier(requestContext.getPath(), requestContext.getHttpVerb()));
             Sendable response = this.generateResponse(requestContext);
 
             //Sendable response;
@@ -65,7 +59,6 @@ public class ClientExecutor implements Runnable {
         requestContext.setHttpVerb(splitVersionString[0]);
 
         PathParser.parsePath(requestContext, splitVersionString[1]);
-        //requestContext.setPath(splitVersionString[1]);
 
         List<Header> headers = new ArrayList<>();
         HeaderParser headerParser = new HeaderParser();
@@ -95,18 +88,17 @@ public class ClientExecutor implements Runnable {
 
     private Sendable generateResponse(RequestContext requestContext) throws IOException {
 
-        Routeable routeable = HttpServer.FUNCTIONAL_ROUTER
+        RouteEntry routeEntry = HttpServer.FUNCTIONAL_ROUTER
                 .findRoute(
                         new RouteIdentifier(requestContext.getPath(), requestContext.getHttpVerb())
-                )
-                .generateRoute();
+                );
 
         try {
 
 
-            if (routeable != null) {
+            if (routeEntry != null) {
 
-                return routeable.process(requestContext);
+                return routeEntry.generateRoute().process(requestContext);
 
             } else {
 

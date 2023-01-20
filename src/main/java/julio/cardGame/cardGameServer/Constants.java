@@ -6,6 +6,5 @@ public class Constants {
     public final static String HOST_ADDR = "http://localhost:";
     public final static String USER_AUTH = "Bearer %s-mtcgToken";
     public final static int DECK_SIZE = 4;
-
     public final static int PACKAGE_COST = 5;
 }

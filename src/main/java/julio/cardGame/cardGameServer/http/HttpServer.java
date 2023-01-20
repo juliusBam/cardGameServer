@@ -13,19 +13,17 @@ import java.util.concurrent.Executors;
 
 public class HttpServer {
 
-    //private final Router router = new Router();
-
     public final static FunctionalRouter FUNCTIONAL_ROUTER = new FunctionalRouter();
 
-    //public static BattleExecutor battleRes = new BattleExecutor();
-
     public static BattleWrapper battleWrapper = new BattleWrapper();
+
+    public final ExecutorService executorService = Executors.newFixedThreadPool(10);
 
 
     public void start() {
 
         try (ServerSocket listener = new ServerSocket(Constants.LISTENING_PORT)) {
-            ExecutorService executorService = Executors.newFixedThreadPool(10);
+            //ExecutorService executorService = Executors.newFixedThreadPool(10);
             while (true) {
                 try {
                     final Socket socket = listener.accept();

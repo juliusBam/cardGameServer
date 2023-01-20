@@ -1,51 +1,21 @@
 package julio.cardGame.cardGameServer.battle;
 
-import julio.cardGame.cardGameServer.battle.CardGame;
 import julio.cardGame.cardGameServer.database.models.UserInfoModel;
 import julio.cardGame.cardGameServer.http.communication.DefaultMessages;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Observable;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.CompletableFuture;
 
-public class BattleWrapper {
-
-    public List<String> getBattleResult() {
-        return battleResult;
-    }
-
-    protected PropertyChangeSupport propertyChangeSupport;
+public class BattleWrapper implements BattleResultProvider {
     private List<String> battleResult;
 
-    //TODO implement observer pattern from "scratch" -> implement observable and observer
-    public CompletableFuture<List<String>> completableBattleRes = new CompletableFuture<>();
+    private List<BattleResultSubscriber> subscribers = new ArrayList<>();
     private BlockingQueue<UserInfoModel> battleQueue = new ArrayBlockingQueue<>(2);
 
     public BattleWrapper() {
 
-        this.propertyChangeSupport = new PropertyChangeSupport(this);
-
-    }
-
-    public void updateBattleResult(List<String> newResults) {
-
-        List<String> oldValue = this.battleResult;
-        //List<String> oldValue = Collections.synchronizedList(new ArrayList<>());
-        //oldValue.add("");
-        this.battleResult = Collections.synchronizedList(new ArrayList<>(newResults));
-        //this.battleResult = Collections.synchronizedList(new ArrayList<>(newResults));
-                //new ArrayList<>(newResults);
-
-        this.propertyChangeSupport.firePropertyChange("Battle res", oldValue, this.battleResult);
-        //notifyObservers(newResults);
-
-        //this.propertyChangeSupport.firePropertyChange("Battle res", oldValue, this.battleResult);
     }
 
     public void addUserQueue(UserInfoModel newUser) {
@@ -59,33 +29,64 @@ public class BattleWrapper {
 
     public void play() {
 
-        List<String> battleRes;
+        List<String> newBattleRes;
 
         try {
 
             CardGame game = new CardGame(battleQueue.take(), battleQueue.take());
-            battleRes = game.playRound();
+            newBattleRes = game.playRound();
 
         } catch (InterruptedException e) {
 
-            battleRes = new ArrayList<>();
-            battleRes.add(DefaultMessages.ERR_USERS_BATTLE_QUEUE.getMessage());
+            newBattleRes = new ArrayList<>();
+            newBattleRes.add(DefaultMessages.ERR_USERS_BATTLE_QUEUE.getMessage());
 
         }
 
-        this.updateBattleResult(battleRes);
-    }
-
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-
-        this.propertyChangeSupport.addPropertyChangeListener(listener);
+        this.updateResult(newBattleRes);
 
     }
 
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
+    @Override
+    public void subscribe(BattleResultSubscriber battleResultSubscriber) {
 
-        this.propertyChangeSupport.removePropertyChangeListener(listener);
+        subscribers.add(battleResultSubscriber);
 
     }
 
+    @Override
+    public void unsubscribe(BattleResultSubscriber battleResultSubscriber) {
+
+        subscribers.remove(battleResultSubscriber);
+
+    }
+
+    @Override
+    public void notifySubscribers() {
+
+        //we iterate the subscribers in a reverse order, since the thread running this operation
+        //is in the first position, if we update its battle Service the loop will terminate
+        //not notifying the other thread
+        for (int i = this.subscribers.size() - 1; i > -1; i--) {
+
+            System.out.println("Updating subscriber");
+            subscribers.get(i).update();
+
+        }
+
+    }
+
+    @Override
+    public void updateResult(List<String> newResult) {
+
+        this.battleResult = newResult;
+
+        this.notifySubscribers();
+
+    }
+
+    @Override
+    public List<String> getResult() {
+        return this.battleResult;
+    }
 }

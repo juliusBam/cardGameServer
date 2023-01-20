@@ -29,12 +29,7 @@ public class CardGame {
 
         this.firstPlayer = new BattleUser(firstUser);
 
-        //todo fetches the owned cards from the db
-        //this.firstPlayer.createCollection();
-
         this.secondPlayer = new BattleUser(secondUser);
-        //todo fetches the owned cards from the db
-        //this.secondPlayer.createCollection();
 
     }
 
@@ -101,6 +96,8 @@ public class CardGame {
                     }
 
             }
+
+            //TODO rewrite in a dedicate service
 
             UserBattleResultWrapper battleResultWrapper = this.calculateWinner();
 
@@ -173,14 +170,6 @@ public class CardGame {
         this.secondPlayer.putCardBack();
     }
 
-    public BattleUser getFirstPlayer() {
-        return firstPlayer;
-    }
-
-    public BattleUser getSecondPlayer() {
-        return secondPlayer;
-    }
-
     private boolean playersHaveCards() {
         return this.firstPlayer.hasCards() && this.secondPlayer.hasCards();
     }
@@ -198,7 +187,6 @@ public class CardGame {
 
             return new UserBattleResultWrapper(secondPlayer, firstPlayer, false);
 
-            //return firstPlayerCards > secondPlayerCards ? this.firstPlayer : this.secondPlayer;
         }
     }
 

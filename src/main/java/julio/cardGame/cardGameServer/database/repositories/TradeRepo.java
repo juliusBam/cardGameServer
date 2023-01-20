@@ -14,50 +14,50 @@ import java.util.UUID;
 public class TradeRepo {
 
     private final String stmtInsertNewTrade = """
-                            INSERT INTO trades
-                                VALUES (?,?,?, (SELECT "userID" FROM users where "userName"=?), ?);
-                        """;
+                INSERT INTO trades
+                    VALUES (?,?,?, (SELECT "userID" FROM users where "userName"=?), ?);
+            """;
 
     private final String stmtDeleteTraded = """
-                DELETE
-                    FROM trades
-                        WHERE "tradeID"=?;
-                """;
+            DELETE
+                FROM trades
+                    WHERE "tradeID"=?;
+            """;
 
     private final String stmtCompareCardTradeRequirements = """
-                        SELECT count("tradeID")
-                            FROM trades
-                                WHERE "tradeID"=?
-                                    AND "requiredCardType"=(SELECT "cardType" FROM cards WHERE "cardID"=?)
-                                    AND "minimumDamage"<(SELECT card_damage FROM cards WHERE "cardID"=?);
-                    """;
+                SELECT count("tradeID")
+                    FROM trades
+                        WHERE "tradeID"=?
+                            AND "requiredCardType"=(SELECT "cardType" FROM cards WHERE "cardID"=?)
+                            AND "minimumDamage"<(SELECT card_damage FROM cards WHERE "cardID"=?);
+            """;
 
     private final String stmtCheckSelfTrade = """
-                    SELECT count("tradeID")
-                        FROM trades
-                            WHERE "tradeID"=? AND "userID"=(SELECT "userID" FROM users WHERE "userName"=?);
-                """;
+                SELECT count("tradeID")
+                    FROM trades
+                        WHERE "tradeID"=? AND "userID"=(SELECT "userID" FROM users WHERE "userName"=?);
+            """;
 
     private final String stmtFetchTrades = """
-                        SELECT t.* 
-                            FROM public."tradesMetaData" t;
-                    """;
+                SELECT t.* 
+                    FROM public."tradesMetaData" t;
+            """;
 
     private final String stmtDeleteTradeNormalUser = """
-                        DELETE 
-                            FROM trades 
-                            WHERE "tradeID"=? 
-                                AND "userID"=
-                                    (SELECT "userID" 
-                                        FROM users 
-                                        WHERE users."userName"=?)
-                    """;
+                DELETE 
+                    FROM trades 
+                    WHERE "tradeID"=? 
+                        AND "userID"=
+                            (SELECT "userID" 
+                                FROM users 
+                                WHERE users."userName"=?)
+            """;
 
     private final String stmtDeleteTradeAdmin = """
-                        DELETE 
-                            FROM public.trades 
-                            WHERE "tradeID"=?
-                    """;
+                DELETE 
+                    FROM public.trades 
+                    WHERE "tradeID"=?
+            """;
 
     public void insertNewTradeDeal(Connection dbConnection, String userName, TradeModel tradeModel, CardTypes requiredType) throws SQLException {
 
@@ -77,7 +77,7 @@ public class TradeRepo {
 
     public void deleteTrade(Connection dbConnection, UUID tradeUUID) throws SQLException {
 
-        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(this.stmtDeleteTraded)){
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(this.stmtDeleteTraded)) {
 
             preparedStatement.setObject(1, DataTransformation.prepareUUID(tradeUUID));
 

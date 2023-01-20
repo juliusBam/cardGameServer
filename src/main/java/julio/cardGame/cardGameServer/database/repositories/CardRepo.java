@@ -13,17 +13,53 @@ import java.util.UUID;
 
 public class CardRepo {
 
+    private final String stmtFetchUserCards = """
+                SELECT *
+                    FROM cards
+                        WHERE "ownerID"=(SELECT "userID"
+                                            FROM users
+                                                WHERE "userName"=?);
+            """;
+
+    private final String stmtAssignCardsToDeck = """
+            UPDATE cards
+                 SET "deckID"=?
+                         WHERE "cardID"=? OR "cardID"=? OR "cardID"=? OR "cardID"=?;
+             """;
+
+    private final String stmtInsertNewCards = """
+                INSERT INTO
+                    cards("cardID", "cardName", "card_damage", "cardElement", "cardType", "monsterRace")
+                VALUES
+                    (?,?,?,?,?,?),
+                    (?,?,?,?,?,?),
+                    (?,?,?,?,?,?),
+                    (?,?,?,?,?,?),
+                    (?,?,?,?,?,?);
+            """;
+
+    private final String stmtUpdateCardOwner = """
+                UPDATE cards
+                    SET "ownerID"=(SELECT "userID" from users WHERE "userName"=?)
+                        WHERE 
+                            "cardID"=? OR "cardID"=? OR "cardID"=? OR "cardID"=? OR "cardID"=?;
+            """;
+
+    private final String stmtChangeOwnershipOfferedCard = """
+                UPDATE cards
+                    SET "deckID"=null, "ownerID"=(SELECT "userID" FROM trades WHERE "tradeID"=?)
+                        WHERE "cardID"=?;
+            """;
+
+    private final String getStmtChangeOwnershipCardInTrade = """
+                UPDATE cards
+                    SET "deckID"=null, "ownerID"=(SELECT "userID" FROM users WHERE "userName"=?)
+                        WHERE "cardID"=(SELECT "offeredCardID" FROM trades WHERE "tradeID"=?);
+            """;
+
     public List<CardDbModel> fetchUserCards(String userName) throws SQLException {
 
-        String sql = """
-                SELECT * 
-                    FROM cards 
-                        WHERE "ownerID"=(SELECT "userID" 
-                                            FROM users 
-                                                WHERE "userName"=?);
-                """;
-
-        try (PreparedStatement preparedStatement = DbConnection.getInstance().prepareStatement(sql)) {
+        try (PreparedStatement preparedStatement = DbConnection.getInstance().prepareStatement(stmtFetchUserCards)) {
 
 
             preparedStatement.setString(1, userName);
@@ -56,13 +92,7 @@ public class CardRepo {
 
     public void moveCardsToDeck(Connection dbConn, UUID newDeckID, List<UUID> cardIds) throws SQLException {
 
-        String sql = """
-               UPDATE cards
-                    SET "deckID"=?
-                            WHERE "cardID"=? OR "cardID"=? OR "cardID"=? OR "cardID"=?;
-                """;
-
-        try (PreparedStatement preparedStatement = dbConn.prepareStatement(sql)){
+        try (PreparedStatement preparedStatement = dbConn.prepareStatement(stmtAssignCardsToDeck)) {
 
             preparedStatement.setObject(1, DataTransformation.prepareUUID(newDeckID));
 
@@ -80,18 +110,7 @@ public class CardRepo {
 
     public void addCards(Connection dbConnection, List<CardDbModel> cards) throws SQLException {
 
-        String sqlInsertCards = """
-                INSERT INTO
-                    cards("cardID", "cardName", "card_damage", "cardElement", "cardType", "monsterRace")
-                VALUES
-                    (?,?,?,?,?,?),
-                    (?,?,?,?,?,?),
-                    (?,?,?,?,?,?),
-                    (?,?,?,?,?,?),
-                    (?,?,?,?,?,?);
-                """;
-
-        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(sqlInsertCards)) {
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(stmtInsertNewCards)) {
 
             for (int i = 0; i < 5; ++i) {
 
@@ -112,14 +131,7 @@ public class CardRepo {
 
     public void updateCardOwner(Connection dbConnection, String userName, PackageModel packageData) throws SQLException {
 
-        String sql = """
-                UPDATE cards
-                    SET "ownerID"=(SELECT "userID" from users WHERE "userName"=?)
-                    WHERE 
-                        "cardID"=? OR "cardID"=? OR "cardID"=? OR "cardID"=? OR "cardID"=?;
-                """;
-
-        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(sql)) {
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(stmtUpdateCardOwner)) {
 
             preparedStatement.setString(1, userName);
             preparedStatement.setObject(2, DataTransformation.prepareUUID(packageData.firstCardID));
@@ -138,13 +150,7 @@ public class CardRepo {
 
     public void changeOwnershipOfferedCard(Connection dbConnection, UUID tradeUUID, UUID cardUUID) throws SQLException {
 
-        String sql = """
-                    UPDATE cards
-                        SET "deckID"=null, "ownerID"=(SELECT "userID" FROM trades WHERE "tradeID"=?)
-                        WHERE "cardID"=?;
-                """;
-
-        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(sql)) {
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(stmtChangeOwnershipOfferedCard)) {
 
             preparedStatement.setObject(1, DataTransformation.prepareUUID(tradeUUID));
             preparedStatement.setObject(2, DataTransformation.prepareUUID(cardUUID));
@@ -159,13 +165,7 @@ public class CardRepo {
 
     public void changeOwnershipCardInTrade(Connection dbConnection, String userName, UUID tradeUUID) throws SQLException {
 
-        String sql = """
-                UPDATE cards
-                    SET "deckID"=null, "ownerID"=(SELECT "userID" FROM users WHERE "userName"=?)
-                        WHERE "cardID"=(SELECT "offeredCardID" FROM trades WHERE "tradeID"=?);
-                """;
-
-        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(sql)) {
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(getStmtChangeOwnershipCardInTrade)) {
 
             preparedStatement.setString(1, userName);
             preparedStatement.setObject(2, DataTransformation.prepareUUID(tradeUUID));
