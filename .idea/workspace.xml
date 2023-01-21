@@ -6,7 +6,52 @@
   <component name="ChangeListManager">
     <list default="true" id="312fb4b1-8cf7-436a-b6d7-c41c0b71f13d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/database/repositories/UserRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameServer/database/repositories/UserRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/application/CardGame.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/ClientAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/ClientInputParser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/ClientInputValidator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/HeadersBuilder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/ServerResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/ServerResponseParser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/readers/CardNameReader.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/readers/CardReader.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/readers/CredentialReader.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/readers/DeckReader.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/readers/DoubleReader.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/readers/GenericStringReader.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/readers/InputReader.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/readers/PackageReader.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/readers/TradeDealReader.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/readers/TypeReader.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/readers/UUIDreader.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/readers/UsernameReader.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/requests/DeleteRequestBuilder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/requests/GetRequestBuilder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/requests/PostRequestBuilder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/requests/PutRequestBuilder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/helpers/requests/RequestBuilder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/services/Actions/Action.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/services/Actions/QuitAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/services/Actions/deleteActions/DeleteTradeAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/services/Actions/getActions/FetchCardsAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/services/Actions/getActions/ShowDeckAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/services/Actions/getActions/ShowScoreAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/services/Actions/getActions/ShowStatsAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/services/Actions/getActions/ShowTradesAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/services/Actions/getActions/ShowUserAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/services/Actions/postActions/BattleAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/services/Actions/postActions/BuyPackageAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/services/Actions/postActions/CreatePackageAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/services/Actions/postActions/CreateUserAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/services/Actions/postActions/LoginAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/services/Actions/postActions/PostTradeAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/services/Actions/postActions/TradeAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/services/Actions/putActions/CreateDeckAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/services/Actions/putActions/UpdateUserAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/services/LoginValidator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/services/RequestSender.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/julio/cardGame/cardGameClient/services/Validator.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -256,7 +301,7 @@
       <workItem from="1674235478878" duration="5697000" />
       <workItem from="1674244670680" duration="962000" />
       <workItem from="1674249888931" duration="4622000" />
-      <workItem from="1674295054124" duration="6576000" />
+      <workItem from="1674295054124" duration="7183000" />
     </task>
     <task id="LOCAL-00001" summary="First backup :D">
       <created>1673214341070</created>
@@ -370,7 +415,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674301315860</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Extracted sql from methods in user repo">
+      <created>1674302017069</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1674302017069</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -416,7 +468,8 @@
     <MESSAGE value="Added extra feature (activate/deactivate users)" />
     <MESSAGE value="Refactoring, added deactivate / activate user. Added crit chance for cards and implemented correct elo calculation" />
     <MESSAGE value="Finished tests, changed message factory to output base dmg and transformed dmg" />
-    <option name="LAST_COMMIT_MESSAGE" value="Finished tests, changed message factory to output base dmg and transformed dmg" />
+    <MESSAGE value="Extracted sql from methods in user repo" />
+    <option name="LAST_COMMIT_MESSAGE" value="Extracted sql from methods in user repo" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
