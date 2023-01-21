@@ -11,35 +11,13 @@ public class DbConnection implements Closeable {
 
     private Connection connection;
 
-//
     private static final HikariConfig config = new HikariConfig("src/main/resources/hikari.properties");
     private static final HikariDataSource ds = new HikariDataSource(config);
 
-    public DbConnection() {
-        /*try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException e) {
-            System.err.println("PostgreSQL JDBC driver not found");
-            e.printStackTrace();
-        }*/
-    }
-
-    /*public Connection connect(String database) throws SQLException {
-        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/" + database, "mtcgbackend", "mtcgBackendPwd");
-    }*/
-
-    /*public Connection connect() throws SQLException {
-        //HikariConfig config = new HikariConfig()
-
-        return connect(Constants.DB_NAME);
-    }*/
-
     public Connection connect() throws SQLException {
-        //HikariConfig config = new HikariConfig("src/main/resources/hikari.properties");
-        //HikariDataSource ds = new HikariDataSource(config);
 
         return ds.getConnection();
-                //connect(Constants.DB_NAME);
+
     }
 
 
@@ -58,25 +36,6 @@ public class DbConnection implements Closeable {
     public PreparedStatement prepareStatement(String sql) throws SQLException {
         return getConnection().prepareStatement(sql);
     }
-
-    public boolean executeSql(String sql) throws SQLException {
-        return executeSql(getConnection(), sql, false);
-    }
-
-    public static boolean executeSql(Connection connection, String sql, boolean ignoreIfFails) throws SQLException {
-        try ( Statement statement = connection.createStatement() ) {
-            statement.execute(sql );
-            return true;
-        } catch (SQLException e) {
-            if( !ignoreIfFails )
-                throw e;
-            return false;
-        }
-    }
-
-    /*public static boolean executeSql(Connection connection, String sql) throws SQLException {
-        return executeSql(connection, sql, false);
-    }*/
 
 
     @Override

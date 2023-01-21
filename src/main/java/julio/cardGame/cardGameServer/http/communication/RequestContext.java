@@ -58,7 +58,7 @@ public class RequestContext extends HttpMessage implements HttpCommunication {
         this.body = body;
     }
 
-    public int getContentLenght() {
+    public int getContentLength() {
 
         return headers.stream()
                 .filter(header -> HeaderTypes.CONTENT_LENGTH.getHeaderValue().equals(header.getName()))

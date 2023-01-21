@@ -1,9 +1,11 @@
 package julio.cardGame.cardGameServer.http.communication;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import julio.cardGame.cardGameServer.http.communication.headers.Header;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +30,24 @@ public class Response extends HttpMessage implements Sendable {
 
         if(isJson)
             this.addJsonContentHeader();
+    }
+
+    public Response(SQLException e) {
+        switch (e.getSQLState()) {
+            case "23001", "23502", "23503", "23504", "23505", "23511", "23513", "23515" -> {
+                this.body = e.getMessage();
+                this.httpStatus = HttpStatus.BAD_REQUEST;
+            }
+            default -> {
+                this.body = e.getMessage();
+                this.httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+            }
+        }
+    }
+
+    public Response(String body, JsonProcessingException e) {
+        this.body = body;
+        this.httpStatus = HttpStatus.BAD_REQUEST;
     }
 
     private void addJsonContentHeader() {

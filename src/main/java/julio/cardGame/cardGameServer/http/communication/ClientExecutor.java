@@ -22,11 +22,8 @@ public class ClientExecutor implements Runnable {
     public ClientExecutor(Socket newSocket) {
         this.actualSocket = newSocket;
     }
-
     @Override
     public void run() {
-
-        System.out.println(Thread.currentThread().getName() + " responding");
 
         try {
             BufferedReader br = new BufferedReader(
@@ -34,13 +31,8 @@ public class ClientExecutor implements Runnable {
                             (this.actualSocket.getInputStream()));
 
             final RequestContext requestContext = this.parseRequest(br);
-                /*
-                    System.out.println("Thread: " + Thread.currentThread().getName());
-                    requestContext.print();
-                */
 
             //now that we parsed the request into the correct context we can handle it
-            //Routeable routeable = router.findRoute(new RouteIdentifier(requestContext.getPath(), requestContext.getHttpVerb()));
             Sendable response = this.generateResponse(requestContext);
 
             //Sendable response;
@@ -61,11 +53,8 @@ public class ClientExecutor implements Runnable {
         RequestContext requestContext = new RequestContext();
 
         String versionString = bufferedReader.readLine();
-        final String[] splitVersionString = versionString.split(" ");
-        requestContext.setHttpVerb(splitVersionString[0]);
 
-        PathParser.parsePath(requestContext, splitVersionString[1]);
-        //requestContext.setPath(splitVersionString[1]);
+        this.parseEndPoint(requestContext, versionString);
 
         List<Header> headers = new ArrayList<>();
         HeaderParser headerParser = new HeaderParser();
@@ -83,7 +72,7 @@ public class ClientExecutor implements Runnable {
 
         requestContext.setHeaders(headers);
 
-        int contentLength = requestContext.getContentLenght();
+        int contentLength = requestContext.getContentLength();
         char[] buffer = new char[contentLength];
         bufferedReader.read(buffer, 0, contentLength);
         String body = new String(buffer);
@@ -95,29 +84,33 @@ public class ClientExecutor implements Runnable {
 
     private Sendable generateResponse(RequestContext requestContext) throws IOException {
 
-        Routeable routeable = HttpServer.functionalRouter
-                .findRoute(
-                        new RouteIdentifier(requestContext.getPath(), requestContext.getHttpVerb())
-                )
-                .generateRoute();
-
         try {
 
+            Routeable route = HttpServer.FUNCTIONAL_ROUTER
+                    .findRoute(
+                            new RouteIdentifier(requestContext.getPath(), requestContext.getHttpVerb())
+                    ).generateRoute();
 
-            if (routeable != null) {
+            return route.process(requestContext);
 
-                return routeable.process(requestContext);
-
-            } else {
-
-                return new Response(DefaultMessages.ERR_ROUTE_NOT_FOUND.getMessage(), HttpStatus.BAD_REQUEST);
-
-            }
 
         } catch (JsonProcessingException | NoSuchAlgorithmException | SQLException e) {
+
             return new Response(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+
+        } catch (NullPointerException e) {
+
+            return new Response(DefaultMessages.ERR_ROUTE_NOT_FOUND.getMessage(), HttpStatus.BAD_REQUEST);
+
         }
 
+    }
+
+    public void parseEndPoint(RequestContext requestContext, String versionString) throws IOException {
+        final String[] splitVersionString = versionString.split(" ");
+        requestContext.setHttpVerb(splitVersionString[0]);
+
+        PathParser.parsePath(requestContext, splitVersionString[1]);
     }
 
 }

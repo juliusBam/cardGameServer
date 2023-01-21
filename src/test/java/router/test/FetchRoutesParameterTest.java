@@ -8,6 +8,8 @@ import julio.cardGame.cardGameServer.http.routing.routes.Routeable;
 import julio.cardGame.cardGameServer.http.routing.routes.delete.ExecuteDeleteTrading;
 import julio.cardGame.cardGameServer.http.routing.routes.get.*;
 import julio.cardGame.cardGameServer.http.routing.routes.post.*;
+import julio.cardGame.cardGameServer.http.routing.routes.put.ExecutePutActivate;
+import julio.cardGame.cardGameServer.http.routing.routes.put.ExecutePutDeactivate;
 import julio.cardGame.cardGameServer.http.routing.routes.put.ExecutePutDeck;
 import julio.cardGame.cardGameServer.http.routing.routes.put.ExecutePutUser;
 import org.junit.jupiter.api.BeforeAll;
@@ -54,7 +56,9 @@ public class FetchRoutesParameterTest {
                     Arguments.of(new RouteIdentifier(HttpPath.DECK.getPath(), HttpVerb.PUT.getVerb()), new ExecutePutDeck()),
                     Arguments.of(new RouteIdentifier(HttpPath.STATS.getPath(), HttpVerb.GET.getVerb()), new ExecuteGetStats()),
                     Arguments.of(new RouteIdentifier(HttpPath.SCORE.getPath(), HttpVerb.GET.getVerb()), new ExecuteGetScore()),
-                    Arguments.of(new RouteIdentifier(HttpPath.BATTLES.getPath(), HttpVerb.POST.getVerb()), new ExecutePostBattle())
+                    Arguments.of(new RouteIdentifier(HttpPath.BATTLES.getPath(), HttpVerb.POST.getVerb()), new ExecutePostBattle()),
+                    Arguments.of(new RouteIdentifier(HttpPath.ACTIVATE.getPath(), HttpVerb.PUT.getVerb()), new ExecutePutActivate()),
+                    Arguments.of(new RouteIdentifier(HttpPath.DEACTIVATE.getPath(), HttpVerb.PUT.getVerb()), new ExecutePutDeactivate())
             );
         }
     }

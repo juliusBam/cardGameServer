@@ -12,9 +12,6 @@ import java.util.UUID;
 
 public class DataTransformation {
 
-    public static final int winValue = 1;
-
-    public static final int loseValue = -1;
     public static String calculateHash(String input) throws NoSuchAlgorithmException {
 
         MessageDigest md = MessageDigest.getInstance("MD5");
@@ -25,7 +22,7 @@ public class DataTransformation {
 
         String hashtext = no.toString(16);
         while (hashtext.length() < 32) {
-            hashtext = "0" + hashtext;
+            hashtext = hashtext.concat("0");
         }
         return hashtext;
 
@@ -56,7 +53,7 @@ public class DataTransformation {
     public static double calculateWinRate(int wins, int losses) {
 
         if (wins + losses != 0 || wins != 0)
-            return (double) (wins / (wins + losses));
+            return (wins / (wins + losses));
 
         return 0;
 
@@ -68,32 +65,4 @@ public class DataTransformation {
 
     }
 
-    public static int calculateWinnerElo(int winnerElo, int loserElo) {
-
-        int eloIncrease = 32;
-
-        if (winnerElo > 1600)
-            eloIncrease = 16;
-
-        int expectedOutcome = winnerElo > loserElo ? DataTransformation.winValue : -1;
-
-        int newElo = winnerElo + (eloIncrease * (DataTransformation.winValue - expectedOutcome));
-
-        return Math.max(newElo, 0);
-
-    }
-
-    public static int calculateLoserElo(int winnerElo, int loserElo) {
-
-        int eloIncrease = 32;
-
-        if (loserElo > 1600)
-            eloIncrease = 16;
-
-        int expectedOutcome = loserElo > winnerElo ? DataTransformation.winValue : -1;
-
-        int newElo = winnerElo + (eloIncrease * (DataTransformation.winValue - expectedOutcome));
-
-        return Math.max(newElo, 0);
-    }
 }

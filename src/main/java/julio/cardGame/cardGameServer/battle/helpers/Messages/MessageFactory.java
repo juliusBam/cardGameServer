@@ -1,40 +1,57 @@
 package julio.cardGame.cardGameServer.battle.helpers.Messages;
 
+import julio.cardGame.cardGameServer.Constants;
 import julio.cardGame.cardGameServer.battle.BattleUser;
 import julio.cardGame.cardGameServer.battle.cards.ICard;
 import julio.cardGame.cardGameServer.battle.helpers.Fighter.CardFighterResult;
 
 public class MessageFactory implements IMessageFactory {
 
-    //todo refactor param
     public String createCardFightMsg(BattleUser firstPlayer, ICard firstCard, BattleUser secondPlayer, ICard secondCard, CardFighterResult fightResult) {
-
-        //in the case we have a draw
 
         String firstBaseMsg = "%s: %s (%s) vs ";
         String secondBaseMsg = "%s: %s (%s)";
 
-        String formattedFirstMsg = String.format(firstBaseMsg, firstPlayer.getName(), firstCard.getName(), Integer.toString(fightResult.getFirstCardDmg()));
-        String formattedSecondMsg = String.format(secondBaseMsg, secondPlayer.getName(), secondCard.getName(), Integer.toString(fightResult.getSecondCardDmg()));
+        //String formattedFirstMsg = String.format(firstBaseMsg, firstPlayer.getName(), firstCard.getName(), fightResult.getFirstCardDmg());
+        //String formattedSecondMsg = String.format(secondBaseMsg, secondPlayer.getName(), secondCard.getName(), fightResult.getSecondCardDmg());
+
+        String formattedFirstMsg = String.format(firstBaseMsg, firstPlayer.getName(), firstCard.getName(), firstCard.getDmg());
+        String formattedSecondMsg = String.format(secondBaseMsg, secondPlayer.getName(), secondCard.getName(), secondCard.getDmg());
+
+
+        String dmgMsgPartBase = " => %s vs %s ";
+
+        String dmgMsgPartFormatted = String.format(dmgMsgPartBase, fightResult.getFirstCardDmg(), fightResult.getSecondCardDmg());
 
         if (fightResult.getLoser() == null && fightResult.getWinner() == null) {
             return createFightDrawMsg(formattedFirstMsg, formattedSecondMsg);
         }
 
-        String lastMsgPart = " => %s %s %s";
-        String formattedLastMsg = String.format(lastMsgPart, fightResult.getWinner().getName(), " kills ", fightResult.getLoser().getName());
+        String formattedLastMsg = "";
 
-        String totalMsg = formattedFirstMsg.concat(formattedSecondMsg).concat(formattedLastMsg);
-        return totalMsg;
-    }
+        if (fightResult.getFirstCardDmg() == Constants.WATERSPELL_VS_KNIGHT || fightResult.getSecondCardDmg() == Constants.WATERSPELL_VS_KNIGHT) {
 
-    public String createUserErrorMsg(BattleUser user, String msg) {
+            formattedLastMsg = "=> The knight drowned";
 
-        return "";
+        } else {
+            String lastMsgPart = " => %s %s %s";
+            formattedLastMsg = String.format(lastMsgPart, fightResult.getWinner().getName(), " kills ", fightResult.getLoser().getName());
+        }
+
+        if (fightResult.isRickRoll()) {
+
+            formattedLastMsg = formattedLastMsg.concat( " ||| Rickrolled! |||");
+
+        }
+
+        return formattedFirstMsg.concat(formattedSecondMsg).concat(dmgMsgPartFormatted).concat(formattedLastMsg);
+
     }
 
     private String createFightDrawMsg(String firstPart, String secondPart) {
+
         return firstPart.concat(secondPart).concat(" => had the same damage, the match is a draw");
+
     }
 
     public String createRoundLimitMsg() {
@@ -42,10 +59,14 @@ public class MessageFactory implements IMessageFactory {
     }
 
     public String createEndGameMsg(BattleUser winner) {
+
+        final String endGameMsg = "Player %s won";
+
         if (winner == null) {
             return "The game was a draw";
         } else {
-            return "Player " + winner.getName() + "won";
+            return String.format(endGameMsg, winner.getName());
         }
+
     }
 }

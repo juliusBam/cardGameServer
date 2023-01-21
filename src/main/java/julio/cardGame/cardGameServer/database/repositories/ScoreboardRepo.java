@@ -1,10 +1,8 @@
 package julio.cardGame.cardGameServer.database.repositories;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import julio.cardGame.cardGameServer.database.db.DataTransformation;
 import julio.cardGame.cardGameServer.database.db.DbConnection;
-import julio.cardGame.cardGameServer.database.models.ScoreModel;
+import julio.cardGame.cardGameServer.models.ScoreModel;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,15 +12,14 @@ import java.util.List;
 
 public class ScoreboardRepo {
 
-    public List<ScoreModel> fetchScoreBoard() throws SQLException {
-
-        String sql = """
-                    SELECT
-                        t.*
-                    FROM public."scoreBoard" t;
+    private final String stmtFetchScoreBoard = """
+                    SELECT t.*
+                        FROM public."scoreBoard" t;
                 """;
 
-        try (PreparedStatement preparedStatement = DbConnection.getInstance().prepareStatement(sql)) {
+    public List<ScoreModel> fetchScoreBoard() throws SQLException {
+
+        try (PreparedStatement preparedStatement = DbConnection.getInstance().prepareStatement(stmtFetchScoreBoard)) {
 
             ResultSet resultSet = preparedStatement.executeQuery();
 

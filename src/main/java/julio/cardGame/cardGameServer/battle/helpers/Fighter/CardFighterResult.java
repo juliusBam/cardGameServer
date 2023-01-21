@@ -7,12 +7,14 @@ public class CardFighterResult {
     private final ICard loser;
     private final int firstCardDmg;
     private final int secondCardDmg;
+    private final boolean rickRoll;
 
-    public CardFighterResult(ICard winner, ICard loser, int firstCardDmg, int secondCardDmg) {
+    public CardFighterResult(ICard winner, ICard loser, int firstCardDmg, int secondCardDmg, boolean rickRoll) {
         this.winner = winner;
         this.loser = loser;
         this.firstCardDmg = firstCardDmg;
         this.secondCardDmg = secondCardDmg;
+        this.rickRoll = rickRoll;
     }
 
 
@@ -30,5 +32,9 @@ public class CardFighterResult {
 
     public int getSecondCardDmg() {
         return secondCardDmg;
+    }
+
+    public boolean isRickRoll() {
+        return rickRoll;
     }
 }

@@ -1,6 +1,5 @@
 package julio.cardGame.cardGameServer.http.routing;
 
-//TODO add missing, check CURL script
 public enum HttpPath {
     USERS("/users"),
     SESSIONS("/sessions"),
@@ -11,6 +10,8 @@ public enum HttpPath {
     STATS("/stats"),
     SCORE("/score"),
     BATTLES("/battles"),
+    ACTIVATE("/activate"),
+    DEACTIVATE("/deactivate"),
     TRADINGS("/tradings");
 
     private final String HttpPath;

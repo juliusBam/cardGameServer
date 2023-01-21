@@ -5,13 +5,14 @@ import julio.cardGame.cardGameServer.http.routing.HttpVerb;
 import julio.cardGame.cardGameServer.http.routing.routes.delete.ExecuteDeleteTrading;
 import julio.cardGame.cardGameServer.http.routing.routes.get.*;
 import julio.cardGame.cardGameServer.http.routing.routes.post.*;
+import julio.cardGame.cardGameServer.http.routing.routes.put.ExecutePutActivate;
+import julio.cardGame.cardGameServer.http.routing.routes.put.ExecutePutDeactivate;
 import julio.cardGame.cardGameServer.http.routing.routes.put.ExecutePutDeck;
 import julio.cardGame.cardGameServer.http.routing.routes.put.ExecutePutUser;
-
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+
+//TODO add new endpoint to activate/deactivate users -> service and repo as well (only admin)
 
 public class FunctionalRouter {
 
@@ -67,7 +68,9 @@ public class FunctionalRouter {
             //we register the battles route
             registerRoute(new RouteIdentifier(HttpPath.BATTLES.getPath(), HttpVerb.POST.getVerb()), ExecutePostBattle::new);
 
+            registerRoute(new RouteIdentifier(HttpPath.ACTIVATE.getPath(), HttpVerb.PUT.getVerb()), ExecutePutActivate::new);
 
+            registerRoute(new RouteIdentifier(HttpPath.DEACTIVATE.getPath(), HttpVerb.PUT.getVerb()), ExecutePutDeactivate::new);
 
         }
 
