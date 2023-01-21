@@ -5,7 +5,6 @@ import julio.cardGame.cardGameServer.http.HttpServer;
 import julio.cardGame.cardGameServer.http.communication.headers.Header;
 import julio.cardGame.cardGameServer.http.communication.headers.HeaderParser;
 import julio.cardGame.cardGameServer.http.routing.PathParser;
-import julio.cardGame.cardGameServer.http.routing.router.RouteEntry;
 import julio.cardGame.cardGameServer.http.routing.router.RouteIdentifier;
 import julio.cardGame.cardGameServer.http.routing.routes.Routeable;
 
@@ -23,7 +22,6 @@ public class ClientExecutor implements Runnable {
     public ClientExecutor(Socket newSocket) {
         this.actualSocket = newSocket;
     }
-
     @Override
     public void run() {
 
@@ -55,10 +53,8 @@ public class ClientExecutor implements Runnable {
         RequestContext requestContext = new RequestContext();
 
         String versionString = bufferedReader.readLine();
-        final String[] splitVersionString = versionString.split(" ");
-        requestContext.setHttpVerb(splitVersionString[0]);
 
-        PathParser.parsePath(requestContext, splitVersionString[1]);
+        this.parseEndPoint(requestContext, versionString);
 
         List<Header> headers = new ArrayList<>();
         HeaderParser headerParser = new HeaderParser();
@@ -76,7 +72,7 @@ public class ClientExecutor implements Runnable {
 
         requestContext.setHeaders(headers);
 
-        int contentLength = requestContext.getContentLenght();
+        int contentLength = requestContext.getContentLength();
         char[] buffer = new char[contentLength];
         bufferedReader.read(buffer, 0, contentLength);
         String body = new String(buffer);
@@ -108,6 +104,13 @@ public class ClientExecutor implements Runnable {
 
         }
 
+    }
+
+    public void parseEndPoint(RequestContext requestContext, String versionString) throws IOException {
+        final String[] splitVersionString = versionString.split(" ");
+        requestContext.setHttpVerb(splitVersionString[0]);
+
+        PathParser.parsePath(requestContext, splitVersionString[1]);
     }
 
 }

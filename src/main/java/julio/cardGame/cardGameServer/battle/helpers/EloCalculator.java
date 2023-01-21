@@ -53,4 +53,10 @@ public class EloCalculator {
 
     }
 
+    public static int getLowEloK() {return LOW_ELO_K;}
+
+    public static int getAvgEloK() {return AVG_ELO_K;}
+
+    public static int getHighEloK() {return HIGH_ELO_K;}
+
 }

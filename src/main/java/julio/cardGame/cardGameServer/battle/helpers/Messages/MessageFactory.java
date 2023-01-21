@@ -12,8 +12,16 @@ public class MessageFactory implements IMessageFactory {
         String firstBaseMsg = "%s: %s (%s) vs ";
         String secondBaseMsg = "%s: %s (%s)";
 
-        String formattedFirstMsg = String.format(firstBaseMsg, firstPlayer.getName(), firstCard.getName(), fightResult.getFirstCardDmg());
-        String formattedSecondMsg = String.format(secondBaseMsg, secondPlayer.getName(), secondCard.getName(), fightResult.getSecondCardDmg());
+        //String formattedFirstMsg = String.format(firstBaseMsg, firstPlayer.getName(), firstCard.getName(), fightResult.getFirstCardDmg());
+        //String formattedSecondMsg = String.format(secondBaseMsg, secondPlayer.getName(), secondCard.getName(), fightResult.getSecondCardDmg());
+
+        String formattedFirstMsg = String.format(firstBaseMsg, firstPlayer.getName(), firstCard.getName(), firstCard.getDmg());
+        String formattedSecondMsg = String.format(secondBaseMsg, secondPlayer.getName(), secondCard.getName(), secondCard.getDmg());
+
+
+        String dmgMsgPartBase = " => %s vs %s ";
+
+        String dmgMsgPartFormatted = String.format(dmgMsgPartBase, fightResult.getFirstCardDmg(), fightResult.getSecondCardDmg());
 
         if (fightResult.getLoser() == null && fightResult.getWinner() == null) {
             return createFightDrawMsg(formattedFirstMsg, formattedSecondMsg);
@@ -36,7 +44,7 @@ public class MessageFactory implements IMessageFactory {
 
         }
 
-        return formattedFirstMsg.concat(formattedSecondMsg).concat(formattedLastMsg);
+        return formattedFirstMsg.concat(formattedSecondMsg).concat(dmgMsgPartFormatted).concat(formattedLastMsg);
 
     }
 
