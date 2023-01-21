@@ -1,7 +1,10 @@
-package julio.cardGame.cardGameServer.database.db;
+package julio.cardGame.cardGameServer.database;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import julio.cardGame.cardGameServer.Main;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Closeable;
 import java.sql.*;
@@ -15,7 +18,7 @@ public class DbConnection implements Closeable {
     private static final HikariDataSource ds = new HikariDataSource(config);
 
     public Connection connect() throws SQLException {
-
+        Logger logger = LoggerFactory.getLogger(DbConnection.class);
         return ds.getConnection();
 
     }

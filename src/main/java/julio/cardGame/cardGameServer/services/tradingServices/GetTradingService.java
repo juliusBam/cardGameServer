@@ -3,7 +3,7 @@ package julio.cardGame.cardGameServer.services.tradingServices;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import julio.cardGame.cardGameServer.models.TradeViewModel;
-import julio.cardGame.cardGameServer.database.repositories.TradeRepo;
+import julio.cardGame.cardGameServer.repositories.TradeRepo;
 import julio.cardGame.cardGameServer.http.communication.DefaultMessages;
 import julio.cardGame.cardGameServer.http.communication.HttpStatus;
 import julio.cardGame.cardGameServer.http.communication.RequestContext;

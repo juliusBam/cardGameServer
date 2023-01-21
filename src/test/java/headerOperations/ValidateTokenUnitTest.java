@@ -1,4 +1,4 @@
-package headerOperations.test;
+package headerOperations;
 
 import julio.cardGame.cardGameServer.http.communication.headers.Header;
 import julio.cardGame.cardGameServer.http.communication.headers.HeaderParser;

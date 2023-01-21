@@ -1,4 +1,4 @@
-package battleTests.tests.cardFighting;
+package battle;
 
 import julio.cardGame.cardGameServer.battle.BattleUser;
 import julio.cardGame.cardGameServer.battle.cards.CardFactory;

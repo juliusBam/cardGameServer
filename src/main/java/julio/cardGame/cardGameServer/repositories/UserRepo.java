@@ -1,8 +1,8 @@
-package julio.cardGame.cardGameServer.database.repositories;
+package julio.cardGame.cardGameServer.repositories;
 
 import julio.cardGame.cardGameServer.battle.helpers.EloCalculator;
-import julio.cardGame.cardGameServer.database.db.DataTransformation;
-import julio.cardGame.cardGameServer.database.db.DbConnection;
+import julio.cardGame.cardGameServer.database.DataTransformation;
+import julio.cardGame.cardGameServer.database.DbConnection;
 import julio.cardGame.cardGameServer.Constants;
 import julio.cardGame.cardGameServer.models.*;
 
@@ -141,7 +141,7 @@ public class UserRepo {
             preparedStatement.setBoolean(1, newState);
             preparedStatement.setString(2, userName);
 
-            int changedRecords = preparedStatement.executeUpdate();
+            preparedStatement.execute();
 
         }
 
@@ -212,7 +212,7 @@ public class UserRepo {
             preparedStatement.setString(3, userModel.name);
             preparedStatement.setString(4, requestedUser);
 
-            int res = preparedStatement.executeUpdate();
+            preparedStatement.execute();
 
         }
 
@@ -298,7 +298,7 @@ public class UserRepo {
             preparedStatement.setInt(2, EloCalculator.calculateWinnerElo(eloWinner, eloLooser));
             preparedStatement.setString(3, userName);
 
-            int res = preparedStatement.executeUpdate();
+            preparedStatement.execute();
 
         }
 
@@ -314,7 +314,7 @@ public class UserRepo {
             preparedStatement.setInt(2, EloCalculator.calculateLoserElo(eloWinner, eloLooser));
             preparedStatement.setString(3, userName);
 
-            int res = preparedStatement.executeUpdate();
+            preparedStatement.execute();
 
         }
 
@@ -437,7 +437,7 @@ public class UserRepo {
             preparedStatement.setObject(1, DataTransformation.prepareUUID(newDeckID));
             preparedStatement.setString(2, userName);
 
-            int res = preparedStatement.executeUpdate();
+            preparedStatement.execute();
 
         } catch (SQLException e) {
             throw e;
@@ -460,7 +460,7 @@ public class UserRepo {
                 UUID deckID = resultSet.getObject(1, UUID.class);
 
                 if (deckID != null)
-                    hasDeck = true;
+                    return true;
 
             } else {
                 preparedStatement.close();
@@ -469,7 +469,7 @@ public class UserRepo {
 
         }
 
-        return hasDeck;
+        return false;
 
     }
 
@@ -500,7 +500,7 @@ public class UserRepo {
             preparedStatement.setInt(1, userCoins - Constants.PACKAGE_COST);
             preparedStatement.setString(2, userName);
 
-            int res = preparedStatement.executeUpdate();
+            preparedStatement.execute();
 
         } catch (SQLException e) {
             throw e;

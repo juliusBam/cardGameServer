@@ -1,6 +1,6 @@
-package julio.cardGame.cardGameServer.database.repositories;
+package julio.cardGame.cardGameServer.repositories;
 
-import julio.cardGame.cardGameServer.database.db.DataTransformation;
+import julio.cardGame.cardGameServer.database.DataTransformation;
 import julio.cardGame.cardGameServer.models.PackageModel;
 
 import java.sql.*;

@@ -1,4 +1,4 @@
-package router.test;
+package routing;
 
 import julio.cardGame.cardGameServer.http.routing.HttpPath;
 import julio.cardGame.cardGameServer.http.routing.HttpVerb;

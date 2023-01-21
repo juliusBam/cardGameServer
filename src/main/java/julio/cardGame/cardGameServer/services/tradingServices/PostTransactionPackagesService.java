@@ -2,11 +2,11 @@ package julio.cardGame.cardGameServer.services.tradingServices;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import julio.cardGame.cardGameServer.Constants;
-import julio.cardGame.cardGameServer.database.db.DbConnection;
+import julio.cardGame.cardGameServer.database.DbConnection;
 import julio.cardGame.cardGameServer.models.PackageModel;
-import julio.cardGame.cardGameServer.database.repositories.CardRepo;
-import julio.cardGame.cardGameServer.database.repositories.PackageRepo;
-import julio.cardGame.cardGameServer.database.repositories.UserRepo;
+import julio.cardGame.cardGameServer.repositories.CardRepo;
+import julio.cardGame.cardGameServer.repositories.PackageRepo;
+import julio.cardGame.cardGameServer.repositories.UserRepo;
 import julio.cardGame.cardGameServer.http.communication.DefaultMessages;
 import julio.cardGame.cardGameServer.http.communication.HttpStatus;
 import julio.cardGame.cardGameServer.http.communication.RequestContext;

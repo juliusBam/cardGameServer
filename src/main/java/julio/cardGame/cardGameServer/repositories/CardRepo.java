@@ -1,7 +1,7 @@
-package julio.cardGame.cardGameServer.database.repositories;
+package julio.cardGame.cardGameServer.repositories;
 
-import julio.cardGame.cardGameServer.database.db.DataTransformation;
-import julio.cardGame.cardGameServer.database.db.DbConnection;
+import julio.cardGame.cardGameServer.database.DataTransformation;
+import julio.cardGame.cardGameServer.database.DbConnection;
 import julio.cardGame.cardGameServer.models.CardDbModel;
 import julio.cardGame.cardGameServer.models.PackageModel;
 import julio.cardGame.cardGameServer.Constants;
@@ -112,7 +112,7 @@ public class CardRepo {
                 preparedStatement.setObject(i + 2, DataTransformation.prepareUUID(cardIds.get(i)));
             }
 
-            int res = preparedStatement.executeUpdate();
+            preparedStatement.execute();
 
         } catch (SQLException e) {
             throw e;
@@ -152,7 +152,7 @@ public class CardRepo {
             preparedStatement.setObject(5, DataTransformation.prepareUUID(packageData.fourthCardID));
             preparedStatement.setObject(6, DataTransformation.prepareUUID(packageData.fifthCardID));
 
-            int res = preparedStatement.executeUpdate();
+            preparedStatement.execute();
 
         } catch (SQLException e) {
             throw e;
@@ -167,7 +167,7 @@ public class CardRepo {
             preparedStatement.setObject(1, DataTransformation.prepareUUID(tradeUUID));
             preparedStatement.setObject(2, DataTransformation.prepareUUID(cardUUID));
 
-            int res = preparedStatement.executeUpdate();
+            preparedStatement.execute();
 
         } catch (SQLException e) {
             throw e;
@@ -182,7 +182,7 @@ public class CardRepo {
             preparedStatement.setString(1, userName);
             preparedStatement.setObject(2, DataTransformation.prepareUUID(tradeUUID));
 
-            int res = preparedStatement.executeUpdate();
+            preparedStatement.execute();
 
         } catch (SQLException e) {
             throw e;

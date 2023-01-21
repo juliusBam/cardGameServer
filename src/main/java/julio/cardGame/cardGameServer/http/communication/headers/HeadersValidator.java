@@ -23,9 +23,4 @@ public class HeadersValidator {
 
     }
 
-    public static boolean checkAdmin(String authToken) {
-
-        return authToken.contains("admin");
-
-    }
 }

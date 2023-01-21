@@ -1,4 +1,4 @@
-package requestContext.test;
+package requestContext;
 
 import julio.cardGame.cardGameServer.http.communication.ClientExecutor;
 import julio.cardGame.cardGameServer.http.communication.RequestContext;

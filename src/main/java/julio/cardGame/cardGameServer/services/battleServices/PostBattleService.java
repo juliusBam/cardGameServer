@@ -5,7 +5,7 @@ import julio.cardGame.cardGameServer.battle.BattleResultSubscriber;
 import julio.cardGame.cardGameServer.controllers.AuthenticationController;
 import julio.cardGame.cardGameServer.models.CompleteUserModel;
 import julio.cardGame.cardGameServer.models.UserInfoModel;
-import julio.cardGame.cardGameServer.database.repositories.UserRepo;
+import julio.cardGame.cardGameServer.repositories.UserRepo;
 import julio.cardGame.cardGameServer.http.HttpServer;
 import julio.cardGame.cardGameServer.http.communication.HttpStatus;
 import julio.cardGame.cardGameServer.http.communication.RequestContext;
@@ -33,15 +33,10 @@ public class PostBattleService implements CardGameService, BattleResultSubscribe
 
         try {
 
-            AuthorizationWrapper auth = AuthenticationController.requireAuthToken(requestContext.getHeaders());
-
-            if (auth.response != null)
-                return auth.response;
-
             UserRepo userRepo = new UserRepo();
 
             //Create the user data for the battle
-            CompleteUserModel userData = userRepo.getUser(auth.userName);
+            CompleteUserModel userData = userRepo.getUser(authorizationWrapper.userName);
 
             //subscribe to the battle result provider
             HttpServer.battleWrapper.subscribe(this);

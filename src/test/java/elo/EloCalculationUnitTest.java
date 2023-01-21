@@ -1,4 +1,4 @@
-package elo.test;
+package elo;
 
 import julio.cardGame.cardGameServer.battle.helpers.EloCalculator;
 import org.junit.jupiter.api.Test;

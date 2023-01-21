@@ -55,7 +55,7 @@ public class CardFighter {
 
             int percentage = rand.nextInt(100);
 
-            if (percentage < 18) {
+            if (percentage < 15) {
                 return 3;
             }
 

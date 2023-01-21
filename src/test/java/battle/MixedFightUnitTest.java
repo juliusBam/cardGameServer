@@ -1,4 +1,4 @@
-package battleTests.tests.cardFighting;
+package battle;
 
 import julio.cardGame.cardGameServer.Constants;
 import julio.cardGame.cardGameServer.battle.BattleUser;

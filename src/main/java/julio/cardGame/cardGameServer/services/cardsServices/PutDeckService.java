@@ -4,9 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import julio.cardGame.cardGameServer.Constants;
-import julio.cardGame.cardGameServer.database.db.DbConnection;
-import julio.cardGame.cardGameServer.database.repositories.CardRepo;
-import julio.cardGame.cardGameServer.database.repositories.UserRepo;
+import julio.cardGame.cardGameServer.database.DbConnection;
+import julio.cardGame.cardGameServer.repositories.CardRepo;
+import julio.cardGame.cardGameServer.repositories.UserRepo;
 import julio.cardGame.cardGameServer.http.communication.DefaultMessages;
 import julio.cardGame.cardGameServer.http.communication.HttpStatus;
 import julio.cardGame.cardGameServer.http.communication.RequestContext;
@@ -43,8 +43,9 @@ public class PutDeckService implements CardGameService {
 
                 //user already has a deck
                 if (hasDeck) {
-                    //dbConn.close();
-                    return new Response(HttpStatus.BAD_REQUEST.getStatusMessage(), HttpStatus.BAD_REQUEST);
+                    Response getDeckResponse = new GetDeckService().execute(requestContext, authorizationWrapper);
+
+                    return new Response(getDeckResponse.getBody(), HttpStatus.BAD_REQUEST);
                 }
 
                 //we check if all the cards belong to the user

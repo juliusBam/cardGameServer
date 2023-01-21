@@ -6,9 +6,9 @@ import julio.cardGame.cardGameServer.battle.helpers.Fighter.CardFighterResult;
 import julio.cardGame.cardGameServer.battle.helpers.Messages.IMessageFactory;
 import julio.cardGame.cardGameServer.battle.helpers.Messages.MessageFactory;
 import julio.cardGame.cardGameServer.battle.helpers.UserBattleResultWrapper;
-import julio.cardGame.cardGameServer.database.db.DbConnection;
+import julio.cardGame.cardGameServer.database.DbConnection;
 import julio.cardGame.cardGameServer.models.UserInfoModel;
-import julio.cardGame.cardGameServer.database.repositories.UserRepo;
+import julio.cardGame.cardGameServer.repositories.UserRepo;
 import julio.cardGame.cardGameServer.http.communication.DefaultMessages;
 
 import java.sql.Connection;
@@ -101,11 +101,11 @@ public class CardGame {
         int firstPlayerCards = this.firstPlayer.getDeckSize();
         int secondPlayerCards = this.secondPlayer.getDeckSize();
 
-        if (firstPlayerCards == secondPlayerCards) {
+        if (firstPlayerCards != 0 && secondPlayerCards != 0) {
             return new UserBattleResultWrapper(null, null, true);
         } else {
 
-            if (firstPlayerCards > secondPlayerCards)
+            if (firstPlayerCards != 0)
                 return new UserBattleResultWrapper(firstPlayer, secondPlayer, false);
 
             return new UserBattleResultWrapper(secondPlayer, firstPlayer, false);
@@ -118,7 +118,6 @@ public class CardGame {
         while (this.playersHaveCards()) {
 
             if (this.roundCounter >= 100) {
-                System.out.println(messageFactory.createRoundLimitMsg());
                 break;
             }
             this.roundCounter++;

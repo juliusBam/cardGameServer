@@ -1,4 +1,4 @@
-package julio.cardGame.cardGameServer.database.db;
+package julio.cardGame.cardGameServer.database;
 
 import julio.cardGame.cardGameServer.battle.cards.CardTypes;
 import julio.cardGame.cardGameServer.Constants;

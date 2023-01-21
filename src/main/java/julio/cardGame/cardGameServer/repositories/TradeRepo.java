@@ -1,7 +1,7 @@
-package julio.cardGame.cardGameServer.database.repositories;
+package julio.cardGame.cardGameServer.repositories;
 
-import julio.cardGame.cardGameServer.database.db.DataTransformation;
-import julio.cardGame.cardGameServer.database.db.DbConnection;
+import julio.cardGame.cardGameServer.database.DataTransformation;
+import julio.cardGame.cardGameServer.database.DbConnection;
 import julio.cardGame.cardGameServer.models.TradeModel;
 import julio.cardGame.cardGameServer.models.TradeViewModel;
 import julio.cardGame.cardGameServer.battle.cards.CardTypes;
