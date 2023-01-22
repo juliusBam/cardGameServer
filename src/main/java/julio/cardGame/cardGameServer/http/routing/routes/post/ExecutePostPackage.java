@@ -1,5 +1,6 @@
 package julio.cardGame.cardGameServer.http.routing.routes.post;
 
+import julio.cardGame.cardGameServer.http.communication.DefaultMessages;
 import julio.cardGame.cardGameServer.http.communication.RequestContext;
 import julio.cardGame.cardGameServer.http.communication.Response;
 import julio.cardGame.cardGameServer.http.routing.routes.Routeable;
@@ -12,7 +13,7 @@ public class ExecutePostPackage extends ServiceableRoute implements Routeable {
     @Override
     public Response process(RequestContext requestContext) {
 
-        return this.executeAdminService(requestContext, null);
+        return this.executeAdminService(requestContext, DefaultMessages.ERR_JSON_PARSE_PACKAGE.getMessage());
 
     }
 

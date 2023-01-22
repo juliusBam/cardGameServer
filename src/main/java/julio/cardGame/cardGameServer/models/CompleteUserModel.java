@@ -1,7 +1,7 @@
 package julio.cardGame.cardGameServer.models;
 
 
-//composition is used
+//composition is used, since we cannot extend 2 classes
 public class CompleteUserModel {
 
     public String userName;

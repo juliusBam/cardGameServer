@@ -17,7 +17,7 @@ public class HttpServer {
 
     public static BattleWrapper battleWrapper = new BattleWrapper();
 
-    public final ExecutorService executorService = Executors.newFixedThreadPool(10);
+    private final ExecutorService executorService = Executors.newFixedThreadPool(10);
 
 
     public void start() {

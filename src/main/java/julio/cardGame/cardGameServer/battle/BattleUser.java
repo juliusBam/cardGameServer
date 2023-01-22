@@ -72,10 +72,6 @@ public class BattleUser {
         return this.deck.getDeckSize();
     }
 
-    public Deck getDeck() {
-        return this.deck;
-    }
-
     public void moveCardTo(BattleUser targetPlayer) {
 
         targetPlayer.deck.addCard(

@@ -1,10 +1,12 @@
 package julio.cardGame.cardGameServer.http.communication;
 
+//Contains the messages which are sent back to the client
+
 public enum DefaultMessages {
 
     ERR_JSON_PARSE_USER("Error while parsing the user data"),
 
-    ERR_NO_COINS("Not enough coins, to buy the package"),
+    ERR_NO_COINS("Not enough coins to buy the package"),
 
     ERR_BATTLE_RES_NULL("An error occurred in the battle logic"),
 

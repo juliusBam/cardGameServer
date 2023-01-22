@@ -1,5 +1,6 @@
 package julio.cardGame.cardGameServer.http.routing.routes.get;
 
+import julio.cardGame.cardGameServer.http.communication.DefaultMessages;
 import julio.cardGame.cardGameServer.http.communication.RequestContext;
 import julio.cardGame.cardGameServer.http.routing.routes.Routeable;
 import julio.cardGame.cardGameServer.http.communication.Response;
@@ -12,7 +13,7 @@ public class ExecuteGetScore extends ServiceableRoute implements Routeable {
     @Override
     public Response process(RequestContext requestContext) {
 
-        return this.executeAuthenticatedService(requestContext, null);
+        return this.executeAuthenticatedService(requestContext, DefaultMessages.ERR_JSON_PARSE_SCOREBOARD.getMessage());
 
     }
 

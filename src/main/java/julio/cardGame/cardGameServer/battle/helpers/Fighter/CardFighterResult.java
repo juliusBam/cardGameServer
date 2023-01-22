@@ -2,6 +2,9 @@ package julio.cardGame.cardGameServer.battle.helpers.Fighter;
 
 import julio.cardGame.cardGameServer.battle.cards.ICard;
 
+//the class encapsulates the needed information after a round is played
+//if the round is a draw the winner and loser are null.
+
 public class CardFighterResult {
     private final ICard winner;
     private final ICard loser;

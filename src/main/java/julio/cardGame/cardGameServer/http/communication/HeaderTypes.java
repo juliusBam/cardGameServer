@@ -1,5 +1,7 @@
 package julio.cardGame.cardGameServer.http.communication;
 
+//Defines the headers we use
+
 public enum HeaderTypes {
 
     CONTENT_TYPE("Content-Type"),

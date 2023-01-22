@@ -10,9 +10,9 @@ import java.security.InvalidParameterException;
 
 import static java.lang.Math.floor;
 
-//todo check why knight not working
-
 public class CardDmgCalculator {
+
+    //overloading of the method calculateDmg
     public int calculateDmg(Monster attackingMonster, Monster defendingMonster) {
 
         if (attackingMonster == null || defendingMonster == null)

@@ -1,5 +1,7 @@
 package julio.cardGame.cardGameServer.http.communication;
 
+//defines the different possible request parameters we use
+
 public enum RequestParameters {
     USERNAME("userName"),
 

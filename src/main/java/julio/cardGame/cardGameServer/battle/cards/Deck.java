@@ -11,10 +11,6 @@ public class Deck {
         this.cards = new ArrayList<ICard>();
     }
 
-    public Deck(ArrayList<ICard> newCards) {
-        this.cards = newCards;
-    }
-
     public void addCard(ICard newCard) {
         if (newCard == null) {
             throw new InvalidParameterException("New card is null");
@@ -29,10 +25,6 @@ public class Deck {
 
     public ICard removeFirstCard() {
         return cards.remove(0);
-    }
-
-    public void removeCard(int position) {
-        this.cards.remove(position);
     }
 
     public int getDeckSize() {

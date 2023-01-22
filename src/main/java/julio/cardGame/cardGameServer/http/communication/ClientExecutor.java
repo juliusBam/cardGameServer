@@ -15,6 +15,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+//The class which executes the client request and sends a response to the same socket
+
 public class ClientExecutor implements Runnable {
 
     private final Socket actualSocket;

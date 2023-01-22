@@ -2,6 +2,8 @@ package julio.cardGame.cardGameServer.battle.helpers;
 
 import julio.cardGame.cardGameServer.battle.BattleUser;
 
+//Encapsulates the results of the battle
+
 public class UserBattleResultWrapper {
 
     public BattleUser winner;

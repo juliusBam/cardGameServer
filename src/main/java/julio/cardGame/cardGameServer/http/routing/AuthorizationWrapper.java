@@ -3,7 +3,6 @@ package julio.cardGame.cardGameServer.http.routing;
 import julio.cardGame.cardGameServer.http.communication.Response;
 
 public class AuthorizationWrapper {
-
     //when response != null it will be sent, used only for errors
     public Response response;
     public String userName;

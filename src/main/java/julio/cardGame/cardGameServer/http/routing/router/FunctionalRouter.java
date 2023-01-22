@@ -12,8 +12,6 @@ import julio.cardGame.cardGameServer.http.routing.routes.put.ExecutePutUser;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-//TODO add new endpoint to activate/deactivate users -> service and repo as well (only admin)
-
 public class FunctionalRouter {
 
         private final ConcurrentMap<RouteIdentifier, RouteEntry> routes = new ConcurrentHashMap<>();

@@ -135,7 +135,6 @@ public class CardGame {
                         messageFactory
                                 .createCardFightMsg(this.firstPlayer, firstPlayerFirstCard, this.secondPlayer, secondPlayerSecondCard, fightResult));
 
-                //if round was not a draw move the loser
                 this.handleFightEnd(fightResult, firstPlayerFirstCard);
 
             }
@@ -184,6 +183,7 @@ public class CardGame {
 
         if (fightResult.getLoser() != null) {
 
+            //if round was not a draw move the loser
             this.handleMoveCards(fightResult, firstPlayerFirstCard);
 
         } else {

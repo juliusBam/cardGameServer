@@ -21,14 +21,6 @@ public abstract class Card implements ICard {
 
     }
 
-    public final void trade(BattleUser targetPlayer) {
-
-    };
-
-    public final void move(Deck targetDeck) {
-
-    };
-
     public String getName() {
         return this.name;
     }
